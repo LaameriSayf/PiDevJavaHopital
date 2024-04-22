@@ -153,7 +153,7 @@ public class AjouterPatient {
         int genre = patient1.getGenre();
         if (genre == 1) { // Suppose que 1 correspond à "Homme"
             genreTF.setSelected(true);
-        } else if (genre == 0) { // Suppose que 2 correspond à "Femme"
+        } else if (genre == 0) { // Suppose que 0 correspond à "Femme"
             genreTF1.setSelected(true);
         }
 
@@ -176,30 +176,8 @@ public class AjouterPatient {
         } else {
             InterlockTF.setSelected(true);
         }
-        roleTF.setSelected(false);
-        roleTF1.setSelected(false);
-        roleTF2.setSelected(false);
-        roleTF3.setSelected(false);
 
-        // Vérifier la valeur du champ rôle et sélectionner le radio bouton approprié
-        String role = patient1.getRole();
-        switch (role) {
-            case "Admin":
-                roleTF.setSelected(true);
-                break;
-            case "Medecin":
-                roleTF1.setSelected(true);
-                break;
-            case "patient":
-                roleTF2.setSelected(true);
-                break;
-            case "pharmacien":
-                roleTF3.setSelected(true);
-                break;
-            default:
-                // Traitement par défaut si la valeur du champ rôle n'est pas reconnue
-                break;
-        }
+
 
         getData.path = patient1.getImage();
         String uri = "file:" + patient1.getImage();
@@ -234,10 +212,6 @@ public class AjouterPatient {
         getData.path = "";
         genreTF.setSelected(false);
         genreTF1.setSelected(false);
-        roleTF.setSelected(false);
-        roleTF1.setSelected(false);
-        roleTF2.setSelected(false);
-        roleTF3.setSelected(false);
         interlockTF.setSelected(false);
         InterlockTF.setSelected(false);
 
@@ -257,9 +231,10 @@ public class AjouterPatient {
 
     public ObservableList<Patient> addPatientListData() throws SQLException {
         ObservableList<Patient> list = FXCollections.observableArrayList();
-        String sql = "SELECT u.id, u.cin, u.nom, u.prenom, u.genre, u.datenaissance, u.numtel, u.email, u.password, u.interlock, u.role,u.image, p.numcarte " +
+        String sql = "SELECT u.id, u.cin, u.nom, u.prenom, u.genre, u.datenaissance, u.numtel, u.role, u.email, u.password, u.interlock, u.image, p.numcarte " +
                 "FROM global_user u " +
                 "JOIN patient p ON u.id = p.id";
+
         connect = MyConnection.getInstance().getCnx();
 
         try {
@@ -284,7 +259,7 @@ public class AjouterPatient {
                 );
                 list.add(patient);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
@@ -333,9 +308,8 @@ public class AjouterPatient {
         connect = MyConnection.getInstance().getCnx();
         try {
             Alert alert;
-            if (carteTF.getText().isEmpty()||cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
-                    date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty() ||
-                    emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() ||
+            if (carteTF.getText().isEmpty() || cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() || genreTF.getText().isEmpty() || genreTF1.getText().isEmpty() || interlockTF.getText().isEmpty() || InterlockTF.getText().isEmpty() ||
+                    date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty() || emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() ||
                     getData.path == null || getData.path.equals("")) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Message d'erreur");
@@ -353,7 +327,7 @@ public class AjouterPatient {
                     alert.setContentText("Patient existe déjà !");
                     alert.showAndWait();
                 } else {
-                    // Afficher une alerte de confirmation pour ajouter l'administrateur
+                    // Afficher une alerte de confirmation pour ajouter le patient
                     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
                     confirmationAlert.setTitle("Confirmation");
                     confirmationAlert.setHeaderText(null);
@@ -369,7 +343,7 @@ public class AjouterPatient {
                     // Attendre la réponse de l'utilisateur
                     Optional<ButtonType> userChoice = confirmationAlert.showAndWait();
 
-                    // Si l'utilisateur confirme, procéder à l'ajout de l'administrateur
+                    // Si l'utilisateur confirme, procéder à l'ajout du patient
                     if (userChoice.isPresent() && userChoice.get() == confirmButton) {
                         prepare = connect.prepareStatement(sql);
                         prepare.setInt(1, Integer.parseInt(cinTF.getText()));
@@ -399,16 +373,8 @@ public class AjouterPatient {
                             prepare.setInt(9, 0); // Assuming InterlockTF represents "Non", so set 0
                         }
 
-                        // Determine the role based on which CheckBox is selected
-                        if (roleTF.isSelected()) {
-                            prepare.setString(11, "Admin");
-                        } else if (roleTF1.isSelected()) {
-                            prepare.setString(11, "Medecin");
-                        } else if (roleTF2.isSelected()) {
-                            prepare.setString(11, "Patient");
-                        } else {
-                            prepare.setString(11, "Pharmacien");
-                        }
+                        // Set the role to "Patient" by default
+                        prepare.setString(11, "Patient");
 
                         // Execute the SQL statement to insert into global_user table
                         prepare.executeUpdate();
@@ -446,10 +412,10 @@ public class AjouterPatient {
 
         try {
             Alert alert;
-            if (cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
+            if (carteTF.getText().isEmpty() ||cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
                     genreTF.getText().isEmpty() || date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty() ||
                     emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() || interlockTF.getText().isEmpty() ||
-                    roleTF.getText().isEmpty() || getData.path == null || getData.path.equals("")) {
+                    getData.path == null || getData.path.equals("")) {
 
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Message d'erreur");
@@ -495,35 +461,25 @@ public class AjouterPatient {
         String uri = getData.path;
         uri = uri.replace("\\", "\\\\");
 
-        String sql = "UPDATE global_user SET cin = ?, nom = ?, prenom = ?, genre = ?, datenaissance = ?, " +
-                "numtel = ?, password = ?, interlock = ?, role = ?, image = ? WHERE cin = ?";
-
+        String sqlGlobalUser = "UPDATE global_user SET cin = ?, nom = ?, prenom = ?, genre = ?, datenaissance = ?, numtel = ?, password = ?, interlock = ?,  image = ? WHERE cin = ?";
+        String sqlPatient = "UPDATE patient SET numcarte = ? WHERE id = (SELECT id FROM global_user WHERE cin = ?)";
         Connection connect = null;
-        PreparedStatement prepare = null;
+        PreparedStatement prepareGlobalUser = null;
+        PreparedStatement preparePatient = null;
 
         try {
             Alert alert;
-            if (carteTF.getText().isEmpty() ||cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
+            if (carteTF.getText().isEmpty() || cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
                     date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty() ||
                     emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() ||
                     (!interlockTF.isSelected() && !InterlockTF.isSelected()) ||
-                    roleTF.getText().isEmpty() || uri == null || uri.equals("")) {
+                    uri == null || uri.equals("")) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Message d'erreur");
                 alert.setHeaderText(null);
                 alert.setContentText("Veuillez remplir tous les champs vides !");
                 alert.showAndWait();
             } else {
-                // Vérifier si une seule radio box est sélectionnée pour le genre
-                if (!(genreTF.isSelected() ^ genreTF1.isSelected())) {
-                    alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Message d'erreur");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Veuillez sélectionner un seul genre !");
-                    alert.showAndWait();
-                    return; // Arrêter l'exécution de la méthode
-                }
-
                 alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation Message");
                 alert.setHeaderText(null);
@@ -537,26 +493,33 @@ public class AjouterPatient {
                     // Obtention d'une nouvelle connexion à chaque fois
                     connect = MyConnection.getInstance().getCnx();
 
-                    // Préparation de la requête avec des paramètres
-                    prepare = connect.prepareStatement(sql);
-                    prepare.setInt(1, Integer.parseInt(cinTF.getText()));
-                    prepare.setString(2, nomTF.getText());
-                    prepare.setString(3, prenomTF.getText());
-                    prepare.setInt(4, genreSelectionne); // Utilisation du genre sélectionné
-                    prepare.setObject(5, date_de_naissanceTF.getValue());
-                    prepare.setInt(6, Integer.parseInt(numtelTF.getText()));
-                    prepare.setString(7, passwordTF.getText());
+                    // Préparation des requêtes avec des paramètres
+                    prepareGlobalUser = connect.prepareStatement(sqlGlobalUser);
+                    preparePatient = connect.prepareStatement(sqlPatient);
+
+                    // Remplir les paramètres pour la requête global_user
+                    prepareGlobalUser.setInt(1, Integer.parseInt(cinTF.getText()));
+                    prepareGlobalUser.setString(2, nomTF.getText());
+                    prepareGlobalUser.setString(3, prenomTF.getText());
+                    prepareGlobalUser.setInt(4, genreSelectionne); // Utilisation du genre sélectionné
+                    prepareGlobalUser.setObject(5, date_de_naissanceTF.getValue());
+                    prepareGlobalUser.setInt(6, Integer.parseInt(numtelTF.getText()));
+                    prepareGlobalUser.setString(7, passwordTF.getText());
 
                     // Convertir la valeur de l'interlock en entier (0 ou 1)
                     int interlockValue = interlockTF.isSelected() ? 1 : 0;
-                    prepare.setInt(8, interlockValue);
+                    prepareGlobalUser.setInt(8, interlockValue);
 
-                    prepare.setString(9, roleTF.getText());
-                    prepare.setString(10, uri);
-                    prepare.setString(11, cinTF.getText()); // Utilisation du cin comme condition WHERE
+                    prepareGlobalUser.setString(9, uri);
+                    prepareGlobalUser.setString(10, cinTF.getText()); // Utilisation du cin comme condition WHERE
 
-                    // Exécuter la requête de mise à jour
-                    prepare.executeUpdate();
+                    // Remplir les paramètres pour la requête patient
+                    preparePatient.setString(1, carteTF.getText()); // Modification pour inclure numcarte
+                    preparePatient.setString(2, cinTF.getText()); // Utilisation du cin comme condition WHERE
+
+                    // Exécuter les requêtes de mise à jour
+                    prepareGlobalUser.executeUpdate();
+                    preparePatient.executeUpdate();
 
                     alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Information Message");

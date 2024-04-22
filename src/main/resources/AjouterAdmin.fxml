@@ -49,17 +49,22 @@
                         </Label>
                         <Line endX="77.5" layoutX="97.0" layoutY="46.0" startX="-76.5" />
                         <Button layoutX="14.0" layoutY="55.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Tableau de board" />
-                        <Button layoutX="14.0" layoutY="95.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Administrateur" />
-                        <Button layoutX="14.0" layoutY="135.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Patients" />
-                        <Button layoutX="14.0" layoutY="175.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Médecins" />
-                        <Button layoutX="14.0" layoutY="215.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Pharmaciens" />
+                        <Button fx:id="gereradministrateurbtn" layoutX="14.0" layoutY="95.0" mnemonicParsing="false" onAction="#gereradministrateurbtn" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Administrateur" />
+                        <Button fx:id="gererpatientbtn" layoutX="14.0" layoutY="135.0" mnemonicParsing="false" onAction="#gererpatientbtn" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Patients" />
+                        <Button fx:id="gerermedecin" layoutX="14.0" layoutY="175.0" mnemonicParsing="false" onAction="#gerermedecin" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Médecins" />
+                        <Button fx:id="gererpharmacienbtn" layoutX="14.0" layoutY="215.0" mnemonicParsing="false" onAction="#gererpharmacienbtn" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Pharmaciens" />
                         <Button layoutX="14.0" layoutY="255.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Blogs" />
                         <Button layoutX="14.0" layoutY="295.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Rendez-vous" />
                         <Button layoutX="14.0" layoutY="335.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Ordonnances" />
                         <Button layoutX="14.0" layoutY="375.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Médicaments" />
-                        <Button layoutX="14.0" layoutY="415.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Catégories" />
-                        <Button layoutX="14.0" layoutY="455.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Dossiers médicales" />
-                        <Button layoutX="14.0" layoutY="495.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Se déconnecter" />
+                        <Button layoutX="14.0" layoutY="425.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Catégories" />
+                        <Button layoutX="14.0" layoutY="466.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Dossiers médicales" />
+                        <Button layoutX="14.0" layoutY="505.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Se déconnecter" />
+                        <ImageView fitHeight="22.0" fitWidth="21.0" layoutX="16.0" layoutY="65.0">
+                           <image>
+                              <Image url="@iconhome.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </AnchorPane>
                </left>
@@ -108,12 +113,11 @@
                               <Label layoutX="324.0" layoutY="396.0" text="Email:" />
                               <DatePicker fx:id="date_de_naissanceTF" layoutX="361.0" layoutY="323.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
                               <Label layoutX="306.0" layoutY="431.0" text="Interlock:" />
-                              <Label layoutX="566.0" layoutY="327.0" text="Role:" />
-                              <Label layoutX="540.0" layoutY="396.0" text="Password:" />
-                              <PasswordField fx:id="passwordTF" layoutX="614.0" layoutY="392.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
-                              <AnchorPane layoutX="834.0" layoutY="305.0" prefHeight="150.0" prefWidth="130.0" stylesheets="@DashboarsDesign.css">
+                              <Label layoutX="564.0" layoutY="327.0" text="Password:" />
+                              <PasswordField fx:id="passwordTF" layoutX="625.0" layoutY="323.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                              <AnchorPane layoutX="893.0" layoutY="308.0" prefHeight="147.0" prefWidth="140.0" stylesheets="@DashboarsDesign.css">
                                  <children>
-                                    <ImageView fx:id="imageTF" fitHeight="150.0" fitWidth="133.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="imageTF" fitHeight="151.0" fitWidth="136.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
                                     <Button layoutX="13.0" layoutY="117.0" mnemonicParsing="false" onAction="#ajouterAdminInsertImage" styleClass="import-btn" stylesheets="@DashboarsDesign.css" text="Insérer une image" />
                                  </children>
                                  <styleClass>
@@ -121,18 +125,34 @@
                                     <String fx:value="white-bg" />
                                  </styleClass>
                               </AnchorPane>
-                              <Button layoutX="223.0" layoutY="479.0" mnemonicParsing="false" onAction="#ajouterAdminadd" prefHeight="36.0" prefWidth="89.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Ajouter" />
-                              <Button layoutX="411.0" layoutY="479.0" mnemonicParsing="false" onAction="#modifierAdminupdate" prefHeight="36.0" prefWidth="89.0" styleClass="update-btn" stylesheets="@DashboarsDesign.css" text="Modifier" />
-                              <Button layoutX="599.0" layoutY="479.0" mnemonicParsing="false" onAction="#supprimerAdmindelete" prefHeight="36.0" prefWidth="89.0" styleClass="delete-btn" stylesheets="@DashboarsDesign.css" text="Supprimer" />
-                              <Button layoutX="783.0" layoutY="479.0" mnemonicParsing="false" onAction="#ajouterAdminReset" prefHeight="36.0" prefWidth="89.0" styleClass="clear-btn" stylesheets="@DashboarsDesign.css" text="Effacer" />
+                              <Button layoutX="223.0" layoutY="479.0" mnemonicParsing="false" onAction="#ajouterAdminadd" prefHeight="36.0" prefWidth="99.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Ajouter" />
+                              <Button layoutX="411.0" layoutY="479.0" mnemonicParsing="false" onAction="#modifierAdminupdate" prefHeight="36.0" prefWidth="99.0" styleClass="update-btn" stylesheets="@DashboarsDesign.css" text="Modifier" />
+                              <Button layoutX="599.0" layoutY="479.0" mnemonicParsing="false" onAction="#supprimerAdmindelete" prefHeight="36.0" prefWidth="99.0" styleClass="delete-btn" stylesheets="@DashboarsDesign.css" text="Supprimer" />
+                              <Button layoutX="783.0" layoutY="479.0" mnemonicParsing="false" onAction="#ajouterAdminReset" prefHeight="36.0" prefWidth="99.0" styleClass="clear-btn" stylesheets="@DashboarsDesign.css" text="Effacer" />
                               <RadioButton fx:id="genreTF" layoutX="74.0" layoutY="431.0" mnemonicParsing="false" text="Homme" />
                               <RadioButton fx:id="genreTF1" layoutX="149.0" layoutY="431.0" mnemonicParsing="false" text="Femme" />
                               <RadioButton fx:id="interlockTF" layoutX="361.0" layoutY="431.0" mnemonicParsing="false" text="Oui" />
                               <RadioButton fx:id="InterlockTF" layoutX="428.0" layoutY="431.0" mnemonicParsing="false" text="Non" />
-                              <RadioButton fx:id="roleTF" layoutX="615.0" layoutY="327.0" mnemonicParsing="false" text="Admin" />
-                              <RadioButton fx:id="roleTF1" layoutX="697.0" layoutY="327.0" mnemonicParsing="false" text="Medecin" />
-                              <RadioButton fx:id="roleTF2" layoutX="614.0" layoutY="363.0" mnemonicParsing="false" text="Patient" />
-                              <RadioButton fx:id="roleTF3" layoutX="702.0" layoutY="363.0" mnemonicParsing="false" text="Pharmacien" />
+                              <ImageView fitHeight="17.0" fitWidth="14.0" layoutX="228.0" layoutY="489.0">
+                                 <image>
+                                    <Image url="@addicon.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="21.0" fitWidth="18.0" layoutX="599.0" layoutY="487.0">
+                                 <image>
+                                    <Image url="@deleteicon.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="21.0" fitWidth="22.0" layoutX="785.0" layoutY="487.0">
+                                 <image>
+                                    <Image url="@effacericon.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="18.0" fitWidth="19.0" layoutX="411.0" layoutY="488.0">
+                                 <image>
+                                    <Image url="@edit.png" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                      </children>

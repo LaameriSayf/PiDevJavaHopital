@@ -137,6 +137,8 @@
     -fx-font-family:"Arial";
     -fx-cursor:hand;
 }
+
+
 .add-btn:hover{
     -fx-background-color:#3357a4;
 }

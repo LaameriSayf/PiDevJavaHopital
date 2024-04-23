@@ -1,0 +1,5 @@
+Controller\AfficherController.class
+Service\CategorieService.class
+org\example\MainFx.class
+Test\CategorieTest.class
+Model\Categorie.class

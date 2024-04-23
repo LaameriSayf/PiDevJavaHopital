@@ -9,6 +9,8 @@ import Service.CategorieService;
 import Service.MedicamentService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -29,11 +32,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
@@ -45,12 +52,16 @@ public class CategorieController implements Initializable {
     private AnchorPane MedicamentForm;
 
     @FXML
+    private ComboBox<String> etat;
+
+    @FXML
     private Button categorieBtn;
 
     @FXML
     private AnchorPane categorieForm;
 
-
+    @FXML
+    private TextField recherche;
 
     @FXML
     private DatePicker dateamm;
@@ -61,10 +72,6 @@ public class CategorieController implements Initializable {
     @FXML
     private TextField desc;
 
-
-
-    @FXML
-    private TextField etat;
 
     @FXML
     private Button i;
@@ -116,9 +123,6 @@ public class CategorieController implements Initializable {
     @FXML
     private TextArea textArea;
 
-
-    @FXML
-    private TextField recherche;
     @FXML
     private Button minimize;
     @FXML
@@ -146,19 +150,35 @@ public class CategorieController implements Initializable {
             // Charger l'image à partir du fichier sélectionné
             Image image = new Image(selectedFile.toURI().toString());
 
-            // Afficher l'image dans un composant ImageView ou utiliser l'image comme bon vous semble
-            // Par exemple, vous pouvez définir l'image dans un objet ImageView
-            // ImageView imageView = new ImageView(image);
-            // imageView.setFitWidth(200); // Définir la largeur souhaitée
-            // imageView.setFitHeight(200); // Définir la hauteur souhaitée
-            // Ajouter imageView à votre interface utilisateur
+            File destinationDirectory = new File("C:\\Users\\ASUS\\Desktop\\PiDevJava\\PiDevJavaHopital\\JavaPiHopital\\src\\main\\resources\\uploads");
+
+            Path destinationPath = null;
+            try {
+                // Copier le fichier sélectionné vers le répertoire de destination
+                Path sourcePath = selectedFile.toPath();
+                destinationPath = new File(destinationDirectory, selectedFile.getName()).toPath();
+                Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+
+                // Afficher un message de succès
+                showAlert("Image uploaded successfully!");
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Afficher un message d'erreur si le téléchargement échoue
+                showAlert("Failed to upload image.");
+            }
 
             // Mettre à jour le contenu du TextArea avec le chemin de l'image sélectionnée
-            textArea.setText(selectedFile.getPath());
+            textArea.setText(destinationPath.toString());
         }
     }
 
-
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     public CategorieController() {
     }
@@ -198,24 +218,35 @@ public class CategorieController implements Initializable {
         String description1_cat = description_cat.getText();
         String type_cat1 = type_cat.getText();
 
+        // Vérifier si les champs sont vides
         if (nom_cat1.isEmpty() || description1_cat.isEmpty() || type_cat1.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning");
-            alert.setHeaderText(null);
-            alert.setContentText("Veuillez remplir tous les champs.");
-            alert.showAndWait();
-            return; // Sortie de la méthode si un champ est vide
+            new Alert(Alert.AlertType.WARNING, "Veuillez remplir tous les champs.").showAndWait();
+            return; // Sortir de la méthode si un champ est vide
         }
 
+        // Vérifier si le nom de la catégorie contient uniquement des lettres
+        if (!isValidName(nom_cat1)) {
+            new Alert(Alert.AlertType.WARNING, "Le nom de la catégorie ne doit contenir que des lettres.").showAndWait();
+            return;
+        }
+
+        // Vérifier si le type de la catégorie contient uniquement des lettres
+        if (!isValidName(type_cat1)) {
+            new Alert(Alert.AlertType.WARNING, "Le type de la catégorie ne doit contenir que des lettres.").showAndWait();
+            return;
+        }
+        // Vérifier si la description contient au moins 3 caractères
+        if (description1_cat.length() < 3) {
+            new Alert(Alert.AlertType.WARNING, "La description de la catégorie doit contenir au moins 3 caractères.").showAndWait();
+            return; // Sortir de la méthode si la description est trop courte
+        }
+
+        // Ajouter la nouvelle catégorie
         Categorie c = new Categorie(1, nom_cat1, description1_cat, type_cat1);
         cs.addCategorie(c);
 
         // Affichage d'une alerte de succès
-        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-        successAlert.setTitle("Success");
-        successAlert.setHeaderText(null);
-        successAlert.setContentText("Catégorie ajoutée avec succès!");
-        successAlert.showAndWait();
+        new Alert(Alert.AlertType.INFORMATION, "Catégorie ajoutée avec succès!").showAndWait();
 
         // Effacement des champs de saisie
         nom_cat.clear();
@@ -226,16 +257,30 @@ public class CategorieController implements Initializable {
         refreshTable();
     }
 
+    private boolean isValidName(String name) {
+        // Vérifier si le nom contient uniquement des lettres
+        return name.matches("[a-zA-Z]+");
+    }
+
     @FXML
     void AfficherCategorie(ActionEvent event) {
-        refreshTable();
-    }
+
+        nom_med.clear();
+        ref_med.clear();
+        dateamm.setValue(null);
+        dateexp.setValue(null);
+        qte.clear();
+        desc.clear();
+        etat.getSelectionModel().clearSelection();
+        textArea.clear();
+        refreshTable();    }
 
     @FXML
     void SupprimerCategorie(ActionEvent event) {
         Categorie categorieSelectionnee = table.getSelectionModel().getSelectedItem();
         if (categorieSelectionnee != null) {
             cs.deleteCategorie(categorieSelectionnee);
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setContentText("Categorie removed successfully!");
@@ -247,6 +292,7 @@ public class CategorieController implements Initializable {
             alert.setContentText("Please select a category to delete.");
             alert.show();
         }
+
     }
 
 
@@ -301,6 +347,7 @@ public class CategorieController implements Initializable {
 
                 // Rafraîchir la table
                 refreshTable();
+
             } catch (Exception e) {
                 // Afficher une alerte en cas d'erreur
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -315,13 +362,55 @@ public class CategorieController implements Initializable {
             alert.setContentText("Veuillez sélectionner une catégorie à modifier.");
             alert.showAndWait();
         }
+
     }
 
 
+    @FXML
+    void rechercher(ActionEvent event) {
+        table.getItems().clear();
+        table.getItems().addAll(searchList(recherche.getText(), cs.getData()));
+    }
 
+    private List<Categorie> searchList(String searchWords, List<Categorie> data) {
+        List<String> searchWordsArray = Arrays.asList(searchWords.trim().split(" "));
+
+        return data.stream().filter(input -> {
+            boolean matchNom = false;
+            boolean matchType = false;
+            boolean matchDescription = false;
+
+            // Vérifie si le nom, le type ou la description contient l'un des mots de recherche
+            for (String word : searchWordsArray) {
+                if (input.getNom_cat().toLowerCase().contains(word.toLowerCase())) {
+                    matchNom = true;
+                }
+                if (input.getType_cat().toLowerCase().contains(word.toLowerCase())) {
+                    matchType = true;
+                }
+                if (input.getDescription_cat().toLowerCase().contains(word.toLowerCase())) {
+                    matchDescription = true;
+                }
+            }
+
+            // Renvoie vrai si le nom, le type ou la description correspond à l'un des mots de recherche
+            return matchNom || matchType || matchDescription;
+        }).collect(Collectors.toList());
+    }
+
+    private List<String> searchList1(String searchWords, List<String> listOfStrings) {
+
+        List<String> searchWordsArray = Arrays.asList(searchWords.trim().split(" "));
+
+        return listOfStrings.stream().filter(input -> {
+            return searchWordsArray.stream().allMatch(word ->
+                    input.toLowerCase().contains(word.toLowerCase()));
+        }).collect(Collectors.toList());
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        fileChooser.setInitialDirectory(new File("."));
+etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
+            fileChooser.setInitialDirectory(new File("."));
         loadAndDisplayData();
 
         try {
@@ -340,13 +429,121 @@ public class CategorieController implements Initializable {
 
                 // Affichage des données dans la table
                 table.setItems(data);
+
             } else {
                 System.err.println("La référence à la table est nulle. Vérifiez votre configuration FXML.");
             }
+
         } catch (Exception e) {
             // Gestion des exceptions: Affichage de l'erreur et capture de l'exception pour éviter les interruptions
             System.err.println("Une exception s'est produite lors de l'initialisation de l'interface utilisateur : " + e.getMessage());
             e.printStackTrace(); // Affichage de la trace de la pile pour le débogage
+        }
+        table.setOnMouseClicked(event -> {
+            // Vérifier si un clic de souris a été effectué avec le bouton gauche
+            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 1) {
+                // Récupérer la ligne sélectionnée
+                Categorie categorieSelectionnee = table.getSelectionModel().getSelectedItem();
+
+                // Vérifier si la ligne sélectionnée n'est pas nulle
+                if (categorieSelectionnee != null) {
+                    // Afficher les valeurs de la ligne sélectionnée dans les zones de texte
+                    nom_cat.setText(categorieSelectionnee.getNom_cat());
+                    description_cat.setText(categorieSelectionnee.getDescription_cat());
+                    type_cat.setText(categorieSelectionnee.getType_cat());
+                }
+            }
+        });
+        table_med.setOnMouseClicked(this::handle);
+
+
+    }
+    // Méthode pour extraire l'ID à partir de la ligne de médicament sélectionnée
+    private int getIdFromLine(String line) {
+        Pattern pattern = Pattern.compile("ID: (\\d+)");
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()) {
+            return Integer.parseInt(matcher.group(1));
+        }
+        return 0;
+    }
+
+    private String getRefFromLine(String line) {
+        String[] parts = line.split(", Reference: ");
+        if (parts.length > 1) {
+            return parts[1].split(",")[0].trim();
+        }
+        return "";
+    }
+
+    // Méthode pour extraire le nom à partir de la ligne de médicament sélectionnée
+    private String getNomFromLine(String line) {
+        String[] parts = line.split("nom medicament: ");
+        if (parts.length > 1) {
+            return parts[1].split(",")[0].trim();
+        }
+        return "";
+    }
+
+    // Méthode pour extraire la description à partir de la ligne de médicament sélectionnée
+    private String getDescriptionFromLine(String line) {
+        String[] parts = line.split("Description: ");
+        if (parts.length > 1) {
+            return parts[1].split(",")[0].trim();
+        }
+        return "";
+    }
+    private LocalDate getDateAmmFromLine(String line) {
+        Pattern pattern = Pattern.compile("date amm: (\\d{4}-\\d{2}-\\d{2})");
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()) {
+            return LocalDate.parse(matcher.group(1));
+        } else {
+            return null; // Gérer le cas où la date d'AMM n'est pas trouvée
+        }
+    }
+
+    // Méthode pour extraire la date d'expiration à partir de la ligne de médicament sélectionnée
+    private LocalDate getDateExpFromLine(String line) {
+        Pattern pattern = Pattern.compile("Date expiration: (\\d{4}-\\d{2}-\\d{2})");
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()) {
+            return LocalDate.parse(matcher.group(1));
+        } else {
+            return null; // Gérer le cas où la date d'expiration n'est pas trouvée
+        }
+    }
+
+    // Méthode pour extraire la quantité à partir de la ligne de médicament sélectionnée
+    private int getQteFromLine(String line) {
+        Pattern pattern = Pattern.compile("Quantite: (\\d+)");
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()) {
+            return Integer.parseInt(matcher.group(1));
+        } else {
+            return 0; // Gérer le cas où la quantité n'est pas trouvée
+        }
+    }
+
+    // Méthode pour extraire l'état à partir de la ligne de médicament sélectionnée
+    private String getEtatFromLine(String line) {
+        Pattern pattern = Pattern.compile("etat: (.*?),");
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()) {
+            return matcher.group(1);
+        } else {
+            return ""; // Gérer le cas où l'état n'est pas trouvé
+        }
+    }
+
+    // Méthode pour extraire le chemin de l'image à partir de la ligne de médicament sélectionnée
+    private String getImageFromLine(String line) {
+        Pattern pattern = Pattern.compile("image: (.+)");
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()) {
+            return matcher.group(1);
+        } else {
+            return ""; // Gérer le cas où le chemin de l'image n'est pas trouvé
         }
     }
     @FXML
@@ -356,7 +553,7 @@ public class CategorieController implements Initializable {
         String description = desc.getText();
         String nom1 = nom_med.getText();
         String ref1 = ref_med.getText();
-        String etat1 = etat.getText();
+        String etat1 = etat.getSelectionModel().getSelectedItem();
         String image1 = textArea.getText();
 
         // Conversion de la quantité en entier
@@ -392,7 +589,7 @@ public class CategorieController implements Initializable {
         dateexp.setValue(null);
         qte.clear();
         desc.clear();
-        etat.clear();
+        etat.getSelectionModel().clearSelection();
         textArea.clear();
 
 
@@ -410,27 +607,103 @@ public class CategorieController implements Initializable {
 
     @FXML
     void modifierMed(ActionEvent event) {
+        int selectedIndex = table_med.getSelectionModel().getSelectedIndex();
 
+        if (selectedIndex != -1) {
+            // Récupérer le médicament sélectionné
+            Medicament medSelected = ms.getData().get(selectedIndex);
+
+            String nomMed = nom_med.getText();
+            String refMed = ref_med.getText();
+            LocalDate dateAmm = dateamm.getValue();
+            LocalDate dateExp = dateexp.getValue();
+            String description = desc.getText();
+            String etatMed = etat.getSelectionModel().getSelectedItem();
+            String image = textArea.getText();
+            int qteMed = Integer.parseInt(qte.getText());
+
+            try {
+                if (nomMed.isEmpty() || refMed.isEmpty() || dateAmm == null || dateExp == null ||
+                        description.isEmpty() || etatMed.isEmpty() || image.isEmpty()) {
+                    throw new Exception("Veuillez remplir tous les champs !");
+                }
+
+                // Mettre à jour les valeurs du médicament sélectionné
+                medSelected.setNom_med(nomMed);
+                medSelected.setRef_med(refMed);
+                medSelected.setDate_amm(dateAmm);
+                medSelected.setDate_expiration(dateExp);
+                medSelected.setDescription(description);
+                medSelected.setEtat(etatMed);
+                medSelected.setImage(image);
+                medSelected.setQte(qteMed);
+
+                // Appeler la méthode pour modifier le médicament dans le service
+                ms.updateMedicament(medSelected);
+
+                // Afficher une alerte de succès
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Succès");
+                alert.setContentText("Médicament modifié avec succès !");
+                alert.showAndWait();
+
+                // Rafraîchir la table
+                refreshTable();
+            } catch (Exception e) {
+                // Afficher une alerte en cas d'erreur
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+            }
+        } else {
+            // Afficher une alerte si aucun médicament n'est sélectionné
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Avertissement");
+            alert.setContentText("Veuillez sélectionner un médicament à modifier.");
+            alert.showAndWait();
+        }
     }
+
 
     @FXML
     void supprimerMed(ActionEvent event) {
+        // Récupérer l'index de l'élément sélectionné dans la liste
+        int selectedIndex = table_med.getSelectionModel().getSelectedIndex();
 
-    }
-    public int get_List_medicament(String chaine){
-        String selectedItem =chaine;
-        System.out.println("Selected item: " + selectedItem);
-        Pattern pattern = Pattern.compile("ID: (\\d+)");
-        Matcher matcher = pattern.matcher(selectedItem);
+        if (selectedIndex != -1) {
+            // Récupérer l'élément correspondant à l'index sélectionné
+            Medicament medLineSelected = ms.getData().get(selectedIndex);
 
-        // Check if the pattern matches and extract the ID
-        if (matcher.find()) {
-            return  Integer.parseInt(matcher.group(1));
+            // Supprimer le médicament sélectionné
+            ms.deleteMedicament(medLineSelected);
 
+            // Afficher une alerte de succès
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setContentText("Medicament removed successfully!");
+            alert.show();
+
+            // Rafraîchir la table
+            refreshTable();
         } else {
-            System.out.println("ID not found");
-        }return 0;
+            // Afficher une alerte si aucun élément n'est sélectionné
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setContentText("Please select a medicament to delete.");
+            alert.show();
+        }
+        nom_med.clear();
+        ref_med.clear();
+        dateamm.setValue(null);
+        dateexp.setValue(null);
+        qte.clear();
+        desc.clear();
+        etat.getSelectionModel().clearSelection();
+        textArea.clear();
     }
+
+
     private void loadAndDisplayData() {
         ObservableList<String> items = observableArrayList();
         System.out.println("loading");
@@ -455,4 +728,36 @@ public class CategorieController implements Initializable {
     }
 
 
+    private void handle(MouseEvent event) {
+        // Vérifier si un clic de souris a été effectué avec le bouton gauche
+        if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 1) {
+            // Récupérer la ligne sélectionnée
+            String medLineSelected = table_med.getSelectionModel().getSelectedItem();
+
+            // Vérifier si la ligne sélectionnée n'est pas nulle
+            if (medLineSelected != null) {
+                // Extraire les valeurs de la ligne sélectionnée
+                int id = getIdFromLine(medLineSelected);
+                String ref = getRefFromLine(medLineSelected);
+                String nom = getNomFromLine(medLineSelected);
+                String description = getDescriptionFromLine(medLineSelected);
+                LocalDate dateAmm = getDateAmmFromLine(medLineSelected);
+                LocalDate dateExp = getDateExpFromLine(medLineSelected);
+                int qte1 = getQteFromLine(medLineSelected);
+                String etata = getEtatFromLine(medLineSelected);
+                String img = getImageFromLine(medLineSelected);
+                // Extraire les autres valeurs de la ligne sélectionnée ici ...
+
+                // Afficher les valeurs dans les zones de texte
+                nom_med.setText(nom);
+                ref_med.setText(ref);
+                desc.setText(description);
+                dateamm.setValue(dateAmm);
+                dateexp.setValue(dateExp);
+                qte.setText(String.valueOf(qte1));
+                etat.setValue(etata);
+                textArea.setText(img);
+            }
+        }
+    }
 }

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXListView?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="708.0" prefWidth="1105.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AjouterRdv">
+   <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="700.0" minWidth="900.0" prefHeight="400.0" prefWidth="600.0">
+      <left>
+         <AnchorPane fx:id="sidebar" prefHeight="400.0" prefWidth="133.0" BorderPane.alignment="CENTER">
+            <children>
+               <VBox layoutY="-29.0" prefHeight="694.0" prefWidth="201.0" styleClass="sidebardash" stylesheets="@../java/CssBlog/RendezVous.css">
+                  <children>
+                     <ImageView fitHeight="49.0" fitWidth="190.0" pickOnBounds="true" preserveRatio="true">
+                        <VBox.margin>
+                           <Insets top="8.0" />
+                        </VBox.margin>
+                     </ImageView>
+                     <HBox prefHeight="30.0" prefWidth="145.0">
+                        <VBox.margin>
+                           <Insets top="30.0" />
+                        </VBox.margin>
+                        <padding>
+                           <Insets top="40.0" />
+                        </padding>
+                     </HBox>
+                     <HBox fx:id="sidecateg" prefHeight="42.0" prefWidth="146.0">
+                        <children>
+                           <ImageView fitHeight="35.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                              <HBox.margin>
+                                 <Insets left="18.0" />
+                              </HBox.margin>
+                           </ImageView>
+                           <Text fx:id="sidecateg1" strokeType="OUTSIDE" strokeWidth="0.0" text="Rendez vous">
+                              <HBox.margin>
+                                 <Insets top="2.0" />
+                              </HBox.margin>
+                              <font>
+                                 <Font name="System Bold Italic" size="14.0" />
+                              </font></Text>
+                        </children>
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                        <padding>
+                           <Insets top="20.0" />
+                        </padding>
+                     </HBox>
+                     <HBox prefHeight="30.0" prefWidth="138.0">
+                        <children>
+                           <ImageView fitHeight="34.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                              <HBox.margin>
+                                 <Insets left="18.0" />
+                              </HBox.margin>
+                           </ImageView>
+                           <Text fx:id="sideblog" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: italic;" styleClass="styleecriture" text="Emploi">
+                              <HBox.margin>
+                                 <Insets left="8.0" top="6.0" />
+                              </HBox.margin>
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Text>
+                        </children>
+                        <VBox.margin>
+                           <Insets top="20.0" />
+                        </VBox.margin>
+                     </HBox>
+                     <HBox prefHeight="27.0" prefWidth="130.0">
+                        <children>
+                           <ImageView fitHeight="32.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                              <HBox.margin>
+                                 <Insets left="18.0" top="2.0" />
+                              </HBox.margin>
+                           </ImageView>
+                           <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: italic;" styleClass="styleecriture" text="Charts">
+                              <HBox.margin>
+                                 <Insets top="8.0" />
+                              </HBox.margin></Text>
+                        </children>
+                        <VBox.margin>
+                           <Insets top="20.0" />
+                        </VBox.margin>
+                     </HBox>
+                     <ImageView fitHeight="29.0" fitWidth="146.0" pickOnBounds="true" preserveRatio="true" />
+                     <HBox prefHeight="52.0" prefWidth="144.0">
+                        <VBox.margin>
+                           <Insets top="300.0" />
+                        </VBox.margin>
+                     </HBox>
+                  </children>
+               </VBox>
+            </children>
+         </AnchorPane>
+      </left>
+      <top>
+         <AnchorPane prefHeight="33.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <children>
+               <HBox layoutX="400.0" layoutY="7.0" prefHeight="35.0" prefWidth="891.0" styleClass="sidebardash" stylesheets="@../java/CssBlog/RendezVous.css">
+                  <children>
+                     <ImageView fitHeight="30.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <HBox.margin>
+                           <Insets left="550.0" />
+                        </HBox.margin>
+                     </ImageView>
+                  </children>
+               </HBox>
+            </children>
+         </AnchorPane>
+      </top>
+      <center>
+         <AnchorPane prefHeight="629.0" prefWidth="942.0" BorderPane.alignment="CENTER">
+            <children>
+               <AnchorPane fx:id="panCategorie" layoutX="98.0" layoutY="6.0" prefHeight="654.0" prefWidth="888.0" style="-fx-background-color: white; -fx-border-radius: 12px;" visible="false">
+                  <children>
+                     <HBox layoutX="19.0" layoutY="43.0" prefHeight="47.0" prefWidth="742.0" AnchorPane.leftAnchor="19.0" AnchorPane.topAnchor="43.0">
+                        <children>
+                           <ImageView fx:id="btndelete" accessibleRole="BUTTON" fitHeight="37.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                              <HBox.margin>
+                                 <Insets left="250.0" />
+                              </HBox.margin>
+                           </ImageView>
+                           <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                              <HBox.margin>
+                                 <Insets left="20.0" />
+                              </HBox.margin>
+                           </ImageView>
+                           <ImageView fitHeight="44.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" styleClass="btnadd">
+                              <HBox.margin>
+                                 <Insets left="30.0" />
+                              </HBox.margin>
+                           </ImageView>
+                           <ImageView fx:id="btnclear" accessibleRole="BUTTON" fitHeight="37.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                              <HBox.margin>
+                                 <Insets left="40.0" />
+                              </HBox.margin>
+                           </ImageView>
+                           <TextField id="rechGen" fx:id="inputsearch" minWidth="94.0" prefHeight="30.0" prefWidth="113.0" promptText="Search ....." styleClass="rechGen">
+                              <HBox.margin>
+                                 <Insets left="120.0" top="10.0" />
+                              </HBox.margin>
+                           </TextField>
+                        </children>
+                     </HBox>
+                     <HBox layoutX="15.0" layoutY="98.0" prefHeight="258.0" prefWidth="858.0" style="-fx-border-color: white;">
+                        <children>
+                           <TableView fx:id="tabcategorie" prefHeight="257.0" prefWidth="854.0" style="-fx-background-radius: 12; -fx-border-color: white; -fx-font-weight: bold;">
+                              <columns>
+                                 <TableColumn fx:id="thtitre" prefWidth="251.20000910758972" text="Titre" />
+                              </columns>
+                              <effect>
+                                 <InnerShadow />
+                              </effect>
+                              <styleClass>
+                                 <String fx:value="thdescription" />
+                                 <String fx:value="thtitre" />
+                              </styleClass>
+                           </TableView>
+                        </children>
+                     </HBox>
+                     <VBox layoutX="211.0" layoutY="415.0" prefHeight="214.0" prefWidth="330.0">
+                        <children>
+                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Titre" />
+                           <TextField fx:id="inputtitre" prefHeight="34.0" prefWidth="311.0" promptText="Saisir Titre...." styleClass="rechCat" />
+                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description">
+                              <font>
+                                 <Font name="System Bold Italic" size="12.0" />
+                              </font>
+                              <VBox.margin>
+                                 <Insets top="20.0" />
+                              </VBox.margin>
+                           </Text>
+                           <TextArea fx:id="inputdescription" prefHeight="87.0" prefWidth="254.0" promptText="Saisir Description ..." styleClass="rechCat" />
+                           <Button fx:id="btnadd" mnemonicParsing="false" prefHeight="42.0" prefWidth="94.0" styleClass="btnadd" text="Ajouter">
+                              <VBox.margin>
+                                 <Insets left="220.0" top="20.0" />
+                              </VBox.margin>
+                           </Button>
+                        </children>
+                     </VBox>
+                     <HBox layoutX="400.0" layoutY="368.0" prefHeight="42.0" prefWidth="324.0">
+                        <children>
+                           <Pagination fx:id="pagination" prefHeight="29.0" prefWidth="342.0" />
+                        </children>
+                     </HBox>
+                  </children>
+                  <effect>
+                     <InnerShadow />
+                  </effect>
+               </AnchorPane>
+               <AnchorPane fx:id="panblog" layoutX="103.0" layoutY="5.0" prefHeight="653.0" prefWidth="881.0">
+                  <children>
+                     <HBox layoutX="9.0" layoutY="53.0" prefHeight="48.0" prefWidth="815.0">
+                        <children>
+                           <Label prefHeight="50.0" prefWidth="824.0" text="                              Liste des rendez vous" textAlignment="JUSTIFY">
+                              <font>
+                                 <Font size="34.0" />
+                              </font>
+                           </Label>
+                           <TextField fx:id="rechBlog" prefHeight="84.0" prefWidth="374.0" promptText="Search ..." styleClass="rechBlog" />
+                        </children>
+                     </HBox>
+                     <AnchorPane layoutX="6.0" layoutY="117.0" prefHeight="234.0" prefWidth="820.0">
+                        <children>
+                           <HBox layoutX="6.0" layoutY="6.0" prefHeight="222.0" prefWidth="806.0">
+                              <children>
+                                 <JFXListView fx:id="listeRdv" prefHeight="222.0" prefWidth="815.0" />
+                              </children>
+                           </HBox>
+                        </children>
+                     </AnchorPane>
+                     <VBox layoutX="9.0" layoutY="362.0" prefHeight="262.0" prefWidth="285.0">
+                        <children>
+                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date :" />
+                           <DatePicker fx:id="dateLabel" prefHeight="45.0" prefWidth="298.0" />
+                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Heure" />
+                           <TextField fx:id="heureLabel" prefHeight="40.0" prefWidth="285.0" />
+                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+                           <TextField fx:id="descriptionLabel" prefHeight="39.0" prefWidth="274.0" styleClass="rechBlog" />
+
+                        </children>
+                     </VBox>
+                     <Text layoutX="363.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                     <AnchorPane layoutX="374.0" layoutY="379.0" prefHeight="157.0" prefWidth="96.0">
+                        <children>
+                           <VBox layoutX="-3.0" prefHeight="260.0" prefWidth="358.0">
+                              <children>
+                                 <Button fx:id="importFile" mnemonicParsing="false" onAction="#importFile" prefHeight="25.0" prefWidth="355.0" text="Import file" />
+                                 <ListView fx:id="fileList" prefHeight="175.0" prefWidth="318.0" />
+                              </children>
+                           </VBox>
+                        </children>
+                     </AnchorPane>
+                     <Pagination fx:id="paginationblog" layoutX="728.0" layoutY="361.0" prefHeight="53.0" prefWidth="69.0" />
+                     <Text layoutX="376.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File" wrappingWidth="42.947265625" />
+                     <Button fx:id="ajouterButton" layoutX="298.0" layoutY="606.0" mnemonicParsing="false" onAction="#ajouterRDV" prefHeight="39.0" prefWidth="116.0" text="Ajouter" />
+                     <Button fx:id="supprimerRDB" layoutX="171.0" layoutY="606.0" mnemonicParsing="false" onAction="#supprimerRDV" prefHeight="39.0" prefWidth="116.0" text="suprimer" />
+                  </children>
+               </AnchorPane>
+            </children>
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+            <BorderPane.margin>
+               <Insets left="100.0" />
+            </BorderPane.margin>
+         </AnchorPane>
+      </center>
+   </BorderPane>
+</AnchorPane>

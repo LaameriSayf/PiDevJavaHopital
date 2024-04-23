@@ -26,6 +26,12 @@ public class Medecin extends Global_user{
     public Medecin() {
     }
 
+    public Medecin(int id, int cin, int numtel, int etat, int genre, String nom, String prenom, String email, String password, String specialite, String image, String role, Timestamp dateNaissance, boolean interlock) {
+        super(id, cin, numtel, genre, nom, prenom, email, password, image, role, dateNaissance, interlock);
+        this.specialite = specialite;
+        this.etat = etat;
+    }
+
     public String getSpecialite() {
         return specialite;
     }

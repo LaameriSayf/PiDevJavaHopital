@@ -52,8 +52,20 @@ public class AjouterMedecin {
     @FXML
     private TextField emailTF;
 
+
+
+
     @FXML
-    private TextField etatTF;
+    private RadioButton etatTF;
+
+    @FXML
+    private RadioButton etatTF1;
+    @FXML
+    private RadioButton genreTF;
+
+    @FXML
+    private RadioButton genreTF1;
+
 
     @FXML
     private Button gereradmin;
@@ -89,7 +101,9 @@ public class AjouterMedecin {
     private ImageView imageTF;
 
     @FXML
-    private TextField interlockTF;
+    private RadioButton InterlockTF;
+    @FXML
+    private RadioButton interlockTF;
 
     @FXML
     private Button medecin_ajouterBtn;
@@ -102,8 +116,6 @@ public class AjouterMedecin {
 
     @FXML
     private Button medecin_insérerBtn;
-    @FXML
-    private TextField genreTF;
 
     @FXML
     private Button medecin_modifierBtn;
@@ -195,89 +207,111 @@ public class AjouterMedecin {
 
     public void ajouterMedecinadd(){
 
-        //Date date = new Date();
-        //java.sql.Date sqlDate =new java.sql.Date(date.getTime());
-        //LocalDate sqlDate = LocalDate.now(); // Get the current date
+        String sql = "INSERT INTO global_user " +
+                "(cin, nom, prenom, genre, datenaissance, numtel, email, password, interlock, image, role) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        String sql  =" INSERT INTO  global_user " +
-                "( cin,nom,prenom,genre,datenaissance,numtel,email,password,interlock,image,role)"
-                +"VALUES( ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
+        String sqlMedecin = "INSERT INTO medecin (specialite, etat,id) VALUES (?,?,LAST_INSERT_ID())";
 
         connect = MyConnection.getInstance().getCnx();
         try {
             Alert alert;
-            if(cinTF.getText().isEmpty()
-                    || nomTF.getText().isEmpty()
-                    || prenomTF.getText().isEmpty()
-                    || genreTF.getText().isEmpty()
-                    || date_de_naissanceTF.getValue() == null
-                    || numtelTF.getText().isEmpty()
-                    || emailTF.getText().isEmpty()
-                    || passwordTF.getText().isEmpty()
-                    || interlockTF.getText().isEmpty()
-                    || roleTF.getText().isEmpty()
-                    || getData.path == null || getData.path == "" ){
+            if (etatTF.getText().isEmpty() ||specialiteTF.getText().isEmpty() || cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() || genreTF.getText().isEmpty()  || interlockTF.getText().isEmpty() ||
+                    date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty() || emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() ||
+                    getData.path == null || getData.path.equals("")) {
                 alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Message");
+                alert.setTitle("Message d'erreur");
                 alert.setHeaderText(null);
                 alert.setContentText("Veuillez remplir tous les champs vides !");
                 alert.showAndWait();
-            }else {
-
-                String check = "SELECT nom FROM global_user WHERE nom = '"
-                        +nomTF.getText()+"'";
-
-                statement =connect.createStatement();
-                result =statement.executeQuery(check);
-
-                if(result.next()){
+            } else {
+                String check = "SELECT cin FROM global_user WHERE cin = '" + cinTF.getText() + "'";
+                Statement statement = connect.createStatement();
+                result = statement.executeQuery(check);
+                if (result.next()) {
                     alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error Message");
+                    alert.setTitle("Message d'erreur");
                     alert.setHeaderText(null);
-                    alert.setContentText("Medecin existe déja!");
+                    alert.setContentText("Medecin existe déjà !");
                     alert.showAndWait();
-                }else {
+                } else {
+                    // Afficher une alerte de confirmation pour ajouter le patient
+                    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmationAlert.setTitle("Confirmation");
+                    confirmationAlert.setHeaderText(null);
+                    confirmationAlert.setContentText("Voulez-vous ajouter ce Medecin ?");
 
-                    prepare = connect.prepareStatement(sql);
-                    prepare.setInt(1, Integer.parseInt(cinTF.getText()));
-                    prepare.setString(2, nomTF.getText());
-                    prepare.setString(3, prenomTF.getText());
-                    prepare.setInt(4, Integer.parseInt(genreTF.getText()));
-                    LocalDate dateNaissance = date_de_naissanceTF.getValue();
+                    // Ajouter des boutons de confirmation et d'annulation
+                    ButtonType confirmButton = new ButtonType("Confirmer", ButtonBar.ButtonData.OK_DONE);
+                    ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-// Formater la date de naissance selon le format requis pour la base de données
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    String dateNaissanceFormatee = dateNaissance.format(formatter);
+                    // Ajouter les boutons à l'alerte
+                    confirmationAlert.getButtonTypes().setAll(confirmButton, cancelButton);
 
-// Utiliser la date de naissance formatée dans votre requête préparée
-                    prepare.setString(5, dateNaissanceFormatee);
-                    prepare.setInt(6, Integer.parseInt(numtelTF.getText()));
-                    prepare.setString(7, emailTF.getText());
-                    prepare.setString(8, passwordTF.getText());
-                    prepare.setInt(9, Integer.parseInt(interlockTF.getText()));
-                    prepare.setString(11, roleTF.getText());
+                    // Attendre la réponse de l'utilisateur
+                    Optional<ButtonType> userChoice = confirmationAlert.showAndWait();
 
+                    // Si l'utilisateur confirme, procéder à l'ajout du patient
+                    if (userChoice.isPresent() && userChoice.get() == confirmButton) {
+                        prepare = connect.prepareStatement(sql);
+                        prepare.setInt(1, Integer.parseInt(cinTF.getText()));
+                        prepare.setString(2, nomTF.getText());
+                        prepare.setString(3, prenomTF.getText());
 
-                    String uri = getData.path;
-                    uri = uri.replace("\\", "\\\\");
+                        // Determine the gender based on which CheckBox is selected
+                        if (genreTF.isSelected()) {
+                            prepare.setBoolean(4, true); // Assuming genreTF represents "Homme"
+                        } else {
+                            prepare.setBoolean(4, false); // Assuming genreTF1 represents "Femme"
+                        }
 
-                    prepare.setString(10, uri);
-                    //prepare.setString(9, String.valueOf(sqlDate));
-                    prepare.executeUpdate();
+                        LocalDate dateNaissance = date_de_naissanceTF.getValue();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        String dateNaissanceFormatee = dateNaissance.format(formatter);
+                        prepare.setString(5, dateNaissanceFormatee);
+                        prepare.setInt(6, Integer.parseInt(numtelTF.getText()));
+                        prepare.setString(7, emailTF.getText());
+                        prepare.setString(8, passwordTF.getText());
+                        prepare.setString(10, getData.path.replace("\\", "\\\\"));
 
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Ajout avec succés!");
-                    alert.showAndWait();
+                        // Determine the interlock value based on which CheckBox is selected
+                        if (interlockTF.isSelected()) {
+                            prepare.setInt(9, 1); // Assuming interlockTF represents "Oui", so set 1
+                        } else {
+                            prepare.setInt(9, 0); // Assuming InterlockTF represents "Non", so set 0
+                        }
 
-                    addMedecinShowList();
-                    addMedecinSelect();
+                        // Set the role to "Patient" by default
+                        prepare.setString(11, "Medecin");
 
+                        // Execute the SQL statement to insert into global_user table
+                        prepare.executeUpdate();
+
+                        // Now, insert numcarte into patient table
+                        prepare = connect.prepareStatement(sqlMedecin);
+                        prepare.setString(1, specialiteTF.getText());
+                        if (etatTF.isSelected()) {
+                            prepare.setBoolean(2, true); // Assuming genreTF represents "Homme"
+                        } else {
+                            prepare.setBoolean(2, false); // Assuming genreTF1 represents "Femme"
+                        }
+                        prepare.executeUpdate();
+
+                        alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Information Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Ajout avec succès !");
+                        alert.showAndWait();
+
+                        addMedecinShowList();
+                        addMedecinSelect();
+                    }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        }catch (Exception e){e.printStackTrace();}
     }
     public void ajouterMedecinReset(){
         cinTF.setText("");
@@ -289,7 +323,8 @@ public class AjouterMedecin {
         emailTF.setText("");
         passwordTF.setText("");
         interlockTF.setText("");
-        roleTF.setText("");
+        specialiteTF.setText("");
+        etatTF.setText("");
         imageTF.setImage(null);
         getData.path = "";
     }
@@ -306,7 +341,9 @@ public class AjouterMedecin {
     }
     public ObservableList<Medecin> addMedecinListData() throws SQLException {
         ObservableList<Medecin> list = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM global_user";
+        String sql = "SELECT u.id, u.cin, u.nom, u.prenom, u.genre, u.datenaissance, u.numtel, u.role, u.email, u.password, u.interlock, u.image, m.specialite , m.etat " +
+                "FROM global_user u " +
+                "JOIN medecin m ON u.id = m.id";
         connect = MyConnection.getInstance().getCnx();
 
         try {
@@ -318,16 +355,17 @@ public class AjouterMedecin {
                         result.getInt("id"),
                         result.getInt("cin"),
                         result.getInt("numtel"),
+                        result.getInt("etat"),
                         result.getInt("genre"),
                         result.getString("nom"),
                         result.getString("prenom"),
                         result.getString("email"),
                         result.getString("password"),
+                        result.getString("specialite"),
                         result.getString("image"),
                         result.getString("role"),
                         result.getTimestamp("datenaissance"),
                         result.getBoolean("interlock")
-
                 );
                 list.add(medecin);
             }
@@ -349,7 +387,10 @@ public class AjouterMedecin {
         medecincol_email.setCellValueFactory(new PropertyValueFactory<>("email"));
         medecincol_password.setCellValueFactory(new PropertyValueFactory<>("password"));
         medecincol_interlock.setCellValueFactory(new PropertyValueFactory<>("interlock"));
-        medecincol_role.setCellValueFactory(new PropertyValueFactory<>("password"));
+        medecincol_etat.setCellValueFactory(new PropertyValueFactory<>("etat"));
+        medecincol_specialite.setCellValueFactory(new PropertyValueFactory<>("specialite"));
+        medecincol_role.setCellValueFactory(new PropertyValueFactory<>("role"));
+        medecincol_image.setCellValueFactory(new PropertyValueFactory<>("image"));
 
 
         medecincol_tableview.setItems(addMedecinList);
@@ -376,7 +417,8 @@ public class AjouterMedecin {
         emailTF.setText(medecin1.getEmail());
         passwordTF.setText(medecin1.getPassword());
         interlockTF.setText(String.valueOf(medecin1.isInterlock()));
-        roleTF.setText(medecin1.getRole());
+        specialiteTF.setText(medecin1.getSpecialite());
+        etatTF.setText(String.valueOf(medecin1.getEtat()));
         getData.path =  medecin1.getImage();
         String uri ="file:" + medecin1.getImage();
         image = new Image(uri,118, 139, false, true);
@@ -395,64 +437,7 @@ public class AjouterMedecin {
 
     public void modifierMedecinupdate(){
 
-        String uri =getData.path;
-        uri = uri.replace("\\","\\\\");
 
-        String sql = "UPDATE global_user SET cin = '"
-                +cinTF.getText()+ "', nom = '"
-                +nomTF.getText()+ "', prenom = '"
-                +prenomTF.getText()+ "', genre = '"
-                +genreTF.getText()+ "', datenaissance = '"
-                +date_de_naissanceTF.getValue()+ "', numtel = '"
-                +numtelTF.getText()+ "', password = '"
-                +passwordTF.getText()+ "', interlock = '"
-                +interlockTF.getText()+ "', role = '"
-                +roleTF.getText()+ "', image = '"
-                +uri+  "' WHERE nom ='" +nomTF.getText()+"'" ;
-
-        connect = MyConnection.getInstance().getCnx();
-
-        try {
-            Alert alert;
-            if(cinTF.getText().isEmpty()
-                    || nomTF.getText().isEmpty()
-                    || prenomTF.getText().isEmpty()
-                    || genreTF.getText().isEmpty()
-                    || date_de_naissanceTF.getValue() == null
-                    || numtelTF.getText().isEmpty()
-                    || emailTF.getText().isEmpty()
-                    || passwordTF.getText().isEmpty()
-                    || interlockTF.getText().isEmpty()
-                    || roleTF.getText().isEmpty()
-                    || getData.path == null || getData.path == "" ){
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Veuillez remplir tous les champs vides !");
-                alert.showAndWait();
-            }else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Voulez-vous modifier ces informations!");
-                Optional<ButtonType> option = alert.showAndWait();
-
-                if(option.get().equals(ButtonType.OK)){
-                    statement = connect.createStatement();
-                    statement.executeUpdate(sql);
-
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Modification avec succés !");
-                    alert.showAndWait();
-
-                    addMedecinShowList();
-                    ajouterMedecinReset();
-                }
-
-            }
-        } catch (Exception e){e.printStackTrace();}
     }
 
     public void supprimerMedecindelete(){
@@ -472,7 +457,9 @@ public class AjouterMedecin {
                     || emailTF.getText().isEmpty()
                     || passwordTF.getText().isEmpty()
                     || interlockTF.getText().isEmpty()
-                    || roleTF.getText().isEmpty()
+                    || etatTF.getText().isEmpty()
+                    || specialiteTF.getText().isEmpty()
+
                     || getData.path == null || getData.path == "" ){
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");

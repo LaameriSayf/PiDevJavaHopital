@@ -42,24 +42,24 @@
                <left>
                   <AnchorPane prefHeight="607.0" prefWidth="179.0" styleClass="nav-form" stylesheets="@DashboarsDesign.css" BorderPane.alignment="CENTER">
                      <children>
-                        <Label layoutX="60.0" layoutY="25.0" text="Bienvenue">
+                        <Label layoutX="46.0" layoutY="14.0" text="Bienvenue">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
                         <Line endX="77.5" layoutX="97.0" layoutY="46.0" startX="-76.5" />
-                        <Button layoutX="14.0" layoutY="55.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Tableau de board" />
-                        <Button fx:id="gereradministrateurbtn" layoutX="14.0" layoutY="95.0" mnemonicParsing="false" onAction="#gereradministrateurbtn" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Administrateur" />
-                        <Button fx:id="gererpatientbtn" layoutX="14.0" layoutY="135.0" mnemonicParsing="false" onAction="#gererpatientbtn" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Patients" />
-                        <Button fx:id="gerermedecin" layoutX="14.0" layoutY="175.0" mnemonicParsing="false" onAction="#gerermedecin" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Médecins" />
-                        <Button fx:id="gererpharmacienbtn" layoutX="14.0" layoutY="215.0" mnemonicParsing="false" onAction="#gererpharmacienbtn" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Pharmaciens" />
-                        <Button layoutX="14.0" layoutY="255.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Blogs" />
-                        <Button layoutX="14.0" layoutY="295.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Rendez-vous" />
-                        <Button layoutX="14.0" layoutY="335.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Ordonnances" />
-                        <Button layoutX="14.0" layoutY="375.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Médicaments" />
-                        <Button layoutX="14.0" layoutY="425.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Catégories" />
-                        <Button layoutX="14.0" layoutY="466.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Dossiers médicales" />
-                        <Button layoutX="14.0" layoutY="505.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Se déconnecter" />
+                        <Button layoutX="14.0" layoutY="61.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Tableau de board" />
+                        <Button fx:id="gereradministrateurbtn" layoutX="14.0" layoutY="104.0" mnemonicParsing="false" onAction="#gereradministrateurbtn" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Administrateur" />
+                        <Button fx:id="gererpatientbtn" layoutX="14.0" layoutY="149.0" mnemonicParsing="false" onAction="#gererpatientbtn" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Patients" />
+                        <Button fx:id="gerermedecin" layoutX="14.0" layoutY="189.0" mnemonicParsing="false" onAction="#gerermedecin" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Médecins" />
+                        <Button fx:id="gererpharmacienbtn" layoutX="14.0" layoutY="230.0" mnemonicParsing="false" onAction="#gererpharmacienbtn" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Pharmaciens" />
+                        <Button layoutX="14.0" layoutY="271.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Blogs" />
+                        <Button layoutX="14.0" layoutY="309.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Rendez-vous" />
+                        <Button layoutX="14.0" layoutY="349.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Ordonnances" />
+                        <Button layoutX="14.0" layoutY="386.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Médicaments" />
+                        <Button layoutX="14.0" layoutY="425.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Catégories" />
+                        <Button layoutX="14.0" layoutY="466.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Dossiers médicales" />
+                        <Button layoutX="14.0" layoutY="505.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Se déconnecter" />
                         <ImageView fitHeight="22.0" fitWidth="21.0" layoutX="16.0" layoutY="65.0">
                            <image>
                               <Image url="@iconhome.png" />
@@ -71,11 +71,11 @@
                <center>
                   <AnchorPane prefHeight="499.0" prefWidth="1022.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutX="4.0" layoutY="17.0" prefHeight="528.0" prefWidth="1080.0">
+                        <AnchorPane layoutX="3.0" layoutY="11.0" prefHeight="534.0" prefWidth="1084.0" styleClass="white-bg" stylesheets="@DashboarsDesign.css">
                            <children>
-                              <AnchorPane layoutX="11.0" layoutY="29.0" prefHeight="282.0" prefWidth="1072.0">
+                              <AnchorPane layoutX="8.0" layoutY="20.0" prefHeight="294.0" prefWidth="1075.0">
                                  <children>
-                                    <TableView fx:id="admincol_tableview" layoutX="-7.0" layoutY="41.0" onMouseClicked="#addAdminSelect" prefHeight="227.0" prefWidth="1073.0" styleClass="column-header-background" stylesheets="@DashboarsDesign.css">
+                                    <TableView fx:id="admincol_tableview" layoutX="8.0" layoutY="45.0" onMouseClicked="#addAdminSelect" prefHeight="223.0" prefWidth="1058.0" styleClass="column-header-background" stylesheets="@DashboarsDesign.css">
                                       <columns>
                                         <TableColumn fx:id="admincol_id" prefWidth="45.0" text="Id" />
                                         <TableColumn fx:id="admincol_cin" prefWidth="73.0" text="cin" />
@@ -91,7 +91,7 @@
                                           <TableColumn fx:id="admincol_password" prefWidth="88.0" text="Mot de passe" />
                                       </columns>
                                     </TableView>
-                                    <TextField fx:id="recherche_Admin" layoutX="21.0" layoutY="7.0" prefHeight="25.0" prefWidth="178.0" promptText="recherche" styleClass="search" stylesheets="@DashboarsDesign.css" />
+                                    <TextField fx:id="recherche_Admin" layoutX="21.0" layoutY="7.0" prefHeight="25.0" prefWidth="178.0" promptText="Recherche" styleClass="search" stylesheets="@DashboarsDesign.css" />
                                     <ImageView fitHeight="23.0" fitWidth="22.0" layoutX="171.0" layoutY="8.0">
                                        <image>
                                           <Image url="@iconsearch.png" />

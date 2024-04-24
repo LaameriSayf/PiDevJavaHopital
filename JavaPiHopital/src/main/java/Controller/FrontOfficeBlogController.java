@@ -61,7 +61,7 @@ public class FrontOfficeBlogController {
     @FXML
     public void initialize() {
         btnretournerback.setOnMouseClicked(event -> switchbloglist());
-        btnajoutercommentfront.setOnMouseClicked(event ->addcommentairefront());
+        btnajoutercommentfront.setOnMouseClicked(event ->addCommentaireFront());
 
         ObservableList<List<Blog>> observableList = FXCollections.observableArrayList(chunkList(blogList, 3));
 
@@ -134,14 +134,14 @@ public class FrontOfficeBlogController {
 
             if (fileName != null && !fileName.isEmpty()) {
                 String fullPath = imagePath + fileName;
-                Image image = new Image(fileName,343 , 350, false, true);
+                Image image = new Image(fileName, 343, 350, false, true);
                 imageviewdetaille.setImage(image);
             } else {
                 imageviewdetaille.setImage(null);
             }
-            BlogService bs=new BlogService();
-            String titrecategories=bs.getTitleOfBlogById(blog.getId());
-            String descriptioncategorie=bs.getDescriptionOfBlogById(blog.getId());
+            BlogService bs = new BlogService();
+            String titrecategories = bs.getTitleOfBlogById(blog.getId());
+            String descriptioncategorie = bs.getDescriptionOfBlogById(blog.getId());
             texttitrecategoriefff.setText(titrecategories);
             textcategoriedescription.setText(descriptioncategorie);
             titreDetaille.setText(blog.getTitre());
@@ -171,13 +171,13 @@ public class FrontOfficeBlogController {
 
             for (Commentaire comment : comments) {
                 // Créer un label pour afficher le contenu du commentaire
-                Label commentLabel = new Label(  comment.getAdmin().getNom() + " " + comment.getAdmin().getPrenom() + "\n" +
+                Label commentLabel = new Label(comment.getAdmin().getNom() + " " + comment.getAdmin().getPrenom() + "\n" +
                         comment.getContenue());
                 // Créer deux ImageView pour les logos de like et dislike
                 ImageView likeImageView = new ImageView("Template/front/images/icons8-pouce-en-l'air-16.png");
                 ImageView dislikeImageView = new ImageView("Template/front/images/icons8-pouces-vers-le-bas-24.png");
-                Text supprimercommentaire=new Text();
-                Text modifiercommentaire=new Text();
+                Text supprimercommentaire = new Text();
+                Text modifiercommentaire = new Text();
                 // Créer un Text pour afficher le nombre de likes
                 Text nbrlike = new Text(String.valueOf(comment.getNbLike()));
 
@@ -187,42 +187,23 @@ public class FrontOfficeBlogController {
                 modifiercommentaire.setText("Modifier");
 
                 // Ajouter un événement de clic aux ImageView pour gérer les actions de like/dislike
-                CommentaireService cs=new CommentaireService();
-                supprimercommentaire.setOnMouseClicked(event -> {
-                    // Suppression du commentaire
-                    cs.delete(comment);
+                CommentaireService cs = new CommentaireService();
 
-                    // Afficher une notification
-                    Image successIcon = new Image(getClass().getResourceAsStream("/Template/back/images/icons8-ok-94.png"));
-
-// Afficher une notification personnalisée
-                    Notifications.create()
-                            .title("Suppression réussie")
-                            .text("Le commentaire a été supprimé avec succès. \uD83D\uDC4D")
-                            .graphic(new ImageView(successIcon))
-                            .position(Pos.TOP_CENTER)
-                            .show();
-                });
-                Admin a=new Admin(4,4545,"","","");
-                likeImageView.setOnMouseClicked(event-> cs.like(comment,a));
+                Admin a = new Admin(4, 4545, "", "", "");
+                likeImageView.setOnMouseClicked(event -> cs.like(comment, a));
 
 
+                HBox commentBox = new HBox(commentLabel, modifiercommentaire, supprimercommentaire, likeImageView, nbrlike, dislikeImageView, nbrdislike);
 
-
-                // Créer une HBox pour contenir le label et les ImageView
-                HBox commentBox = new HBox(commentLabel,modifiercommentaire,supprimercommentaire, likeImageView,nbrlike, dislikeImageView,nbrdislike);
-
-                commentBox.setSpacing(10); // Espacement entre les éléments dans la HBox
-// Créer une HBox pour contenir le label et les ImageView
-                commentBox.setSpacing(10); // Espacement entre les éléments dans la HBox
-                commentBox.setStyle("-fx-background-color: #f0f0f0; " + // Couleur de fond
-                        "-fx-padding: 10px; " + // Rembourrage intérieur
-                        "-fx-border-color: #cccccc; " + // Couleur de la bordure
-                        "-fx-border-width: 1px; " + // Largeur de la bordure
-                        "-fx-border-radius: 5px;"); // Rayon de la bordure arrondie
+                commentBox.setSpacing(10); //
+                commentBox.setSpacing(10);
+                commentBox.setStyle("-fx-background-color: #f0f0f0; " +
+                        "-fx-padding: 10px; " +
+                        "-fx-border-color: #cccccc; " +
+                        "-fx-border-width: 1px; " +
+                        "-fx-border-radius: 5px;");
                 nbrlike.setText(String.valueOf(comment.getNbLike()));
                 nbrdislike.setText(String.valueOf(comment.getNbDislike()));
-                // Ajouter la HBox à la liste des commentaires formatés
                 formattedComments.add(commentBox);
 
             }
@@ -243,81 +224,41 @@ public class FrontOfficeBlogController {
                 }
             });
 
-            // Appliquer le style CSS pour la ListView
             listviewcommentfront.getStyleClass().add("list-view-comment-back");
 
-            // Afficher la liste des commentaires formatés dans le composant ListView
             listviewcommentfront.setItems(formattedComments);
             anchordetailleblog.setVisible(true);
             anchorlisteblog.setVisible(false);
         }
-        // Obtenir l'indice de la ligne sélectionnée dans la ListView
-        int selectedRowIndex = listViewFrontBlog.getSelectionModel().getSelectedIndex();
-
-        // Vérifier si une ligne est sélectionnée
-        if (selectedRowIndex >= 0) {
-            // Obtenir l'objet Blog sélectionné dans la ListView
-            List<Blog> selectedBlogs = listViewFrontBlog.getItems().get(selectedRowIndex);
-
-            // Vérifier si des blogs sont sélectionnés dans cette ligne
-            if (selectedBlogs != null && !selectedBlogs.isEmpty()) {
-                // Obtenir l'indice de l'élément sélectionné dans la liste de blogs
-                int selectedBlogIndex = listViewFrontBlog.getSelectionModel().getSelectedIndices().get(0);
-
-                // Récupérer le blog correspondant à l'indice dans la liste
-                Blog selectedBlog = selectedBlogs.get(selectedBlogIndex);
-
-                // Récupérer l'identifiant du blog
-                int blogId = selectedBlog.getId();
-
-                // Récupérer le contenu du commentaire à partir de l'entrée utilisateur
-                String commentaireContenu = inputaddcommentaire.getText();
-
-                // Liste des gros mots
-                String[] tabbadwords = {"fuck", "shit","merde"};
-
-                // Filtrer les gros mots
-                for (String badword : tabbadwords) {
-                    // Remplacer chaque lettre du gros mot par "**"
-                    commentaireContenu = commentaireContenu.replaceAll(badword, "**".repeat(badword.length()));
-                }
-
-                // Ajouter le commentaire en utilisant le service de commentaire
-                CommentaireService commentaireService = new CommentaireService();
-                commentaireService.add(blogId, commentaireContenu);
-
-                // Rafraîchir la liste des commentaires
-                listviewcommentfront.refresh();
-            } else {
-                System.out.println("Veuillez sélectionner un blog pour ajouter un commentaire.");
-            }
-        } else {
-            System.out.println("Veuillez sélectionner une ligne pour ajouter un commentaire.");
-        }
     }
-    public int getSelectedBlogId() {
-        int selectedRowIndex = listViewFrontBlog.getSelectionModel().getSelectedIndex();
-        if (selectedRowIndex >= 0) {
-            List<Blog> selectedBlogs = listViewFrontBlog.getItems().get(selectedRowIndex);
-            if (selectedBlogs != null && !selectedBlogs.isEmpty()) {
-                int selectedBlogIndex = listViewFrontBlog.getSelectionModel().getSelectedIndices().get(1);
-                Blog selectedBlog = selectedBlogs.get(selectedBlogIndex);
-                return selectedBlog.getId();
+
+    public void addCommentaireFront() {
+        BlogService bs = new BlogService();
+        List<Blog> lsb = bs.getAll();
+        int blogId = -1;
+        for (Blog bb : lsb) {
+            if (contenuDetaille.getText().equals(bb.getDescription())) {
+                blogId = bb.getId();
+                break;
             }
         }
-        return -1;
-    }
-    public void addcommentairefront() {
-        int blogId = getSelectedBlogId();
+
         if (blogId != -1) {
             String commentaireContenu = inputaddcommentaire.getText();
-            String[] tabbadwords = {"fuck", "shit"};
-            for (String badword : tabbadwords) {
-                commentaireContenu = commentaireContenu.replaceAll(badword, "**".repeat(badword.length()));
+            String[] tabBadWords = {"fuck", "shit"};
+            for (String badWord : tabBadWords) {
+                commentaireContenu = commentaireContenu.replaceAll(badWord, "**".repeat(badWord.length()));
             }
             CommentaireService commentaireService = new CommentaireService();
             commentaireService.add(blogId, commentaireContenu);
-            listviewcommentfront.refresh();
+
+            // Mettre à jour les détails du blog après l'ajout du commentaire
+            Blog updatedBlog = bs.getBlogById(blogId);
+            if (updatedBlog != null) {
+                displayBlogDetail(updatedBlog);
+            } else {
+                System.out.println("Impossible de récupérer les détails du blog mis à jour.");
+            }
         } else {
             System.out.println("Veuillez sélectionner un blog pour ajouter un commentaire.");
         }

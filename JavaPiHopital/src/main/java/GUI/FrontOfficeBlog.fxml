@@ -183,7 +183,7 @@
                         </ImageView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="anchordetailleblog" layoutY="148.0" prefHeight="387.0" prefWidth="1148.0">
+                  <AnchorPane fx:id="anchordetailleblog" layoutY="148.0" prefHeight="387.0" prefWidth="1148.0" visible="false">
                      <children>
                         <ImageView fx:id="imageviewdetaille" fitHeight="343.0" fitWidth="350.0" layoutX="88.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" />
                         <HBox layoutX="467.0" layoutY="248.0" prefHeight="26.0" prefWidth="157.0">

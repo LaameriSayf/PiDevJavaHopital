@@ -317,16 +317,19 @@ public class AjouterMedecin {
         cinTF.setText("");
         nomTF.setText("");
         prenomTF.setText("");
-        genreTF.setText("");
         date_de_naissanceTF.setValue(null);
         numtelTF.setText("");
+        specialiteTF.setText("");
         emailTF.setText("");
         passwordTF.setText("");
-        interlockTF.setText("");
-        specialiteTF.setText("");
-        etatTF.setText("");
         imageTF.setImage(null);
         getData.path = "";
+        genreTF.setSelected(false);
+        genreTF1.setSelected(false);
+        interlockTF.setSelected(false);
+        InterlockTF.setSelected(false);
+        etatTF.setSelected(false);
+        etatTF1.setSelected(false);
     }
     public void ajouterMedecinInsertImage(){
         FileChooser open = new FileChooser();
@@ -396,101 +399,227 @@ public class AjouterMedecin {
         medecincol_tableview.setItems(addMedecinList);
         //addEventSearch();
     }
-    public void addMedecinSelect(){
-        Medecin medecin1 =medecincol_tableview.getSelectionModel().getSelectedItem();
+    public void addMedecinSelect() {
+        // Sélectionner le médecin dans la table
+        Medecin medecin1 = medecincol_tableview.getSelectionModel().getSelectedItem();
+        // Récupérer l'index du médecin sélectionné
         int num = medecincol_tableview.getSelectionModel().getSelectedIndex();
 
-        if((num -1) <-1){return;}
+        // Vérifier si aucun médecin n'est sélectionné ou si l'index est incorrect
+        if ((num - 1) < -1) {
+            return;
+        }
 
+        // Remplir les champs avec les informations du médecin sélectionné
         cinTF.setText(String.valueOf(medecin1.getCin()));
         nomTF.setText(medecin1.getNom());
         prenomTF.setText(medecin1.getPrenom());
-        genreTF.setText(String.valueOf(medecin1.getGenre()));
-        // Suppose que medecin1.getDateNaissance() retourne une Date
-// Convertir Date en LocalDate
+
+        // Décocher toutes les radio box de genre
+        genreTF.setSelected(false);
+        genreTF1.setSelected(false);
+
+        // Vérifier le genre et sélectionner le radio bouton approprié
+        int genre = medecin1.getGenre();
+        if (genre == 1) { // Suppose que 1 correspond à "Homme"
+            genreTF.setSelected(true);
+        } else if (genre == 0) { // Suppose que 0 correspond à "Femme"
+            genreTF1.setSelected(true);
+        }
+
+        // Convertir la Date de naissance en LocalDate
         Instant instant = medecin1.getDateNaissance().toInstant();
         LocalDate dateNaissance = instant.atZone(ZoneId.systemDefault()).toLocalDate();
 
-// Définir la date de naissance dans le DatePicker
+        // Définir la date de naissance dans le DatePicker
         date_de_naissanceTF.setValue(dateNaissance);
+
         numtelTF.setText(String.valueOf(medecin1.getNumtel()));
         emailTF.setText(medecin1.getEmail());
         passwordTF.setText(medecin1.getPassword());
-        interlockTF.setText(String.valueOf(medecin1.isInterlock()));
+
+        // Décocher toutes les radio box d'interlock
+        interlockTF.setSelected(false);
+        InterlockTF.setSelected(false);
+
+        // Vérifier la valeur du champ interlock et sélectionner le radio bouton approprié
+        boolean interlock = medecin1.isInterlock();
+        if (interlock) {
+            interlockTF.setSelected(true);
+        } else {
+            InterlockTF.setSelected(true);
+        }
+
+        // Remplir le champ de spécialité
         specialiteTF.setText(medecin1.getSpecialite());
-        etatTF.setText(String.valueOf(medecin1.getEtat()));
-        getData.path =  medecin1.getImage();
-        String uri ="file:" + medecin1.getImage();
-        image = new Image(uri,118, 139, false, true);
+
+        // Décocher toutes les radio box d'état
+        etatTF.setSelected(false);
+        etatTF1.setSelected(false);
+
+        // Vérifier la valeur de l'état et sélectionner le radio bouton approprié
+        int etat = medecin1.getEtat();
+        if (etat == 1) { // Suppose que 1 correspond à "disponible"
+            etatTF.setSelected(true);
+        } else if (etat == 0) { // Suppose que 0 correspond à "non disponible "
+            etatTF1.setSelected(true);
+        }
+
+        // Récupérer le chemin de l'image et l'afficher dans ImageView
+        getData.path = medecin1.getImage();
+        String uri = "file:" + medecin1.getImage();
+        image = new Image(uri, 118, 139, false, true);
         imageTF.setImage(image);
     }
 
 
     public void initialize() throws SQLException {
-        addMedecinList = addMedecinListData(); // Initialize addEventList
-        addMedecinShowList(); // Populate TableView with data from addEventList
+        addMedecinList = addMedecinListData(); // Initialize addMedecinList
+        addMedecinShowList(); // Populate TableView with data from addMedecinList
         addMedecinSelect();
         //setupSearchListener();
     }
 
 
 
-    public void modifierMedecinupdate(){
+    public void modifierMedecinupdate() {
+        String uri = getData.path;
+        uri = uri.replace("\\", "\\\\");
 
-
-    }
-
-    public void supprimerMedecindelete(){
-        String sql = "DELETE FROM global_user WHERE nom = '"
-                +nomTF.getText()+"'";
-
-        connect = MyConnection.getInstance().getCnx();
+        String sqlGlobalUser = "UPDATE global_user SET cin = ?, nom = ?, prenom = ?, genre = ?, datenaissance = ?, numtel = ?, password = ?, interlock = ?,  image = ? WHERE cin = ?";
+        String sqlMedecin = "UPDATE medecin SET specialite = ?, etat = ? WHERE id = (SELECT id FROM global_user WHERE cin = ?)";
+        Connection connect = null;
+        PreparedStatement prepareGlobalUser = null;
+        PreparedStatement prepareMedecin = null;
 
         try {
             Alert alert;
-            if(cinTF.getText().isEmpty()
-                    || nomTF.getText().isEmpty()
-                    || prenomTF.getText().isEmpty()
-                    || genreTF.getText().isEmpty()
-                    || date_de_naissanceTF.getValue() == null
-                    || numtelTF.getText().isEmpty()
-                    || emailTF.getText().isEmpty()
-                    || passwordTF.getText().isEmpty()
-                    || interlockTF.getText().isEmpty()
-                    || etatTF.getText().isEmpty()
-                    || specialiteTF.getText().isEmpty()
-
-                    || getData.path == null || getData.path == "" ){
+            if (etatTF.getText().isEmpty() || specialiteTF.getText().isEmpty() || cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
+                    date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty() ||
+                    emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() ||
+                    (!interlockTF.isSelected() && !InterlockTF.isSelected()) ||
+                    uri == null || uri.equals("")) {
                 alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Message");
+                alert.setTitle("Message d'erreur");
                 alert.setHeaderText(null);
-                alert.setContentText("Veuillez sélectionner un medecin!");
+                alert.setContentText("Veuillez remplir tous les champs vides !");
                 alert.showAndWait();
-            }else {
+            } else {
                 alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation Message");
                 alert.setHeaderText(null);
-                alert.setContentText("Voulez-vous supprimer ce médecin !");
+                alert.setContentText("Voulez-vous modifier ces informations!");
                 Optional<ButtonType> option = alert.showAndWait();
 
-                if(option.get().equals(ButtonType.OK)){
-                    statement = connect.createStatement();
-                    statement.executeUpdate(sql);
+                if (option.isPresent() && option.get() == ButtonType.OK) {
+                    // Récupérer le genre sélectionné
+                    int genreSelectionne = genreTF.isSelected() ? 1 : 0; // 1 pour Homme, 0 pour Femme
+
+                    // Récupérer l'état sélectionné
+                    int etatSelectionne = etatTF.isSelected() ? 1 : 0; // 1 pour actif, 0 pour inactif
+
+                    // Obtention d'une nouvelle connexion à chaque fois
+                    connect = MyConnection.getInstance().getCnx();
+
+                    // Préparation des requêtes avec des paramètres
+                    prepareGlobalUser = connect.prepareStatement(sqlGlobalUser);
+                    prepareMedecin = connect.prepareStatement(sqlMedecin);
+
+                    // Remplir les paramètres pour la requête global_user
+                    prepareGlobalUser.setInt(1, Integer.parseInt(cinTF.getText()));
+                    prepareGlobalUser.setString(2, nomTF.getText());
+                    prepareGlobalUser.setString(3, prenomTF.getText());
+                    prepareGlobalUser.setInt(4, genreSelectionne); // Utilisation du genre sélectionné
+                    prepareGlobalUser.setObject(5, date_de_naissanceTF.getValue());
+                    prepareGlobalUser.setInt(6, Integer.parseInt(numtelTF.getText()));
+                    prepareGlobalUser.setString(7, passwordTF.getText());
+
+                    // Convertir la valeur de l'interlock en entier (0 ou 1)
+                    int interlockValue = interlockTF.isSelected() ? 1 : 0;
+                    prepareGlobalUser.setInt(8, interlockValue);
+
+                    prepareGlobalUser.setString(9, uri);
+                    prepareGlobalUser.setString(10, cinTF.getText()); // Utilisation du cin comme condition WHERE
+
+                    // Remplir les paramètres pour la requête medecin
+                    prepareMedecin.setString(1, specialiteTF.getText()); // Modification pour inclure specialite
+                    prepareMedecin.setInt(2, etatSelectionne); // Utilisation de l'état sélectionné
+                    prepareMedecin.setString(3, cinTF.getText()); // Utilisation du cin comme condition WHERE
+
+                    // Exécuter les requêtes de mise à jour
+                    prepareGlobalUser.executeUpdate();
+                    prepareMedecin.executeUpdate();
 
                     alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Information Message");
                     alert.setHeaderText(null);
-                    alert.setContentText("Suppression avec succés !");
+                    alert.setContentText("Modification avec succès !");
                     alert.showAndWait();
 
                     addMedecinShowList();
                     ajouterMedecinReset();
                 }
-
             }
-        }catch (Exception e) {e.printStackTrace();}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
+    @FXML
+    public void supprimerMedecindelete() {
+        String sqlGlobalUser = "DELETE FROM global_user WHERE cin = ?";
+        String sqlMedecin = "DELETE FROM medecin WHERE id = (SELECT id FROM global_user WHERE cin = ?)";
+
+        Connection connect = null;
+        PreparedStatement prepareGlobalUser = null;
+        PreparedStatement preparePatient = null;
+
+        connect = MyConnection.getInstance().getCnx();
+
+        try {
+            Alert alert;
+            if (etatTF.getText().isEmpty() || specialiteTF.getText().isEmpty() ||cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
+                    genreTF.getText().isEmpty() || date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty() ||
+                    emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() || interlockTF.getText().isEmpty() ||
+                    getData.path == null || getData.path.equals("")) {
+
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Message d'erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("Veuillez remplir tous les champs vides !");
+                alert.showAndWait();
+            } else {
+                alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Voulez-vous supprimer ce medecin ?");
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if (option.isPresent() && option.get() == ButtonType.OK) {
+                    // Suppression de l'utilisateur de la table global_user
+                    prepareGlobalUser = connect.prepareStatement(sqlGlobalUser);
+                    prepareGlobalUser.setString(1, cinTF.getText());
+                    prepareGlobalUser.executeUpdate();
+
+                    // Suppression de l'utilisateur de la table patient
+                    preparePatient = connect.prepareStatement(sqlMedecin);
+                    preparePatient.setString(1, cinTF.getText());
+                    preparePatient.executeUpdate();
+
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Suppression avec succès !");
+                    alert.showAndWait();
+
+                    addMedecinShowList();
+                    ajouterMedecinReset();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void close(){
         System.exit(0);

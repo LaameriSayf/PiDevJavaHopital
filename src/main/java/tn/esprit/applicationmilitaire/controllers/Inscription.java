@@ -39,10 +39,10 @@ public class Inscription {
 
 
     @FXML
-    private CheckBox genreTF;
+    private RadioButton genreTF;
 
     @FXML
-    private CheckBox genreTF1;
+    private RadioButton genreTF1;
     @FXML
     private ImageView imageTF;
 
@@ -113,10 +113,9 @@ public class Inscription {
             Alert alert;
             // Vérification si tous les champs sont remplis
             if (cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty()
-                    || (!genreTF.isSelected() && !genreTF1.isSelected()) || date_de_naissanceTF.getValue() == null
-                    || numtelTF.getText().isEmpty() || emailTF.getText().isEmpty()
-                    || passwordTF.getText().isEmpty() || interlockTF.getText().isEmpty()
-                    || roleTF.getText().isEmpty() || getData.path == null || getData.path.isEmpty()) {
+                    || ((!genreTF.isSelected() && !genreTF1.isSelected()))
+                    || date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty()
+                    || emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() || getData.path == null || getData.path.isEmpty()) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");
                 alert.setHeaderText(null);
@@ -184,8 +183,17 @@ public class Inscription {
                         alert.setContentText("Le numéro de carte jaune est déjà utilisé !");
                         alert.showAndWait();
                         return; // Sortir de la méthode car l'inscription ne peut pas être poursuivie
+                    }else {
+                        if ((genreTF.isSelected() && genreTF1.isSelected())){
+                            alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error Message");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Veuillez sélectionner un seul genre !");
+                            alert.showAndWait();
+                            return; // Sortir de la méthode car l'inscription ne peut pas être poursuivie
+                        }
                     }
-    
+
                     // Vérification d'unicité pour le numéro de CIN
                     String checkCin = "SELECT cin FROM global_user WHERE cin = ?";
                     PreparedStatement prepareCheckCin = connect.prepareStatement(checkCin);
@@ -200,13 +208,13 @@ public class Inscription {
                         alert.showAndWait();
                         return; // Sortir de la méthode car l'inscription ne peut pas être poursuivie
                     }
-    
+
                     // Cryptage du mot de passe
                     String hashedPassword = BCrypt.hashpw(passwordTF.getText(), BCrypt.gensalt());
-    
+
                     // Récupération du genre
-                    int genre =genreTF.isSelected() ? 0 : 1;
-    
+                    int genre = genreTF.isSelected() ? 0 : 1;
+
                     // Insertion dans global_user
                     prepare = connect.prepareStatement(sqlGlobalUser, Statement.RETURN_GENERATED_KEYS);
                     prepare.setInt(1, Integer.parseInt(cinTF.getText()));
@@ -220,26 +228,24 @@ public class Inscription {
                     prepare.setInt(6, Integer.parseInt(numtelTF.getText()));
                     prepare.setString(7, emailTF.getText());
                     prepare.setString(8, hashedPassword); // Mot de passe crypté
-                    prepare.setInt(9, Integer.parseInt(interlockTF.getText()));
-                    prepare.setString(11, roleTF.getText());
-                    String uri = getData.path;
-                    uri = uri.replace("\\", "\\\\");
-                    prepare.setString(10, uri);
+                    prepare.setInt(9, 0); // Valeur par défaut pour interlock
+                    prepare.setString(10, getData.path); // image
+                    prepare.setString(11, "patient"); // Valeur par défaut pour le rôle
                     prepare.executeUpdate();
-    
+
                     // Récupération de l'ID de l'utilisateur nouvellement inséré
                     ResultSet generatedKeys = prepare.getGeneratedKeys();
                     int userId = 0;
                     if (generatedKeys.next()) {
                         userId = generatedKeys.getInt(1);
                     }
-    
+
                     // Insertion dans la table patient
                     prepare = connect.prepareStatement(sqlPatient);
                     prepare.setInt(1, userId);
                     prepare.setString(2, numcarteTF.getText()); // Supposons que numcarteTF contient le numéro de carte
                     prepare.executeUpdate();
-    
+
                     alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Information Message");
                     alert.setHeaderText(null);

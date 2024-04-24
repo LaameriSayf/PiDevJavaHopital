@@ -33,6 +33,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class AjouterAdmin {
 
@@ -457,27 +458,25 @@ public class AjouterAdmin {
                 prepareGlobalUser.setString(2, nomTF.getText());
                 prepareGlobalUser.setString(3, prenomTF.getText());
 
-                // Determine the gender based on which CheckBox is selected
+                // Déterminer le genre en fonction de la sélection CheckBox
                 if (genreTF.isSelected() && genreTF1.isSelected()) {
-                    // Afficher un message d'erreur indiquant que seul un genre doit être sélectionné
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Erreur");
-                    errorAlert.setHeaderText(null);
-                    errorAlert.setContentText("Veuillez sélectionner uniquement un genre.");
-                    errorAlert.showAndWait();
-                    return; // Sortir de la méthode sans exécuter la requête SQL
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Veuillez sélectionner uniquement un genre.");
+                    alert.showAndWait();
+                    return;
                 } else if (genreTF.isSelected()) {
-                    prepareGlobalUser.setBoolean(4, true); // Assuming genreTF represents "Homme"
+                    prepareGlobalUser.setBoolean(4, true); // Homme
                 } else if (genreTF1.isSelected()) {
-                    prepareGlobalUser.setBoolean(4, false); // Assuming genreTF1 represents "Femme"
+                    prepareGlobalUser.setBoolean(4, false); // Femme
                 } else {
-                    // Aucune case n'est sélectionnée, afficher un message d'erreur
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Erreur");
-                    errorAlert.setHeaderText(null);
-                    errorAlert.setContentText("Veuillez sélectionner un genre.");
-                    errorAlert.showAndWait();
-                    return; // Sortir de la méthode sans exécuter la requête SQL
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Veuillez sélectionner un genre.");
+                    alert.showAndWait();
+                    return;
                 }
 
                 LocalDate dateNaissance = date_de_naissanceTF.getValue();
@@ -486,31 +485,30 @@ public class AjouterAdmin {
                 prepareGlobalUser.setString(5, dateNaissanceFormatee);
                 prepareGlobalUser.setInt(6, Integer.parseInt(numtelTF.getText()));
                 prepareGlobalUser.setString(7, emailTF.getText());
-                prepareGlobalUser.setString(8, passwordTF.getText());
-                prepareGlobalUser.setString(10, getData.path.replace("\\", "\\\\"));
-
-                // Determine the interlock value based on which CheckBox is selected
+                // Crypter le mot de passe avec BCrypt
+                String hashedPassword = BCrypt.hashpw(passwordTF.getText(), BCrypt.gensalt());
+                prepareGlobalUser.setString(8, hashedPassword);
+                // Déterminer l'interlock en fonction de la sélection CheckBox
                 if (interlockTF.isSelected() && InterlockTF.isSelected()) {
-                    // Afficher un message d'erreur indiquant que seul un choix doit être sélectionné
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Erreur");
-                    errorAlert.setHeaderText(null);
-                    errorAlert.setContentText("Veuillez sélectionner uniquement un choix pour l'interlock.");
-                    errorAlert.showAndWait();
-                    return; // Sortir de la méthode sans exécuter la requête SQL
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Veuillez sélectionner uniquement un choix pour l'interlock.");
+                    alert.showAndWait();
+                    return;
                 } else if (interlockTF.isSelected()) {
-                    prepareGlobalUser.setInt(9, 1); // Assuming interlockTF represents "Oui", so set 1
+                    prepareGlobalUser.setInt(9, 1); // Oui
                 } else if (InterlockTF.isSelected()) {
-                    prepareGlobalUser.setInt(9, 0); // Assuming InterlockTF represents "Non", so set 0
+                    prepareGlobalUser.setInt(9, 0); // Non
                 } else {
-                    // Aucune case n'est sélectionnée, afficher un message d'erreur
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Erreur");
-                    errorAlert.setHeaderText(null);
-                    errorAlert.setContentText("Veuillez sélectionner un choix pour l'interlock.");
-                    errorAlert.showAndWait();
-                    return; // Sortir de la méthode sans exécuter la requête SQL
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Veuillez sélectionner un choix pour l'interlock.");
+                    alert.showAndWait();
+                    return;
                 }
+                prepareGlobalUser.setString(10, getData.path.replace("\\", "\\\\"));
 
                 // Le rôle est toujours "Admin"
                 prepareGlobalUser.setString(11, "Admin");
@@ -543,8 +541,10 @@ public class AjouterAdmin {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }}
+        }
+    }
 
+    @FXML
     public void modifierAdminupdate() {
         String uri = getData.path;
         uri = uri.replace("\\", "\\\\");
@@ -624,6 +624,9 @@ public class AjouterAdmin {
                     // Récupérer le genre sélectionné
                     int genreSelectionne = genreTF.isSelected() ? 1 : 0; // 1 pour Homme, 0 pour Femme
 
+                    // Crypter le mot de passe avec BCrypt
+                    String hashedPassword = BCrypt.hashpw(passwordTF.getText(), BCrypt.gensalt());
+
                     // Obtention d'une nouvelle connexion à chaque fois
                     connect = MyConnection.getInstance().getCnx();
 
@@ -635,14 +638,13 @@ public class AjouterAdmin {
                     prepare.setInt(4, genreSelectionne); // Utilisation du genre sélectionné
                     prepare.setObject(5, date_de_naissanceTF.getValue());
                     prepare.setInt(6, Integer.parseInt(numtelTF.getText()));
-                    prepare.setString(7, passwordTF.getText());
+                    prepare.setString(7, hashedPassword); // Utilisation du mot de passe crypté
+                    prepare.setString(9, uri);
 
                     // Convertir la valeur de l'interlock en entier (0 ou 1)
                     int interlockValue = interlockTF.isSelected() ? 1 : 0;
                     prepare.setInt(8, interlockValue);
 
-                    //prepare.setString(9, roleTF.getText());
-                    prepare.setString(9, uri);
                     prepare.setString(10, cinTF.getText()); // Utilisation du cin comme condition WHERE
 
                     // Exécuter la requête de mise à jour

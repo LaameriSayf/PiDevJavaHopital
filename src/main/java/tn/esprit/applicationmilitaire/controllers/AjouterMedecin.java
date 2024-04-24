@@ -1,6 +1,10 @@
 package tn.esprit.applicationmilitaire.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -8,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.beans.property.SimpleObjectProperty;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -29,6 +34,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.applicationmilitaire.models.Medecin;
 import tn.esprit.applicationmilitaire.models.getData;
+import tn.esprit.applicationmilitaire.test.HelloApplication;
 import tn.esprit.applicationmilitaire.utils.MyConnection;
 
 
@@ -627,6 +633,86 @@ public class AjouterMedecin {
     public void minimize(){
         Stage stage = (Stage)main_form.getScene().getWindow();
         stage.setIconified(true);
+    }
+
+    @FXML
+    private Button gererpatientbtn;
+
+    @FXML
+    public void gererpatientbtn(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/AjouterPatient.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage) gererpatientbtn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    private Button gereradministrateurbtn;
+
+    @FXML
+    private Button gerermedecinbtn;
+
+    @FXML
+    private Button gererpharmacienbtn;
+
+    @FXML
+    private Button tableaudeboardbtn;
+
+    @FXML
+    public void tableaudeboardbtn(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/Dashboard.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage) tableaudeboardbtn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void gereradministrateurbtn(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/AjouterAdmin.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage) gereradministrateurbtn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @FXML
+    public void gerermedecin(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/AjouterMedecin.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage) gerermedecinbtn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @FXML
+    public void gererpharmacienbtn(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/AjouterPharmacien.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage) gererpharmacienbtn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

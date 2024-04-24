@@ -48,10 +48,10 @@
                            </font>
                         </Label>
                         <Line endX="77.5" layoutX="97.0" layoutY="46.0" startX="-76.5" />
-                        <Button layoutX="14.0" layoutY="61.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Tableau de board" />
+                        <Button fx:id="tableauboardbtn" layoutX="14.0" layoutY="61.0" mnemonicParsing="false" onAction="#tableauboardbtn" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Tableau de board" />
                         <Button fx:id="gereradministrateurbtn" layoutX="14.0" layoutY="104.0" mnemonicParsing="false" onAction="#gereradministrateurbtn" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Administrateur" />
                         <Button fx:id="gererpatientbtn" layoutX="14.0" layoutY="149.0" mnemonicParsing="false" onAction="#gererpatientbtn" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Patients" />
-                        <Button fx:id="gerermedecin" layoutX="14.0" layoutY="189.0" mnemonicParsing="false" onAction="#gerermedecin" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Médecins" />
+                        <Button fx:id="gerermedecinbtn" layoutX="14.0" layoutY="189.0" mnemonicParsing="false" onAction="#gerermedecin" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Médecins" />
                         <Button fx:id="gererpharmacienbtn" layoutX="14.0" layoutY="230.0" mnemonicParsing="false" onAction="#gererpharmacienbtn" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Pharmaciens" />
                         <Button layoutX="14.0" layoutY="271.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Blogs" />
                         <Button layoutX="14.0" layoutY="309.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Rendez-vous" />

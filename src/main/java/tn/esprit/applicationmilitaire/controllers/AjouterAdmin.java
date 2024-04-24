@@ -710,18 +710,30 @@ public class AjouterAdmin {
         }
 }
 
-
-
     @FXML
     private Button gereradministrateurbtn;
 
     @FXML
-    private Button gerermedecin;
-
-
+    private Button gerermedecinbtn;
 
     @FXML
     private Button gererpharmacienbtn;
+
+    @FXML
+    private Button tableauboardbtn;
+
+    @FXML
+    public void tableauboardbtn(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/Dashboard.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage) tableauboardbtn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @FXML
     public void gereradministrateurbtn(ActionEvent event) {
@@ -741,7 +753,7 @@ public class AjouterAdmin {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/AjouterMedecin.fxml"));
             Parent root = fxmlLoader.load();
 
-            Stage stage = (Stage) gerermedecin.getScene().getWindow();
+            Stage stage = (Stage) gerermedecinbtn.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {
             throw new RuntimeException(e);

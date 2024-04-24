@@ -2,6 +2,8 @@ package Controller;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import Model.Admin;
 import Model.Blog;
 import Model.Commentaire;
 import Service.BlogService;
@@ -10,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,6 +24,7 @@ import javafx.util.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.controlsfx.control.Notifications;
 
 public class FrontOfficeBlogController {
     @FXML
@@ -182,12 +186,28 @@ public class FrontOfficeBlogController {
                 supprimercommentaire.setText("Supprimer");
                 modifiercommentaire.setText("Modifier");
 
-
-
-
-
                 // Ajouter un événement de clic aux ImageView pour gérer les actions de like/dislike
                 CommentaireService cs=new CommentaireService();
+                supprimercommentaire.setOnMouseClicked(event -> {
+                    // Suppression du commentaire
+                    cs.delete(comment);
+
+                    // Afficher une notification
+                    Image successIcon = new Image(getClass().getResourceAsStream("/Template/back/images/icons8-ok-94.png"));
+
+// Afficher une notification personnalisée
+                    Notifications.create()
+                            .title("Suppression réussie")
+                            .text("Le commentaire a été supprimé avec succès. \uD83D\uDC4D")
+                            .graphic(new ImageView(successIcon))
+                            .position(Pos.TOP_CENTER)
+                            .show();
+                });
+                Admin a=new Admin(4,4545,"","","");
+                likeImageView.setOnMouseClicked(event-> cs.like(comment,a));
+
+
+
 
                 // Créer une HBox pour contenir le label et les ImageView
                 HBox commentBox = new HBox(commentLabel,modifiercommentaire,supprimercommentaire, likeImageView,nbrlike, dislikeImageView,nbrdislike);
@@ -254,7 +274,7 @@ public class FrontOfficeBlogController {
                 String commentaireContenu = inputaddcommentaire.getText();
 
                 // Liste des gros mots
-                String[] tabbadwords = {"fuck", "shit"};
+                String[] tabbadwords = {"fuck", "shit","merde"};
 
                 // Filtrer les gros mots
                 for (String badword : tabbadwords) {

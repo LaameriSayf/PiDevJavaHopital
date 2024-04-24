@@ -22,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -53,6 +54,9 @@ public class CategorieController implements Initializable {
 
     @FXML
     private ComboBox<String> etat;
+
+    @FXML
+    private ImageView btnD;
 
     @FXML
     private Button categorieBtn;
@@ -242,7 +246,7 @@ public class CategorieController implements Initializable {
         }
 
         // Ajouter la nouvelle catégorie
-        Categorie c = new Categorie(1, nom_cat1, description1_cat, type_cat1);
+        Categorie c = new Categorie(1, nom_cat1, type_cat1, description1_cat);
         cs.addCategorie(c);
 
         // Affichage d'une alerte de succès
@@ -409,6 +413,7 @@ public class CategorieController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
 etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
             fileChooser.setInitialDirectory(new File("."));
         loadAndDisplayData();
@@ -548,6 +553,17 @@ etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
     }
     @FXML
     void AjouterMed(ActionEvent event) {
+        // Vérification si tous les champs sont remplis
+        if (dateamm.getValue() == null || dateexp.getValue() == null || desc.getText().isEmpty() ||
+                nom_med.getText().isEmpty() || ref_med.getText().isEmpty() || etat.getSelectionModel().isEmpty() ||
+                textArea.getText().isEmpty() || qte.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setContentText("Veuillez remplir tous les champs.");
+            alert.showAndWait();
+            return; // Sortie de la méthode en cas de champs manquants
+        }
+
         LocalDate date = dateamm.getValue();
         LocalDate date1 = dateexp.getValue();
         String description = desc.getText();
@@ -556,15 +572,27 @@ etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
         String etat1 = etat.getSelectionModel().getSelectedItem();
         String image1 = textArea.getText();
 
-        // Conversion de la quantité en entier
-        int qte1 = 0;
-        try {
-            qte1 = Integer.parseInt(qte.getText());
-        } catch (NumberFormatException e) {
-            // Gestion de l'erreur de conversion
+        // Vérification si la date d'expiration est supérieure à la date d'ajout
+        if (date1.isBefore(date)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur");
-            alert.setContentText("La quantité doit être un entier valide.");
+            alert.setContentText("La date d'expiration doit être ultérieure à la date d'ajout.");
+            alert.showAndWait();
+            return; // Sortie de la méthode en cas d'erreur
+        }
+
+        // Vérification si la quantité est un entier positif
+        int qte1;
+        try {
+            qte1 = Integer.parseInt(qte.getText());
+            if (qte1 < 0) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            // Gestion de l'erreur de conversion ou de quantité négative
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setContentText("La quantité doit être un entier positif valide.");
             alert.showAndWait();
             return; // Sortie de la méthode en cas d'erreur
         }
@@ -592,10 +620,11 @@ etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
         etat.getSelectionModel().clearSelection();
         textArea.clear();
 
-
         // Rafraîchissement automatique de la table
         refreshTable();
     }
+
+
 
 
 

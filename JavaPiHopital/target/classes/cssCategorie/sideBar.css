@@ -1,0 +1,13 @@
+.side{
+    -fx-background-color: linear-gradient(to bottom right, #DFF5FF,#378CE7);
+    -fx-background-radius: 12px;
+}
+.MedicamentForm{
+    -fx-background-color: white;
+}
+.categorieForm{
+    -fx-background-color: white;
+}
+.wost{
+    -fx-background-color: white;
+}

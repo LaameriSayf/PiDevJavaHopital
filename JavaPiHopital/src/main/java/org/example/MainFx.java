@@ -20,7 +20,7 @@ public class MainFx extends Application {
 
             Scene sc = new Scene(root);
             primaryStage.setScene(sc);
-            primaryStage.setTitle("ajout cat");
+            primaryStage.setTitle("MediConnect");
             primaryStage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());

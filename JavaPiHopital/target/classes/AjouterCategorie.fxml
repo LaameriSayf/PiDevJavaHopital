@@ -24,36 +24,18 @@
                <top>
                   <AnchorPane prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutX="-2.0" prefHeight="112.0" prefWidth="1100.0" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Label layoutX="120.0" layoutY="29.0" prefHeight="52.0" prefWidth="176.0" text=" MediConnect" textOverrun="CENTER_ELLIPSIS">
-                                 <font>
-                                    <Font name="System Italic" size="22.0" />
-                                 </font>
-                              </Label>
-                              <Button fx:id="close" layoutX="1063.0" layoutY="8.0" mnemonicParsing="false" text="x">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Button>
-                              <Button layoutX="1035.0" layoutY="8.0" mnemonicParsing="false" text="-" />
-                              <ImageView fitHeight="90.0" fitWidth="100.0" layoutX="20.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@images/logo1.png" />
-                                 </image></ImageView>
-                           </children>
-                        </AnchorPane>
+                        <AnchorPane fx:id="side" layoutX="237.0" prefHeight="35.0" prefWidth="870.0" styleClass="categorieForm" stylesheets="@cssCategorie/sideBar.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </top>
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="categorieForm" prefHeight="560.0" prefWidth="829.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="categorieForm" layoutX="-30.0" layoutY="-5.0" prefHeight="565.0" prefWidth="859.0" styleClass="categorieForm" stylesheets="@cssCategorie/sideBar.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-30.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-5.0">
                            <children>
-                              <Label layoutX="44.0" layoutY="55.0" text="Ajouter Categorie">
+                              <Label layoutX="44.0" layoutY="55.0" text="Ajouter Categorie" textFill="#193378">
                                  <font>
-                                    <Font name="System Bold" size="28.0" />
+                                    <Font name="Times New Roman Italic" size="27.0" />
                                  </font>
                               </Label>
                               <TableView fx:id="table" layoutX="367.0" layoutY="145.0" prefHeight="266.0" prefWidth="432.0">
@@ -63,70 +45,103 @@
                                     <TableColumn fx:id="colDescription" prefWidth="221.0" text="Description Catégorie" />
                                  </columns>
                               </TableView>
-                              <Label layoutX="488.0" layoutY="56.0" text="Liste Categorie">
+                              <Label layoutX="488.0" layoutY="56.0" text="Liste Categorie" textFill="#193378">
                                  <font>
-                                    <Font name="System Bold" size="27.0" />
+                                    <Font name="Times New Roman Italic" size="27.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="70.0" layoutY="145.0" text="Nom Catégorie :" />
-                              <TextField fx:id="nom_cat" layoutX="82.0" layoutY="175.0" prefHeight="25.0" prefWidth="149.0" />
-                              <Label layoutX="76.0" layoutY="206.0" prefHeight="17.0" prefWidth="98.0" text="Type catégorie : " />
-                              <TextField fx:id="type_cat" layoutX="84.0" layoutY="240.0" />
-                              <Label layoutX="76.0" layoutY="278.0" prefHeight="17.0" prefWidth="139.0" text="Description catégorie" />
-                              <TextField fx:id="description_cat" layoutX="84.0" layoutY="306.0" />
-                              <Button layoutX="465.0" layoutY="436.0" mnemonicParsing="false" onAction="#AfficherCategorie" prefHeight="25.0" prefWidth="67.0" text="Afficher" />
-                              <Button layoutX="84.0" layoutY="438.0" mnemonicParsing="false" onAction="#ajouterCategorie" text="Ajouter" />
-                              <Button layoutX="174.0" layoutY="438.0" mnemonicParsing="false" onAction="#modifierCategorie" text="Modifier" />
-                              <Button layoutX="558.0" layoutY="438.0" mnemonicParsing="false" onAction="#SupprimerCategorie" text="Supprimer" />
-                              <TextField fx:id="recherche" layoutX="366.0" layoutY="103.0" onAction="#rechercher" prefHeight="25.0" prefWidth="428.0" promptText="🔍 Rechercher..." />
-                              <Label layoutX="289.0" layoutY="14.0" prefHeight="32.0" prefWidth="188.0" text=" Gérer categorie" textOverrun="CENTER_ELLIPSIS">
+                              <Label layoutX="44.0" layoutY="166.0" text="Nom Catégorie :">
                                  <font>
-                                    <Font name="System Italic" size="22.0" />
+                                    <Font name="Times New Roman" size="12.0" />
+                                 </font></Label>
+                              <TextField fx:id="nom_cat" layoutX="174.0" layoutY="162.0" prefHeight="25.0" prefWidth="149.0" />
+                              <Label layoutX="45.0" layoutY="203.0" prefHeight="17.0" prefWidth="98.0" text="Type catégorie : ">
+                                 <font>
+                                    <Font name="Times New Roman" size="12.0" />
+                                 </font></Label>
+                              <TextField fx:id="type_cat" layoutX="174.0" layoutY="199.0" />
+                              <Label layoutX="14.0" layoutY="248.0" prefHeight="17.0" prefWidth="139.0" text="Description catégorie:">
+                                 <font>
+                                    <Font name="Times New Roman" size="12.0" />
+                                 </font></Label>
+                              <TextField fx:id="description_cat" layoutX="174.0" layoutY="244.0" />
+                              <Button layoutX="388.0" layoutY="476.0" mnemonicParsing="false" onAction="#AfficherCategorie" prefHeight="25.0" prefWidth="67.0" text="Afficher" />
+                              <Button layoutX="240.0" layoutY="476.0" mnemonicParsing="false" onAction="#ajouterCategorie" text="Ajouter" />
+                              <Button layoutX="306.0" layoutY="476.0" mnemonicParsing="false" onAction="#modifierCategorie" text="Modifier" />
+                              <Button layoutX="466.0" layoutY="476.0" mnemonicParsing="false" onAction="#SupprimerCategorie" text="Supprimer" />
+                              <TextField fx:id="recherche" layoutX="366.0" layoutY="103.0" onAction="#rechercher" prefHeight="25.0" prefWidth="428.0" promptText="🔍 Rechercher..." />
+                              <Label layoutX="295.0" layoutY="-10.0" prefHeight="32.0" prefWidth="207.0" text=" Gérer categorie" textFill="#1d7eb6" textOverrun="CENTER_ELLIPSIS">
+                                 <font>
+                                    <Font name="Times New Roman Bold" size="22.0" />
                                  </font>
                               </Label>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="medicamentForm" layoutX="14.0" layoutY="14.0" prefHeight="560.0" prefWidth="829.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="medicamentForm" layoutX="14.0" layoutY="14.0" prefHeight="560.0" prefWidth="829.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <AnchorPane fx:id="MedicamentForm" prefHeight="534.0" prefWidth="829.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <AnchorPane fx:id="MedicamentForm" layoutX="-31.0" layoutY="-4.0" prefHeight="564.0" prefWidth="860.0" styleClass="MedicamentForm" stylesheets="@cssCategorie/sideBar.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-31.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
                                  <children>
-                                    <Label layoutX="288.0" layoutY="34.0" text="Gérer Médicament">
+                                    <Label layoutX="255.0" layoutY="-16.0" text="Gérer Médicament" textFill="#1d7eb6">
                                        <font>
                                           <Font name="System Bold" size="29.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="39.0" layoutY="103.0" text="Réference médicament" />
-                                    <Label layoutX="39.0" layoutY="140.0" text="Nom médicament" />
-                                    <Label layoutX="40.0" layoutY="175.0" text="Date mise en marché " />
-                                    <Label layoutX="42.0" layoutY="211.0" text="Date d'expiration" />
-                                    <Label layoutX="43.0" layoutY="326.0" text="Etat" />
-                                    <Label layoutX="42.0" layoutY="250.0" text="Quantité" />
-                                    <Label layoutX="40.0" layoutY="285.0" text="Description" />
-                                    <Label layoutX="48.0" layoutY="385.0" text="Image" />
-                                    <TextField fx:id="ref_med" layoutX="170.0" layoutY="99.0" />
-                                    <TextField fx:id="desc" layoutX="170.0" layoutY="282.0" />
-                                    <TextField fx:id="qte" layoutX="170.0" layoutY="247.0" />
-                                    <TextField fx:id="nom_med" layoutX="170.0" layoutY="137.0" />
-                                    <Label layoutX="101.0" layoutY="77.0" text="Ajouter Médicament">
+                                    <Label layoutX="18.0" layoutY="122.0" text="Réference médicament">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font></Label>
+                                    <Label layoutX="18.0" layoutY="159.0" text="Nom médicament">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font></Label>
+                                    <Label layoutX="17.0" layoutY="194.0" text="Date mise en marché ">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font></Label>
+                                    <Label layoutX="19.0" layoutY="230.0" text="Date d'expiration">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font></Label>
+                                    <Label layoutX="22.0" layoutY="345.0" text="Etat">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font></Label>
+                                    <Label layoutX="21.0" layoutY="269.0" text="Quantité">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font></Label>
+                                    <Label layoutX="21.0" layoutY="304.0" text="Description">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font></Label>
+                                    <Label layoutX="27.0" layoutY="404.0" text="Image">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font></Label>
+                                    <TextField fx:id="ref_med" layoutX="149.0" layoutY="118.0" />
+                                    <TextField fx:id="desc" layoutX="149.0" layoutY="301.0" prefHeight="25.0" prefWidth="150.0" />
+                                    <TextField fx:id="qte" layoutX="148.0" layoutY="266.0" prefHeight="25.0" prefWidth="150.0" />
+                                    <TextField fx:id="nom_med" layoutX="149.0" layoutY="156.0" />
+                                    <Label layoutX="62.0" layoutY="60.0" text="Ajouter Médicament" textFill="#193378">
                                        <font>
                                           <Font name="Arial Black" size="12.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="536.0" layoutY="77.0" text="Afficher Médicament">
+                                    <Label layoutX="536.0" layoutY="60.0" text="Afficher Médicament" textFill="#193378">
                                        <font>
                                           <Font name="Arial Black" size="12.0" />
                                        </font>
                                     </Label>
-                                    <ListView fx:id="table_med" layoutX="367.0" layoutY="111.0" prefHeight="320.0" prefWidth="445.0" />
-                                    <Button layoutX="269.0" layoutY="478.0" mnemonicParsing="false" onAction="#AjouterMed" text="Ajouter" />
-                                    <Button layoutX="536.0" layoutY="477.0" mnemonicParsing="false" onAction="#afficherMed" text="Afficher" />
-                                    <Button layoutX="438.0" layoutY="477.0" mnemonicParsing="false" onAction="#supprimerMed" text="Supprimer" />
-                                    <Button layoutX="352.0" layoutY="477.0" mnemonicParsing="false" onAction="#modifierMed" text="Modifier" />
-                                    <TextArea fx:id="textArea" layoutX="149.0" layoutY="374.0" prefHeight="37.0" prefWidth="196.0" />
-                                    <DatePicker fx:id="dateamm" layoutX="162.0" layoutY="171.0" />
-                                    <DatePicker fx:id="dateexp" layoutX="164.0" layoutY="209.0" />
-                                    <Button layoutX="206.0" layoutY="421.0" mnemonicParsing="false" onAction="#importerImage" text="Importer" />
-                                    <ComboBox fx:id="etat" layoutX="170.0" layoutY="322.0" prefWidth="150.0" />
+                                    <ListView fx:id="table_med" layoutX="351.0" layoutY="111.0" prefHeight="320.0" prefWidth="461.0" />
+                                    <Button layoutX="272.0" layoutY="496.0" mnemonicParsing="false" onAction="#AjouterMed" text="Ajouter" />
+                                    <Button layoutX="539.0" layoutY="495.0" mnemonicParsing="false" onAction="#afficherMed" text="Afficher" />
+                                    <Button layoutX="441.0" layoutY="495.0" mnemonicParsing="false" onAction="#supprimerMed" text="Supprimer" />
+                                    <Button layoutX="355.0" layoutY="495.0" mnemonicParsing="false" onAction="#modifierMed" text="Modifier" />
+                                    <TextArea fx:id="textArea" layoutX="141.0" layoutY="394.0" prefHeight="37.0" prefWidth="196.0" />
+                                    <DatePicker fx:id="dateamm" layoutX="149.0" layoutY="190.0" prefHeight="25.0" prefWidth="148.0" />
+                                    <DatePicker fx:id="dateexp" layoutX="148.0" layoutY="228.0" prefHeight="25.0" prefWidth="150.0" />
+                                    <Button layoutX="201.0" layoutY="440.0" mnemonicParsing="false" onAction="#importerImage" text="Importer" />
+                                    <ComboBox fx:id="etat" layoutX="149.0" layoutY="341.0" prefWidth="150.0" />
                                  </children>
                               </AnchorPane>
                            </children>
@@ -137,10 +152,26 @@
                <left>
                   <AnchorPane prefHeight="560.0" prefWidth="271.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutX="1.0" prefHeight="560.0" prefWidth="271.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane layoutX="-1.0" layoutY="-49.0" prefHeight="610.0" prefWidth="280.0" styleClass="side" stylesheets="@cssCategorie/sideBar.css" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="-49.0">
                            <children>
-                              <Button fx:id="categorieBtn" layoutX="32.0" layoutY="70.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="25.0" prefWidth="205.0" text="Gérer Categorie" />
-                              <Button fx:id="medicamentBtn" layoutX="32.0" layoutY="114.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="25.0" prefWidth="205.0" text="Gérer Medicament " />
+                              <Button fx:id="categorieBtn" layoutX="15.0" layoutY="215.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="25.0" prefWidth="205.0" text="Gérer Categorie" textFill="#1d7eb6">
+                                 <font>
+                                    <Font name="System Bold Italic" size="12.0" />
+                                 </font></Button>
+                              <Button fx:id="medicamentBtn" layoutX="15.0" layoutY="259.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="25.0" prefWidth="205.0" text="Gérer Medicament " textFill="#1d7eb6">
+                                 <font>
+                                    <Font name="System Bold Italic" size="12.0" />
+                                 </font></Button>
+                              <ImageView fitHeight="53.0" fitWidth="226.0" layoutX="9.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/Capture_d_écran_2024-02-19_235701-removebg-preview-removebg-preview.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="215.0" fitWidth="227.0" layoutX="11.0" layoutY="394.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/19420c3c-5f77-4017-8e36-376d9f131d28-removebg-preview.png" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                      </children>

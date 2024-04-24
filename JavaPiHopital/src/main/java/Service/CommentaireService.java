@@ -27,7 +27,7 @@ public class CommentaireService implements ICommentaire<Commentaire>{
         try {
             PreparedStatement stm= cnx.prepareStatement(rqt);
             stm.setInt(1, idBlog);
-            stm.setInt(2,4);
+            stm.setInt(2,6);
             stm.setString(3, contenu);
             stm.setInt(4, 0); // Valeur initiale de nblike à 0
             stm.setInt(5, 0); // Valeur initiale de nbdislike à 0

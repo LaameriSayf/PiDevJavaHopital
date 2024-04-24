@@ -55,6 +55,7 @@ public class FrontOfficeBlogController {
     private Text texttitrecategoriefff;
     @FXML Text textcategoriedescription;
     @FXML ImageView btnajoutercommentfront;
+    @FXML Text textrate1;
     private BlogService blogService = new BlogService();
     private List<Blog> blogList = blogService.getAll();
 
@@ -178,6 +179,7 @@ public class FrontOfficeBlogController {
                 ImageView dislikeImageView = new ImageView("Template/front/images/icons8-pouces-vers-le-bas-24.png");
                 Text supprimercommentaire = new Text();
                 Text modifiercommentaire = new Text();
+
                 // Créer un Text pour afficher le nombre de likes
                 Text nbrlike = new Text(String.valueOf(comment.getNbLike()));
 
@@ -188,20 +190,41 @@ public class FrontOfficeBlogController {
 
                 // Ajouter un événement de clic aux ImageView pour gérer les actions de like/dislike
                 CommentaireService cs = new CommentaireService();
+                supprimercommentaire.setOnMouseClicked(event -> {
+                    // Suppression du commentaire
+                    cs.delete(comment);
 
-                Admin a = new Admin(4, 4545, "", "", "");
+                    // Récupérer les détails du blog mis à jour après la suppression du commentaire
+                    Blog updatedBlog = bs.getBlogById(blog.getId());
+                    if (updatedBlog != null) {
+                        // Afficher les détails du blog mis à jour avec la liste de commentaires mise à jour
+                        displayBlogDetail(updatedBlog);
+                    } else {
+                        System.out.println("Impossible de récupérer les détails du blog mis à jour.");
+                    }
+
+                    // Afficher une notification
+                    Image successIcon = new Image(getClass().getResourceAsStream("/Template/back/images/icons8-ok-94.png"));
+                    Notifications.create()
+                            .title("Suppression réussie")
+                            .text("Le commentaire a été supprimé avec succès. \uD83D\uDC4D")
+                            .graphic(new ImageView(successIcon))
+                            .position(Pos.TOP_CENTER)
+                            .show();
+                });
+                Admin a = new Admin(6, 4545, "", "", "");
                 likeImageView.setOnMouseClicked(event -> cs.like(comment, a));
-
+                modifiercommentaire.setStyle("-fx-text-fill:green;");
+                supprimercommentaire.setStyle("-fx-text-fill:red;");
 
                 HBox commentBox = new HBox(commentLabel, modifiercommentaire, supprimercommentaire, likeImageView, nbrlike, dislikeImageView, nbrdislike);
-
-                commentBox.setSpacing(10); //
                 commentBox.setSpacing(10);
                 commentBox.setStyle("-fx-background-color: #f0f0f0; " +
                         "-fx-padding: 10px; " +
                         "-fx-border-color: #cccccc; " +
                         "-fx-border-width: 1px; " +
                         "-fx-border-radius: 5px;");
+
                 nbrlike.setText(String.valueOf(comment.getNbLike()));
                 nbrdislike.setText(String.valueOf(comment.getNbDislike()));
                 formattedComments.add(commentBox);
@@ -251,6 +274,7 @@ public class FrontOfficeBlogController {
             }
             CommentaireService commentaireService = new CommentaireService();
             commentaireService.add(blogId, commentaireContenu);
+            inputaddcommentaire.setText("");
 
             // Mettre à jour les détails du blog après l'ajout du commentaire
             Blog updatedBlog = bs.getBlogById(blogId);

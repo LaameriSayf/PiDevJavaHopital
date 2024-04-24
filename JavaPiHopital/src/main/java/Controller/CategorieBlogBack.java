@@ -11,6 +11,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -32,6 +33,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import org.controlsfx.control.Notifications;
 
 import java.io.File;
 
@@ -181,7 +183,6 @@ public class CategorieBlogBack {
 
     public void DarkMode() {
         try {
-            // Obtenez les feuilles de style actuelles
             ObservableList<String> stylesheets = sidebardash.getStylesheets();
             ObservableList<String> navbarStylesheets = navbarback.getStylesheets();
             ObservableList<String> panelstatStylesheets = panstatblog.getStylesheets(); // Assurez-vous que panstatblog est un AnchorPane
@@ -296,7 +297,6 @@ public class CategorieBlogBack {
 
     /****************************Visibilite Formulaire**********************************************************************************************/
 
-// Méthode pour afficher ou masquer le formulaire en fonction de sa visibilité actuelle
     public void AfficherFormPanel() {
         if (panformcateg != null) {
             panformcateg.setVisible(!panformcateg.isVisible());
@@ -355,13 +355,28 @@ public class CategorieBlogBack {
     public void ajouterCategorieFormulaire() {
         String titre = inputtitre.getText();
         String description = inputdescription.getText();
+        CategoriBlogService cbs = new CategoriBlogService();
+        List<CtegorieBlog> lsb = cbs.getAll();
+        for (CtegorieBlog c : lsb) {
+            if (titre.equals(c.getTitrecategorie())) {
+                Notifications.create()
+                        .title("Avertissement")
+                        .text("Cette Catégorie existe déjà !")
+                        .darkStyle()
+                        .position(Pos.TOP_CENTER)
+                        .show();
+
+                return;
+            }
+        }
 
         if (titre.isEmpty() || description.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Alert");
-            alert.setHeaderText(null);
-            alert.setContentText("Titre ou description vide !");
-            alert.showAndWait();
+            Notifications.create()
+                    .title("Alerte")
+                    .text("Le titre ou la description est vide !")
+                    .darkStyle()
+                    .position(Pos.TOP_CENTER)
+                    .show();
             return;
         }
 
@@ -370,7 +385,15 @@ public class CategorieBlogBack {
         loadCategories();
         pagination.setPageCount((int) Math.ceil((double) allCategories.size() / itemsPerPage));
         pagination.setCurrentPageIndex(pagination.getPageCount() - 1);
+
+        Notifications.create()
+                .title("Succès")
+                .text("La catégorie a été ajoutée avec succès.")
+                .darkStyle()
+                .position(Pos.TOP_CENTER)
+                .show();
     }
+
 
     /*****************************Supprimer Element *******************************************************************************/
 
@@ -386,32 +409,36 @@ public class CategorieBlogBack {
                 if (response == ButtonType.OK) {
                     boolean deleted = ctbs.delete(selectedCategorie);
                     if (deleted) {
-                        Alert success = new Alert(Alert.AlertType.INFORMATION);
-                        success.setTitle("Success");
-                        success.setHeaderText(null);
-                        success.setContentText("La catégorie de blog a été supprimée avec succès.");
-                        success.showAndWait();
+                        // Afficher une notification de succès personnalisée
+                        Notifications.create()
+                                .title("Success")
+                                .text("La catégorie de blog a été supprimée avec succès.")
+                                .darkStyle()
+                                .position(Pos.TOP_CENTER)
+                                .show();
                         loadCategories();
                         pagination.setPageCount((int) Math.ceil((double) allCategories.size() / itemsPerPage));
                         pagination.setCurrentPageIndex(0);
                     } else {
-                        Alert failure = new Alert(Alert.AlertType.ERROR);
-                        failure.setTitle("Error");
-                        failure.setHeaderText(null);
-                        failure.setContentText("Erreur lors de la suppression de la catégorie de blog.");
-                        failure.showAndWait();
+                        Notifications.create()
+                                .title("Error")
+                                .text("Erreur lors de la suppression de la catégorie de blog.")
+                                .darkStyle()
+                                .position(Pos.TOP_CENTER)
+
+                                .show();
                     }
                 }
             });
         } else {
-            Alert noSelection = new Alert(Alert.AlertType.WARNING);
-            noSelection.setTitle("Avertissement");
-            noSelection.setHeaderText("Aucune catégorie sélectionnée");
-            noSelection.setContentText("Veuillez sélectionner une catégorie de blog à supprimer.");
-            noSelection.showAndWait();
+            // Afficher une notification d'avertissement personnalisée
+            Notifications.create()
+                    .title("Avertissement")
+                    .text("Veuillez sélectionner une catégorie de blog à supprimer.")
+                    .darkStyle()
+                    .show();
         }
     }
-
     /**************************************Clear les champs ********************************************************************************/
 
 
@@ -423,7 +450,6 @@ public class CategorieBlogBack {
     /********************************Selected Item**********************************************************************************************/
     @FXML
     public void setSelectedCategorieToInputFields() {
-        // Get the selected item from the TableView
         CtegorieBlog selectedCategorie = tabcategorie.getSelectionModel().getSelectedItem();
 
         if (selectedCategorie != null) {
@@ -445,44 +471,42 @@ public class CategorieBlogBack {
             String newDescription = inputdescription.getText();
 
             if (newTitre.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Alert");
-                alert.setHeaderText(null);
-                alert.setContentText("Titre vide !");
-                alert.showAndWait();
+
+                Notifications.create()
+
+                        .title("Modification échouée")
+                        .text("Le titre ne peut pas être vide. \uD83D\uDE1E")
+                        .position(Pos.TOP_CENTER)
+                        .showWarning();
                 return;
             } else if (newDescription.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Alert");
-                alert.setHeaderText(null);
-                alert.setContentText("Description vide !");
-                alert.showAndWait();
+
+                Notifications.create()
+                        .title("Modification échouée")
+                        .text("La description ne peut pas être vide. \uD83D\uDE1E")
+                        .position(Pos.TOP_CENTER)
+                        .showWarning();
                 return;
             }
-
 
             selectedCategorie.setTitrecategorie(newTitre);
             selectedCategorie.setDescription(newDescription);
 
-
             tabcategorie.refresh();
 
-
-            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            successAlert.setTitle("Success");
-            successAlert.setHeaderText(null);
-            successAlert.setContentText("Category updated successfully!");
-            successAlert.showAndWait();
-
+            Notifications.create()
+                    .title("Succès")
+                    .text("Catégorie mise à jour avec succès!" +"\uD83D\uDE0A")
+                    .position(Pos.TOP_CENTER)
+                    .showInformation(); // Utilisation de showInformation() pour une notification d'information
 
             ClearInput();
         } else {
-
-            Alert noSelection = new Alert(Alert.AlertType.WARNING);
-            noSelection.setTitle("Avertissement");
-            noSelection.setHeaderText("Aucune catégorie sélectionnée");
-            noSelection.setContentText("Veuillez sélectionner une catégorie de blog à modifier.");
-            noSelection.showAndWait();
+            Notifications.create()
+                    .title("Avertissement")
+                    .text("Aucune catégorie sélectionnée. Veuillez sélectionner une catégorie de blog à modifier.")
+                    .position(Pos.TOP_CENTER)
+                    .showWarning();
         }
     }
 
@@ -537,27 +561,21 @@ public class CategorieBlogBack {
         File file = open.showOpenDialog(panblog.getScene().getWindow());
 
         if (file != null) {
-            // Get the absolute path of the selected file
             String sourceFilePath = file.getAbsolutePath();
 
-            // Set the destination directory where you want to copy the image
             String destinationDirectory = "C:\\Users\\laame\\Desktop\\HopitalMeliataire\\PIDev\\public\\uploads\\images\\products\\";
 
             try {
-                // Copy the selected image file to the destination directory
                 Path sourcePath = Path.of(sourceFilePath);
                 Path destinationPath = Path.of(destinationDirectory, file.getName());
                 Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
 
-                // Set the path to the copied image file
                 getData.path = destinationPath.toString();
 
-                // Load the copied image and set it to the ImageView
                 Image image = new Image(destinationPath.toUri().toString(), 142, 136, false, true);
                 imageviewblog.setImage(image);
             } catch (IOException e) {
                 e.printStackTrace();
-                // Handle the exception (e.g., show an error message)
             }
         }
     }
@@ -573,12 +591,11 @@ public class CategorieBlogBack {
             loadBlogs();
         }
 
-        // Calculate total number of pages
         int pageCount = (int) Math.ceil((double) allBlogs.size() / itemsPerPage);
 
         // Set up pagination
         paginationblog.setPageCount(pageCount);
-        paginationblog.setCurrentPageIndex(1); // Set to first page
+        paginationblog.setCurrentPageIndex(1);
     }
 
     private void createPageBlog(int pageIndex) {
@@ -612,41 +629,33 @@ public class CategorieBlogBack {
                 String destinationPath = destinationDirectory + fileName;
 
                 try {
-                    // Copier le fichier source vers le répertoire de destination
                     Path source = sourceFile.toPath();
                     Path destination = new File(destinationPath).toPath();
                     Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
 
-                    // Afficher un message indiquant que la copie a été effectuée avec succès
                     System.out.println("Fichier copié avec succès : " + fileName);
                 } catch (IOException e) {
-                    // Afficher une erreur si la copie du fichier échoue
                     e.printStackTrace();
                     System.err.println("Erreur lors de la copie du fichier : " + fileName);
                 }
             } else {
-                // Afficher un message d'erreur si le fichier source n'existe pas
                 System.err.println("Le fichier source n'existe pas : " + fileName);
             }
         } else {
-            // Afficher un message d'erreur si le nom de fichier est vide ou null
             System.err.println("Nom de fichier invalide");
         }
     }
     @FXML
     public void setSelectedBlogsToInputFields() {
-        // Récupérer l'élément sélectionné dans la TableView
         Blog selectedBlog = tabblog.getSelectionModel().getSelectedItem();
 
         if (selectedBlog != null) {
-            // Mettre les données de l'élément sélectionné dans les champs d'entrée
             inputtitreblog.setText(selectedBlog.getTitre());
             inputdescriptionblog.setText(selectedBlog.getDescription());
             inputlieublog.setText(selectedBlog.getLieu());
             choicecategorie.setValue(selectedBlog.getCtgb().getTitrecategorie());
             inputrate.setText(String.valueOf(selectedBlog.getRate()));
 
-            // Charger l'image associée au blog s'il y en a une
             String imagePath = "C:\\Users\\laame\\Desktop\\HopitalMeliataire\\PIDev\\public\\uploads\\images\\products\\"; // Chemin d'accès au répertoire des images
             String fileName = selectedBlog.getIamge(); // Nom de fichier de l'image
 
@@ -658,10 +667,8 @@ public class CategorieBlogBack {
                 imageviewblog.setImage(null);
             }
 
-            // Charger la liste des commentaires associés à ce blog
             List<Commentaire> comments = bs.getCommentsByBlogId(selectedBlog.getId());
 
-            // Créer une liste pour stocker les commentaires formatés avec le contenu et le nom de l'auteur
             ObservableList<String> formattedComments = FXCollections.observableArrayList();
 
             for (Commentaire comment : comments) {
@@ -716,7 +723,7 @@ public class CategorieBlogBack {
         String lieu = inputlieublog.getText();
         String rateText = inputrate.getText();
         int rate = 0;
-        String categorie = choicecategorie.getValue(); // Vérifier si une catégorie est sélectionnée
+        String categorie = choicecategorie.getValue();
 
         // Vérifier si une image est sélectionnée
         String image = "";

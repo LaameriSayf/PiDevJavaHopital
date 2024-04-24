@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="smallmind.javafx.webstart" type="repository">
+    <properties maven-id="org.smallmind:smallmind-javafx-webstart:1.8.6" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/smallmind/smallmind-javafx-webstart/1.8.6/smallmind-javafx-webstart-1.8.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

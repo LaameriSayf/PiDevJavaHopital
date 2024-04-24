@@ -1,0 +1,75 @@
+.rechBlog {
+    -fx-background-color: #f2f2f2;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 4px 8px;
+    -fx-font-size: 12px;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.2) , 2,0,0,1 );
+    -fx-min-width: 100px;
+    -fx-min-height: 20px;
+}
+
+.btncrud{
+    -fx-translate-x: 0; /* Position initiale du bouton */
+    -fx-translate-y: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 0,0,0,1); /* Ajouter une ombre */
+    -fx-transition: transform 0.3s; /* Ajouter une transition */
+
+}
+.btncrud:hover {
+    -fx-translate-x: 2px; /* Déplacer légèrement le bouton sur l'axe x */
+    -fx-translate-y: 2px; /* Déplacer légèrement le bouton sur l'axe y */
+}
+.dark-mode {
+    /* Définissez les styles pour le mode sombre */
+    -fx-background-color: #1a1a1a;
+    -fx-text-fill: #ffffff;
+}
+/* Styles pour le commentaire avec effet visuel */
+.hboxcommentback {
+    /* Ajoutez les propriétés CSS pour l'effet visuel souhaité */
+
+    -fx-padding: 15px; /* Rembourrage */
+    -fx-border-radius: 10px; /* Rayon des coins arrondis */
+    -fx-spacing: 10px; /* Espacement entre les éléments enfants */
+}
+
+/* Styles pour le texte du nom de l'acteur */
+.textnomacteur {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 5, 0, 0); /* Ombre portée */
+
+    /* Ajoutez les propriétés CSS pour le texte du nom de l'acteur */
+    -fx-font-size: 12px; /* Taille de la police */
+    -fx-font-weight: bold; /* Poids de la police */
+    -fx-text-fill: #333; /* Couleur du texte */
+}
+
+/* Styles pour le contenu du commentaire de l'acteur */
+.textcontenueacteur {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 5, 0, 0); /* Ombre portée */
+
+    /* Ajoutez les propriétés CSS pour le contenu du commentaire de l'acteur */
+    -fx-font-size: 16px; /* Taille de la police */
+    -fx-text-fill: #ddd; /* Couleur du texte */
+    -fx-border-width: 1px; /* Épaisseur de la bordure */
+    -fx-border-color: #ddd; /* Couleur de la bordure */
+    -fx-border-radius: 5px; /* Rayon des coins arrondis */
+    -fx-padding: 10px; /* Rembourrage */
+}
+.list-view-comment-back {
+    -fx-background-color: white;
+}
+
+.list-view-card {
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-background-color: white;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+

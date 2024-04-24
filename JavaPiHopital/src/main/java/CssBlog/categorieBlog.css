@@ -1,0 +1,61 @@
+.rechCat {
+    -fx-background-color: #f2f2f2;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 4px 8px;
+    -fx-font-size: 12px;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.2) , 2,0,0,1 );
+    -fx-min-width: 100px;
+    -fx-min-height: 20px;
+}
+.styleecriture{
+
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+}
+
+.btnadd {
+    -fx-border-radius: 18px;
+    -fx-background-color: blue;
+    -fx-text-fill: white; /* Utilisation de -fx-text-fill pour définir la couleur du texte */
+    -fx-cursor: hand; /* Changer le curseur lorsque survolé */
+    -fx-translate-x: 0; /* Position initiale du bouton */
+    -fx-translate-y: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 0,0,0,1); /* Ajouter une ombre */
+    -fx-transition: transform 0.3s; /* Ajouter une transition */
+}
+
+.btnadd:hover {
+    -fx-translate-x: 2px; /* Déplacer légèrement le bouton sur l'axe x */
+    -fx-translate-y: 2px; /* Déplacer légèrement le bouton sur l'axe y */
+}
+
+.btncrud{
+    -fx-translate-x: 0; /* Position initiale du bouton */
+    -fx-translate-y: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 0,0,0,1); /* Ajouter une ombre */
+    -fx-transition: transform 0.3s; /* Ajouter une transition */
+
+}
+.btncrud:hover {
+    -fx-translate-x: 2px; /* Déplacer légèrement le bouton sur l'axe x */
+    -fx-translate-y: 2px; /* Déplacer légèrement le bouton sur l'axe y */
+}
+.table-view .column-header .thtitre {
+    -fx-background-color: blue;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header .thdescription {
+    -fx-background-color: blue;
+    -fx-text-fill: white;
+}
+.dark-mode {
+    /* Définissez les styles pour le mode sombre */
+    -fx-background-color: #1a1a1a;
+    -fx-text-fill: #ffffff;
+}
+

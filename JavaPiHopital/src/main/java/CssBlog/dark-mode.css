@@ -1,0 +1,17 @@
+.sidebardash {
+    /* Définissez les styles pour le mode sombre */
+    -fx-background-color: #1a1a1a;
+    -fx-text-fill: #ffffff;
+}
+.dash{
+    -fx-text-fill: white;
+}
+.navbarback{
+
+}
+panstatblog{
+    -fx-background-color: black;
+}
+.hboxstatblog{
+    -fx-background-color: black;
+}

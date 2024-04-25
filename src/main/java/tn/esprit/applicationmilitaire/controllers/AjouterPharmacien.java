@@ -25,9 +25,12 @@ import java.io.IOException;
 import java.sql.*;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.regex.Pattern;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class AjouterPharmacien {
     @FXML
@@ -247,12 +250,14 @@ public class AjouterPharmacien {
 
         String sqlPharmacien = "INSERT INTO pharmacien (poste, id) VALUES (?, LAST_INSERT_ID())";
 
-        connect = MyConnection.getInstance().getCnx();
+        Connection connect = null;
+        PreparedStatement prepare = null;
+
         try {
             Alert alert;
-            if (cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() || genreTF.getText().isEmpty()  ||InterlockTF.getText().isEmpty() ||
-                    date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty()  ||
-                    emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() ||
+            if (cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
+                    genreTF.getText().isEmpty() || InterlockTF.getText().isEmpty() || date_de_naissanceTF.getValue() == null ||
+                    numtelTF.getText().isEmpty() || emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() ||
                     getData.path == null || getData.path.equals("")) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Message d'erreur");
@@ -260,9 +265,56 @@ public class AjouterPharmacien {
                 alert.setContentText("Veuillez remplir tous les champs vides !");
                 alert.showAndWait();
             } else {
-                String check = "SELECT cin FROM global_user WHERE cin = '" + cinTF.getText() + "'";
-                Statement statement = connect.createStatement();
-                result = statement.executeQuery(check);
+                // Vérifier si une seule case à cocher est sélectionnée pour le genre
+                if (!(genreTF.isSelected() ^ genreTF1.isSelected())) {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Message d'erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Veuillez sélectionner un seul genre !");
+                    alert.showAndWait();
+                    return; // Arrêter l'exécution de la méthode
+                }else if (!isValidCIN(cinTF.getText())) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Message d'erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("CIN invalide !");
+                alert.showAndWait();
+            } else if (!isValidName(nomTF.getText()) || !isValidName(prenomTF.getText())) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Message d'erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("Nom ou prénom invalide !");
+                alert.showAndWait();
+            } else if (!isValidDateOfBirth(date_de_naissanceTF.getValue())) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Message d'erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("L'utilisateur doit avoir plus de 23 ans !");
+                alert.showAndWait();
+            } else if (!isValidPhoneNumber(numtelTF.getText())) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Message d'erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("Numéro de téléphone invalide !");
+                alert.showAndWait();
+            } else if (!isValidEmail(emailTF.getText())) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Message d'erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("Email invalide !");
+                alert.showAndWait();
+            } else if (!isValidPassword(passwordTF.getText())) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Message d'erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("Mot de passe invalide ! Il doit contenir au moins 8 caractères alphanumériques.");
+                alert.showAndWait();
+            } else {
+                connect = MyConnection.getInstance().getCnx();
+                String check = "SELECT cin FROM global_user WHERE cin = ?";
+                prepare = connect.prepareStatement(check);
+                prepare.setInt(1, Integer.parseInt(cinTF.getText()));
+                ResultSet result = prepare.executeQuery();
                 if (result.next()) {
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Message d'erreur");
@@ -288,6 +340,8 @@ public class AjouterPharmacien {
 
                     // Si l'utilisateur confirme, procéder à l'ajout du pharmacien
                     if (userChoice.isPresent() && userChoice.get() == confirmButton) {
+                        String hashedPassword = BCrypt.hashpw(passwordTF.getText(), BCrypt.gensalt());
+
                         prepare = connect.prepareStatement(sql);
                         prepare.setInt(1, Integer.parseInt(cinTF.getText()));
                         prepare.setString(2, nomTF.getText());
@@ -306,7 +360,7 @@ public class AjouterPharmacien {
                         prepare.setString(5, dateNaissanceFormatee);
                         prepare.setInt(6, Integer.parseInt(numtelTF.getText()));
                         prepare.setString(7, emailTF.getText());
-                        prepare.setString(8, passwordTF.getText());
+                        prepare.setString(8, hashedPassword); // Utiliser le mot de passe crypté
                         prepare.setString(10, getData.path.replace("\\", "\\\\"));
 
                         // Déterminer la valeur interlock en fonction de la case à cocher sélectionnée
@@ -341,15 +395,15 @@ public class AjouterPharmacien {
 
                         addPharmacienShowList();
                         addPharmacienSelect();
-                    }
+                    }}
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    @FXML
+        @FXML
     void close() {
         System.exit(0);
 
@@ -440,23 +494,71 @@ public class AjouterPharmacien {
 
         try {
             Alert alert;
-            if (posteTF.getText().isEmpty() ||cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
-                    date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty() ||
-                    emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() ||
-                    (!interlockTF.isSelected() && !InterlockTF.isSelected()) ||
-                    uri == null || uri.equals("")) {
+            if (posteTF.getText().isEmpty() || cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
+                    date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty() || emailTF.getText().isEmpty() ||
+                    passwordTF.getText().isEmpty() || (!interlockTF.isSelected() && !InterlockTF.isSelected()) || uri == null || uri.equals("")) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Message d'erreur");
                 alert.setHeaderText(null);
                 alert.setContentText("Veuillez remplir tous les champs vides !");
                 alert.showAndWait();
             } else {
-                // Vérifier si une seule radio box est sélectionnée pour le genre
+                // Vérifier si une seule case à cocher est sélectionnée pour le genre
                 if (!(genreTF.isSelected() ^ genreTF1.isSelected())) {
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Message d'erreur");
                     alert.setHeaderText(null);
                     alert.setContentText("Veuillez sélectionner un seul genre !");
+                    alert.showAndWait();
+                    return; // Arrêter l'exécution de la méthode
+                }
+
+                // Vérification des données saisies
+                if (!isValidCIN(cinTF.getText())) {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Message d'erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("CIN invalide !");
+                    alert.showAndWait();
+                    return; // Arrêter l'exécution de la méthode
+                }
+                if (!isValidName(nomTF.getText()) || !isValidName(prenomTF.getText())) {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Message d'erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Nom ou prénom invalide !");
+                    alert.showAndWait();
+                    return; // Arrêter l'exécution de la méthode
+                }
+                if (!isValidDateOfBirth(date_de_naissanceTF.getValue())) {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Message d'erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("L'utilisateur doit avoir plus de 23 ans !");
+                    alert.showAndWait();
+                    return; // Arrêter l'exécution de la méthode
+                }
+                if (!isValidPhoneNumber(numtelTF.getText())) {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Message d'erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Numéro de téléphone invalide !");
+                    alert.showAndWait();
+                    return; // Arrêter l'exécution de la méthode
+                }
+                if (!isValidEmail(emailTF.getText())) {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Message d'erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Email invalide !");
+                    alert.showAndWait();
+                    return; // Arrêter l'exécution de la méthode
+                }
+                if (!isValidPassword(passwordTF.getText())) {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Message d'erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Mot de passe invalide ! Il doit contenir au moins 8 caractères alphanumériques.");
                     alert.showAndWait();
                     return; // Arrêter l'exécution de la méthode
                 }
@@ -478,6 +580,9 @@ public class AjouterPharmacien {
                     prepareGlobalUser = connect.prepareStatement(sqlGlobalUser);
                     preparePharmacien = connect.prepareStatement(sqlPharmacien);
 
+                    // Crypter le mot de passe avec bcrypt
+                    String hashedPassword = BCrypt.hashpw(passwordTF.getText(), BCrypt.gensalt());
+
                     // Remplir les paramètres pour la requête global_user
                     prepareGlobalUser.setInt(1, Integer.parseInt(cinTF.getText()));
                     prepareGlobalUser.setString(2, nomTF.getText());
@@ -485,16 +590,10 @@ public class AjouterPharmacien {
                     prepareGlobalUser.setInt(4, genreSelectionne); // Utilisation du genre sélectionné
                     prepareGlobalUser.setObject(5, date_de_naissanceTF.getValue());
                     prepareGlobalUser.setInt(6, Integer.parseInt(numtelTF.getText()));
-                    prepareGlobalUser.setString(7, passwordTF.getText());
-
-                    // Convertir la valeur de l'interlock en entier (0 ou 1)
-                    int interlockValue = interlockTF.isSelected() ? 1 : 0;
-                    prepareGlobalUser.setInt(8, interlockValue);
-
-                    // Définir le rôle par défaut sur "pharmacien"
-                    prepareGlobalUser.setString(9, "pharmacien");
-
-                    prepareGlobalUser.setString(10, uri);
+                    prepareGlobalUser.setString(7, hashedPassword); // Utilisation du mot de passe crypté
+                    prepareGlobalUser.setInt(8, interlockTF.isSelected() ? 1 : 0); // Valeur de l'interlock
+                    prepareGlobalUser.setString(9, "pharmacien"); // Rôle
+                    prepareGlobalUser.setString(10, uri); // Image
                     prepareGlobalUser.setString(11, cinTF.getText()); // Utilisation du cin comme condition WHERE
 
                     // Remplir les paramètres pour la requête pharmacien
@@ -676,4 +775,37 @@ public class AjouterPharmacien {
         }
 
     }
+    private boolean isValidCIN(String cin) {
+        // Vérifie si le CIN est composé de 8 chiffres uniquement
+        return Pattern.matches("\\d{8}", cin);
+    }
+
+    private boolean isValidName(String name) {
+        // Vérifie si le nom ou le prénom ne contient que des caractères alphabétiques
+        return Pattern.matches("[a-zA-Z]+", name);
+    }
+
+    private boolean isValidDateOfBirth(LocalDate dateOfBirth) {
+        // Vérifie si l'utilisateur a plus de 23 ans
+        LocalDate now = LocalDate.now();
+        Period period = Period.between(dateOfBirth, now);
+        return period.getYears() > 23;
+    }
+
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        // Vérifie si le numéro de téléphone contient exactement 8 chiffres
+        return Pattern.matches("\\d{8}", phoneNumber);
+    }
+
+    private boolean isValidEmail(String email) {
+        // Vérifie si l'email est valide en utilisant une expression régulière simple
+        return Pattern.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}", email);
+    }
+
+    private boolean isValidPassword(String password) {
+        // Vérifie si le mot de passe a au moins 8 caractères alphanumériques
+        return Pattern.matches("[a-zA-Z0-9]{8,}", password);
+    }
 }
+
+

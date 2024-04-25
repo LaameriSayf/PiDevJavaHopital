@@ -62,7 +62,7 @@
                         <Button fx:id="inscription_insérerBtn" layoutY="74.0" mnemonicParsing="false" onAction="#inscriptionInsertImage" prefHeight="25.0" prefWidth="136.0" styleClass="import-btn" stylesheets="@DashboarsDesign.css" text="Insérer une image" />
                      </children>
                   </AnchorPane>
-                  <Button layoutX="114.0" layoutY="470.0" mnemonicParsing="false" onAction="#inscription_patient" prefHeight="25.0" prefWidth="246.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="S'inscrire" />
+                  <Button fx:id="inscription_patientbtn" layoutX="114.0" layoutY="470.0" mnemonicParsing="false" onAction="#inscription_patient" prefHeight="25.0" prefWidth="246.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="S'inscrire" />
                   <DatePicker fx:id="date_de_naissanceTF" layoutX="162.0" layoutY="213.0" prefHeight="25.0" prefWidth="214.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
                   <PasswordField fx:id="passwordTF" layoutX="163.0" layoutY="413.0" prefHeight="25.0" prefWidth="214.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
                   <RadioButton fx:id="genreTF" layoutX="169.0" layoutY="189.0" mnemonicParsing="false" text="Homme" />

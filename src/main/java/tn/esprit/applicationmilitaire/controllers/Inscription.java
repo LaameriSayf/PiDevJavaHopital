@@ -1,7 +1,11 @@
 package tn.esprit.applicationmilitaire.controllers;
 
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -12,10 +16,12 @@ import org.mindrot.jbcrypt.BCrypt;
 
 
 import javafx.scene.image.ImageView;
+import tn.esprit.applicationmilitaire.test.HelloApplication;
 import tn.esprit.applicationmilitaire.utils.MyConnection;
 
 import java.io.File;
 
+import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +32,8 @@ public class Inscription {
 
     @FXML
     private Button close;
+    @FXML
+    private Button inscription_patientbtn;
 
     @FXML
     private DatePicker date_de_naissanceTF;
@@ -252,7 +260,22 @@ public class Inscription {
                     alert.setContentText("Compte créé avec succès !");
                 }
                 alert.showAndWait();
+                if (alert.getAlertType() == Alert.AlertType.INFORMATION) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/login.fxml"));
+                        Parent root = fxmlLoader.load();
+
+                        Stage stage = (Stage) inscription_patientbtn.getScene().getWindow();
+                        stage.setScene(new Scene(root));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -272,6 +295,9 @@ public class Inscription {
 
 
     }
+
+
+
 
 
 

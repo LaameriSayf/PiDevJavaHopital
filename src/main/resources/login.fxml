@@ -38,7 +38,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button layoutX="58.0" layoutY="337.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Inscription" />
+                  <Button fx:id="inscri_btn" layoutX="58.0" layoutY="337.0" mnemonicParsing="false" onAction="#inscription_btn" prefHeight="25.0" prefWidth="150.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Inscription" />
                   <Hyperlink layoutX="150.0" layoutY="220.0" text="Mot de passe oubliée ?" />
                   <Button fx:id="close" layoutX="269.0" layoutY="8.0" mnemonicParsing="false" onAction="#close" styleClass="close" stylesheets="@DashboarsDesign.css" text="X" />
                   <Line endX="121.0" layoutX="144.0" layoutY="123.0" startX="-119.0" />

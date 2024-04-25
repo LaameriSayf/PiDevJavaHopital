@@ -75,7 +75,7 @@ public class Dashboard {
             PreparedStatement statementPatient = connect.prepareStatement(sqlPatient);
             ResultSet resultSetPatient = statementPatient.executeQuery();
             if (resultSetPatient.next()) {
-                int totalPatients = resultSetMedecin.getInt("total");
+                int totalPatients = resultSetPatient.getInt("total");
                 totalPatientLabel.setText("Total des patients : " + totalPatients);
             }
 
@@ -83,7 +83,7 @@ public class Dashboard {
             PreparedStatement statementPharmacien = connect.prepareStatement(sqlPharmacien);
             ResultSet resultSetPharmacien= statementPharmacien.executeQuery();
             if (resultSetPharmacien.next()) {
-                int totalPharmaciens = resultSetMedecin.getInt("total");
+                int totalPharmaciens = resultSetPharmacien.getInt("total");
                 totalPharmacienLabel.setText("Total des Pharmaciens : " + totalPharmaciens);
             }
 
@@ -176,7 +176,19 @@ public class Dashboard {
     }
 
 
-    public void logout(ActionEvent actionEvent) {
+    @FXML
+    private Button logout_btn;
+    @FXML
+    void logout(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/login.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage)  logout_btn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }

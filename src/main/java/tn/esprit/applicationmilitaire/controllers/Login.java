@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import tn.esprit.applicationmilitaire.test.HelloApplication;
 import tn.esprit.applicationmilitaire.utils.MyConnection;
 
 
@@ -149,6 +150,23 @@ public class Login {
             }
         }
     }
+
+    @FXML
+    private Button inscri_btn;
+    @FXML
+    void inscription_btn(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/inscription.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage) inscri_btn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 
 

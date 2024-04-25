@@ -31,6 +31,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.applicationmilitaire.models.Medecin;
@@ -43,6 +44,7 @@ import java.io.File;
 import java.sql.*;
 import java.util.regex.Pattern;
 import org.mindrot.jbcrypt.BCrypt;
+import javafx.scene.paint.Color;
 
 public class AjouterMedecin {
 
@@ -61,7 +63,8 @@ public class AjouterMedecin {
     @FXML
     private TextField emailTF;
 
-
+    @FXML
+    private Label agelabel;
 
 
     @FXML
@@ -119,6 +122,7 @@ public class AjouterMedecin {
 
     @FXML
     private Button medecin_clearBtn;
+
 
     @FXML
     private AnchorPane medecin_form;
@@ -505,6 +509,18 @@ public class AjouterMedecin {
         addMedecinShowList(); // Populate TableView with data from addMedecinList
         addMedecinSelect();
         //setupSearchListener();
+        date_de_naissanceTF.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Calculer l'âge à partir de la date de naissance
+            if (newValue != null) {
+                LocalDate currentDate = LocalDate.now();
+                Period period = Period.between(newValue, currentDate);
+                int age = period.getYears();
+                agelabel.setTextFill(Color.RED);
+                agelabel.setText("L'Âge est : " + age); // Mettre à jour le Label avec l'âge calculé
+            } else {
+                agelabel.setText(""); // Réinitialiser le Label si aucune date de naissance n'est sélectionnée
+            }
+        });
     }
 
 

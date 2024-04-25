@@ -107,14 +107,14 @@
                               <TextField fx:id="cinTF" layoutX="74.0" layoutY="323.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
                               <TextField fx:id="nomTF" layoutX="74.0" layoutY="359.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
                               <Label layoutX="256.0" layoutY="327.0" text="Date de naissance:" />
-                              <Label layoutX="235.0" layoutY="363.0" text="Numéro de téléphone:" />
-                              <TextField fx:id="numtelTF" layoutX="361.0" layoutY="359.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
-                              <TextField fx:id="emailTF" layoutX="361.0" layoutY="392.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
-                              <Label layoutX="324.0" layoutY="396.0" text="Email:" />
+                              <Label layoutX="235.0" layoutY="396.0" text="Numéro de téléphone:" />
+                              <TextField fx:id="numtelTF" layoutX="361.0" layoutY="392.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                              <TextField fx:id="emailTF" layoutX="361.0" layoutY="427.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                              <Label layoutX="314.0" layoutY="431.0" text="Email:" />
                               <DatePicker fx:id="date_de_naissanceTF" layoutX="361.0" layoutY="323.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
-                              <Label layoutX="306.0" layoutY="431.0" text="Interlock:" />
-                              <Label layoutX="564.0" layoutY="327.0" text="Password:" />
-                              <PasswordField fx:id="passwordTF" layoutX="625.0" layoutY="323.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                              <Label layoutX="575.0" layoutY="327.0" text="Interlock:" />
+                              <Label layoutX="564.0" layoutY="363.0" text="Password:" />
+                              <PasswordField fx:id="passwordTF" layoutX="625.0" layoutY="359.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
                               <AnchorPane layoutX="893.0" layoutY="308.0" prefHeight="147.0" prefWidth="140.0" stylesheets="@DashboarsDesign.css">
                                  <children>
                                     <ImageView fx:id="imageTF" fitHeight="151.0" fitWidth="136.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
@@ -131,8 +131,8 @@
                               <Button layoutX="783.0" layoutY="479.0" mnemonicParsing="false" onAction="#ajouterAdminReset" prefHeight="36.0" prefWidth="99.0" styleClass="clear-btn" stylesheets="@DashboarsDesign.css" text="Effacer" />
                               <RadioButton fx:id="genreTF" layoutX="74.0" layoutY="431.0" mnemonicParsing="false" text="Homme" />
                               <RadioButton fx:id="genreTF1" layoutX="149.0" layoutY="431.0" mnemonicParsing="false" text="Femme" />
-                              <RadioButton fx:id="interlockTF" layoutX="361.0" layoutY="431.0" mnemonicParsing="false" text="Oui" />
-                              <RadioButton fx:id="InterlockTF" layoutX="428.0" layoutY="431.0" mnemonicParsing="false" text="Non" />
+                              <RadioButton fx:id="interlockTF" layoutX="639.0" layoutY="327.0" mnemonicParsing="false" text="Oui" />
+                              <RadioButton fx:id="InterlockTF" layoutX="698.0" layoutY="327.0" mnemonicParsing="false" text="Non" />
                               <ImageView fitHeight="17.0" fitWidth="14.0" layoutX="228.0" layoutY="489.0">
                                  <image>
                                     <Image url="@addicon.png" />
@@ -153,6 +153,7 @@
                                     <Image url="@edit.png" />
                                  </image>
                               </ImageView>
+                              <Label fx:id="agelabel" layoutX="368.0" layoutY="363.0" prefHeight="17.0" prefWidth="119.0" text="L'Âge est: 0" />
                            </children>
                         </AnchorPane>
                      </children>

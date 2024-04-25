@@ -31,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import org.mindrot.jbcrypt.BCrypt;
+import javafx.scene.paint.Color;
 
 public class AjouterPharmacien {
     @FXML
@@ -38,6 +39,8 @@ public class AjouterPharmacien {
     @FXML
     private AnchorPane main_form;
 
+    @FXML
+    private Label agelabel;
 
     @FXML
     private TextField cinTF;
@@ -479,6 +482,18 @@ public class AjouterPharmacien {
         addPharmacienShowList(); // Populate TableView with data from addEventList
         addPharmacienSelect();
         //setupSearchListener();
+        date_de_naissanceTF.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Calculer l'âge à partir de la date de naissance
+            if (newValue != null) {
+                LocalDate currentDate = LocalDate.now();
+                Period period = Period.between(newValue, currentDate);
+                int age = period.getYears();
+                agelabel.setTextFill(Color.RED);
+                agelabel.setText("L'Âge est : " + age); // Mettre à jour le Label avec l'âge calculé
+            } else {
+                agelabel.setText(""); // Réinitialiser le Label si aucune date de naissance n'est sélectionnée
+            }
+        });
     }
 
     @FXML

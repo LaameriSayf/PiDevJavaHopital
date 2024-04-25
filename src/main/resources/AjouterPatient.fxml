@@ -117,13 +117,13 @@
                               <RadioButton fx:id="genreTF1" layoutX="574.0" layoutY="338.0" mnemonicParsing="false" text="Femme" />
                               <Label layoutX="355.0" layoutY="371.0" text="Date de naissance:" />
                               <DatePicker fx:id="date_de_naissanceTF" layoutX="461.0" layoutY="367.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
-                              <Label layoutX="336.0" layoutY="399.0" text="Numéro de téléphone: " />
-                              <TextField fx:id="numtelTF" layoutX="461.0" layoutY="395.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
-                              <Label layoutX="421.0" layoutY="428.0" text="Email:" />
-                              <TextField fx:id="emailTF" layoutX="461.0" layoutY="424.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
-                              <Label layoutX="658.0" layoutY="338.0" text="Interlock:" />
-                              <RadioButton fx:id="interlockTF" layoutX="713.0" layoutY="338.0" mnemonicParsing="false" text="Oui" />
-                              <RadioButton fx:id="InterlockTF" layoutX="776.0" layoutY="338.0" mnemonicParsing="false" text="Non" />
+                              <Label layoutX="338.0" layoutY="428.0" text="Numéro de téléphone: " />
+                              <TextField fx:id="numtelTF" layoutX="463.0" layoutY="424.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                              <Label layoutX="671.0" layoutY="338.0" text="Email:" />
+                              <TextField fx:id="emailTF" layoutX="713.0" layoutY="334.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                              <Label layoutX="650.0" layoutY="371.0" text="Interlock:" />
+                              <RadioButton fx:id="interlockTF" layoutX="716.0" layoutY="371.0" mnemonicParsing="false" text="Oui" />
+                              <RadioButton fx:id="InterlockTF" layoutX="779.0" layoutY="371.0" mnemonicParsing="false" text="Non" />
                               <Label layoutX="637.0" layoutY="408.0" text="Mot de passe:" />
                               <PasswordField fx:id="passwordTF" layoutX="713.0" layoutY="404.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
                               <Button layoutX="211.0" layoutY="485.0" mnemonicParsing="false" onAction="#ajouterPatientadd" prefHeight="36.0" prefWidth="99.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Ajouter" />
@@ -160,6 +160,7 @@
                                     <Image url="@effacericon.png" />
                                  </image>
                               </ImageView>
+                              <Label fx:id="agelabel" layoutX="491.0" layoutY="400.0" text="L'Âge  est :0" />
                            </children>
                         </AnchorPane>
                      </children>

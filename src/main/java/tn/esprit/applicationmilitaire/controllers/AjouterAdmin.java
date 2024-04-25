@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import org.mindrot.jbcrypt.BCrypt;
+import javafx.scene.paint.Color;
 
 public class AjouterAdmin {
 
@@ -87,6 +88,9 @@ public class AjouterAdmin {
 
     @FXML
     private Button close;
+
+    @FXML
+    private Label agelabel;
 
     @FXML
     private DatePicker date_de_naissanceTF;
@@ -293,6 +297,19 @@ public class AjouterAdmin {
         addAdminShowList(); // Populate TableView with data from addEventList
         addAdminSelect();
         //setupSearchListener();
+
+        date_de_naissanceTF.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Calculer l'âge à partir de la date de naissance
+            if (newValue != null) {
+                LocalDate currentDate = LocalDate.now();
+                Period period = Period.between(newValue, currentDate);
+                int age = period.getYears();
+                agelabel.setTextFill(Color.RED);
+                agelabel.setText("L'Âge est : " + age); // Mettre à jour le Label avec l'âge calculé
+            } else {
+                agelabel.setText(""); // Réinitialiser le Label si aucune date de naissance n'est sélectionnée
+            }
+        });
     }
 
 

@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.applicationmilitaire.models.Admin;
@@ -32,6 +33,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 import org.mindrot.jbcrypt.BCrypt;
+import javafx.scene.paint.Color;
 
 public class AjouterPatient {
     @FXML
@@ -39,6 +41,8 @@ public class AjouterPatient {
 
     @FXML
     private TextField carteTF;
+    @FXML
+    private Label agelabel;
 
     @FXML
     private TextField cinTF;
@@ -305,6 +309,18 @@ public class AjouterPatient {
         addPatientShowList(); // Populate TableView with data from addEventList
         addPatientSelect();
         //setupSearchListener();
+        date_de_naissanceTF.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Calculer l'âge à partir de la date de naissance
+            if (newValue != null) {
+                LocalDate currentDate = LocalDate.now();
+                Period period = Period.between(newValue, currentDate);
+                int age = period.getYears();
+                agelabel.setTextFill(Color.RED);
+                agelabel.setText("L'Âge est : " + age); // Mettre à jour le Label avec l'âge calculé
+            } else {
+                agelabel.setText(""); // Réinitialiser le Label si aucune date de naissance n'est sélectionnée
+            }
+        });
     }
 
 

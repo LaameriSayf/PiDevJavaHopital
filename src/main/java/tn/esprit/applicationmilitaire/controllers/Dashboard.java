@@ -176,5 +176,7 @@ public class Dashboard {
     }
 
 
+    public void logout(ActionEvent actionEvent) {
 
+    }
 }

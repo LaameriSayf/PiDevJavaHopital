@@ -773,5 +773,21 @@ public class AjouterAdmin {
             throw new RuntimeException(e);
         }
     }
+
+    @FXML
+    private Button logout_btn;
+    @FXML
+    void logout(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/login.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage)  logout_btn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
 

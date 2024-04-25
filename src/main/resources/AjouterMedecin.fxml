@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="618.0" prefWidth="1279.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.applicationmilitaire.controllers.AjouterMedecin">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.applicationmilitaire.controllers.AjouterMedecin">
    <children>
       <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -42,7 +42,7 @@
                <left>
                   <AnchorPane prefHeight="355.0" prefWidth="179.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutY="-9.0" prefHeight="561.0" prefWidth="180.0" styleClass="nav-form" stylesheets="@DashboarsDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-9.0">
+                        <AnchorPane layoutY="-9.0" prefHeight="607.0" prefWidth="179.0" styleClass="nav-form" stylesheets="@DashboarsDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-9.0">
                            <children>
                               <Line endX="74.0" layoutX="91.0" layoutY="40.0" startX="-75.5" />
                               <Label contentDisplay="CENTER" layoutX="41.0" layoutY="14.0" prefHeight="27.0" prefWidth="100.0" text="Bienvenue ">
@@ -63,7 +63,7 @@
                               <Button fx:id="gerermedicament" layoutX="15.0" layoutY="372.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="157.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Médicaments" />
                               <Button fx:id="gerercategorie" layoutX="15.0" layoutY="412.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="157.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Catégories" />
                               <Button fx:id="gererdossiersmedicale" layoutX="14.0" layoutY="452.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="157.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Dossiers médicales" />
-                              <Button fx:id="sedeconnecter" layoutX="14.0" layoutY="492.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="157.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Se déconnecter" />
+                              <Button fx:id="logout_btn" layoutX="14.0" layoutY="492.0" mnemonicParsing="false" onAction="#logout" prefHeight="31.0" prefWidth="157.0" styleClass="delete-btn" stylesheets="@DashboarsDesign.css" text="Se déconnecter" />
                               <ImageView fitHeight="28.0" fitWidth="23.0" layoutX="14.0" layoutY="58.0">
                                  <image>
                                     <Image url="@iconhome.png" />

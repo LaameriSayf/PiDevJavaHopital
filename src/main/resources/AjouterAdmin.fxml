@@ -59,7 +59,7 @@
                         <Button layoutX="14.0" layoutY="386.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Médicaments" />
                         <Button layoutX="14.0" layoutY="425.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Catégories" />
                         <Button layoutX="14.0" layoutY="466.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Gérer Dossiers médicales" />
-                        <Button layoutX="14.0" layoutY="505.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Se déconnecter" />
+                        <Button fx:id="logout_btn" layoutX="14.0" layoutY="505.0" mnemonicParsing="false" onAction="#logout" prefHeight="31.0" prefWidth="152.0" styleClass="delete-btn" stylesheets="@DashboarsDesign.css" text="Se déconnecter" />
                         <ImageView fitHeight="22.0" fitWidth="21.0" layoutX="16.0" layoutY="65.0">
                            <image>
                               <Image url="@iconhome.png" />

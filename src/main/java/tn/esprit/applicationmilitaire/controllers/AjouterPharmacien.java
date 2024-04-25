@@ -661,4 +661,6 @@ public class AjouterPharmacien {
     }
 
 
+    public void logout(ActionEvent actionEvent) {
+    }
 }

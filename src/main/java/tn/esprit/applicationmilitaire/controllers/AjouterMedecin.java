@@ -716,5 +716,7 @@ public class AjouterMedecin {
     }
 
 
+    public void logout(ActionEvent actionEvent) {
+    }
 }
 

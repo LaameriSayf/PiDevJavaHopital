@@ -26,11 +26,6 @@
 
 }
 
-
-
-
-
-
 .nav-form{
     -fx-background-color:linear-gradient(to bottom right, #DFF5FF, #378CE7);
     -fx-background-radius: 12px;
@@ -66,7 +61,7 @@
     -fx-background-color:#fff;
     -fx-background-radius:8px;
 }
-.cardevent{
+.cardadmin{
     -fx-background-color:linear-gradient(to right, #272b3f, #256b51);
     -fx-background-radius:5px;
 }

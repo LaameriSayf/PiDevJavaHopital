@@ -623,6 +623,6 @@ public class AjouterPatient {
     }
 
 
-
-
+    public void logout(ActionEvent actionEvent) {
+    }
 }

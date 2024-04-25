@@ -1,0 +1,28 @@
+
+1)CREATE TABLE Orders (
+  order_id INT ,
+   customer_id INT,
+  order_date DATE ,
+  total_amount DECIMAL ,
+  delivery_date DATE,
+  );
+
+2).ALTER TABLE Orders ADD CONSTRAINTS PRIMARY KEY order_id;
+   ALTER TABLE Orders ADD CONSTRAINTS PRIMARY KEY order_id;
+
+ .ALTER TABLE Orders ADD CONSTRAINTS FOREIGN KEY (customer_id) REFERENCES Customers;
+
+ .ALTER TABLE Orders 
+  ALTER COLUMN total_amount NOT NULL;
+ . ALTER TABLE Orders 
+  ALTER COLUMN order_date NOT NULL;
+ .ALTER TABLE Orders
+  ADD CONSTRAINTS CHECK (delivery_date>order_date)
+
+3).ALTER TABLE Orders
+   ALTER COLUMN order_date DROP NOT NULL
+
+  .ALTER TABLE Orders
+   ADD CHECK (total_amount>0)
+
+  

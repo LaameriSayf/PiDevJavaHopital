@@ -18,9 +18,7 @@ public class RendezVousService implements RdvService {
     public void ajouterRDV(RendezVous rendezVous) throws SQLException {
         String sql = "INSERT INTO rendezvous (daterendezvous, heurerendezvous, description, file) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            // Convert LocalDate to Timestamp for DATETIME column
             Timestamp timestamp = Timestamp.valueOf(rendezVous.getDaterdv().atStartOfDay());
-
             ps.setTimestamp(1, timestamp);
             ps.setString(2, rendezVous.getHeurerdv());
             ps.setString(3, rendezVous.getDescription());
@@ -31,6 +29,26 @@ public class RendezVousService implements RdvService {
     }
 
 
+    public RendezVous selectRDV(int id){
+        String sql = "SELECT * FROM rendezvous where id="+id;
+        RendezVous rendezVous = new RendezVous();
+        try
+        {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            if (resultSet.next()) {
+
+                rendezVous.setId(resultSet.getInt("id"));
+                rendezVous.setDescription(resultSet.getString("description"));
+                rendezVous.setFile(resultSet.getString("file"));
+                rendezVous.setDaterdv(resultSet.getDate("daterendezvous").toLocalDate());
+                rendezVous.setHeurerdv(resultSet.getString("heurerendezvous"));
+            }else  return  null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }return rendezVous;
+    }
 
     @Override
     public void modifier(RendezVous rendezVous, int id) throws SQLException {
@@ -43,8 +61,7 @@ public class RendezVousService implements RdvService {
         ps.setString(4, rendezVous.getFile());
         ps.setInt(5, id);
 
-        int rowsAffected = ps.executeUpdate();
-        System.out.println(rowsAffected + " row(s) updated.");
+
     }
 
 

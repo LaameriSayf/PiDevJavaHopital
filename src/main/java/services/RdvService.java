@@ -12,7 +12,7 @@ public interface RdvService {
     void modifier (RendezVous R,int id) throws SQLException;
     void supprimer(int id) throws SQLException;
     List<RendezVous> recuperer() throws SQLException;
-
+    public RendezVous selectRDV(int id);
 
 
 

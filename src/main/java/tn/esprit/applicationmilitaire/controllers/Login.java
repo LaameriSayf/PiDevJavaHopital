@@ -56,24 +56,18 @@ public class Login {
     @FXML
     public void login(ActionEvent event) {
         try {
-            if (connect == null || connect.isClosed()) {
-                connect = MyConnection.getInstance().getCnx();
-            }
+            Connection connect = MyConnection.getInstance().getCnx();
 
             if (emailTF.getText().isEmpty() || passwordTF.getText().isEmpty()) {
                 // Champs vides
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur");
-                alert.setHeaderText("Champs vides");
-                alert.setContentText("Veuillez entrer votre email et votre mot de passe.");
-                alert.showAndWait();
+                showAlert("Erreur", "Champs vides", "Veuillez entrer votre email et votre mot de passe.");
                 return;
             }
 
             String sqlLogin = "SELECT * FROM global_user WHERE email = ?";
-            prepare = connect.prepareStatement(sqlLogin);
+            PreparedStatement prepare = connect.prepareStatement(sqlLogin);
             prepare.setString(1, emailTF.getText());
-            result = prepare.executeQuery();
+            ResultSet result = prepare.executeQuery();
 
             if (result.next()) {
                 String hashedPasswordFromDB = result.getString("password");
@@ -81,74 +75,54 @@ public class Login {
                     // Login successful
                     String role = result.getString("role");
                     FXMLLoader loader = new FXMLLoader();
+                    Parent root;
 
                     switch (role) {
                         case "Admin":
-                            loader.setLocation(getClass().getResource("/Dashboard.fxml"));
+                            root = loader.load(getClass().getResource("/Dashboard.fxml").openStream());
                             break;
                         case "patient":
-                            loader.setLocation(getClass().getResource("PatientDashboard.fxml"));
+                            root = loader.load(getClass().getResource("/PatientDashboard.fxml").openStream());
                             break;
                         case "medecin":
-                            loader.setLocation(getClass().getResource("MedecinDashboard.fxml"));
+                            root = loader.load(getClass().getResource("/MedecinDashboard.fxml").openStream());
                             break;
                         case "pharmacien":
-                            loader.setLocation(getClass().getResource("PharmacienDashboard.fxml"));
+                            root = loader.load(getClass().getResource("/PharmacienDashboard.fxml").openStream());
                             break;
                         default:
                             // Role invalide
-                            Alert invalidRoleAlert = new Alert(Alert.AlertType.ERROR);
-                            invalidRoleAlert.setTitle("Erreur");
-                            invalidRoleAlert.setHeaderText("Rôle invalide");
-                            invalidRoleAlert.setContentText("Le rôle de cet utilisateur est invalide.");
-                            invalidRoleAlert.showAndWait();
+                            showAlert("Erreur", "Rôle invalide", "Le rôle de cet utilisateur est invalide.");
                             return;
                     }
 
-                    Parent root = loader.load();
                     Scene scene = new Scene(root);
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     stage.setScene(scene);
                     stage.show();
                 } else {
                     // Mauvais mot de passe
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erreur");
-                    alert.setHeaderText("Connexion échouée");
-                    alert.setContentText("Email ou mot de passe invalide.");
-                    alert.showAndWait();
+                    showAlert("Erreur", "Connexion échouée", "Email ou mot de passe invalide.");
                 }
             } else {
                 // Utilisateur non trouvé
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur");
-                alert.setHeaderText("Connexion échouée");
-                alert.setContentText("Utilisateur non trouvé.");
-                alert.showAndWait();
+                showAlert("Erreur", "Connexion échouée", "Utilisateur non trouvé.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Erreur de la base de données ou de chargement de l'interface
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText("Erreur de base de données ou de chargement de l'interface");
-            alert.setContentText("Une erreur s'est produite lors de la connexion ou du chargement de l'interface.");
-            alert.showAndWait();
+            showAlert("Erreur", "Erreur de base de données", "Une erreur s'est produite lors de la connexion à la base de données.");
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            // Fermer la connexion, le PreparedStatement et le ResultSet
-            try {
-                if (result != null) {
-                    result.close();
-                }
-                if (prepare != null) {
-                    prepare.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur de chargement", "Une erreur s'est produite lors du chargement de l'interface utilisateur.");
         }
+    }
+
+    private void showAlert(String title, String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
     }
 
     @FXML

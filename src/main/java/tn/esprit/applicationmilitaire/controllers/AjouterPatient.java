@@ -188,20 +188,20 @@ public class AjouterPatient {
         }
 
 
-
         getData.path = patient1.getImage();
         String uri = "file:" + patient1.getImage();
         image = new Image(uri, 118, 139, false, true);
         imageTF.setImage(image);
     }
+
     @FXML
     public void ajouterPatientInsertImage() {
         FileChooser open = new FileChooser();
         File file = open.showOpenDialog(main_form.getScene().getWindow());
-        if (file != null){
+        if (file != null) {
             getData.path = file.getAbsolutePath();
 
-            image = new Image(file.toURI().toString(),118, 139, false, true);
+            image = new Image(file.toURI().toString(), 118, 139, false, true);
             imageTF.setImage(image);
         }
 
@@ -226,6 +226,7 @@ public class AjouterPatient {
         InterlockTF.setSelected(false);
 
     }
+
     @FXML
     public void close() {
         System.exit(0);
@@ -234,7 +235,7 @@ public class AjouterPatient {
 
     @FXML
     public void minimise() {
-        Stage stage = (Stage)main_form.getScene().getWindow();
+        Stage stage = (Stage) main_form.getScene().getWindow();
         stage.setIconified(true);
 
     }
@@ -276,8 +277,8 @@ public class AjouterPatient {
     }
 
 
-
     private ObservableList<Patient> addPatientList;
+
     public void addPatientShowList() throws SQLException {
         addPatientList = addPatientListData();
         patientcol_id.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -295,7 +296,6 @@ public class AjouterPatient {
         patientcol_image.setCellValueFactory(new PropertyValueFactory<>("image"));
 
 
-
         patientcol_tableview.setItems(addPatientList);
         //addEventSearch();
     }
@@ -306,8 +306,6 @@ public class AjouterPatient {
         addPatientSelect();
         //setupSearchListener();
     }
-
-
 
 
     public void ajouterPatientadd() {
@@ -373,6 +371,15 @@ public class AjouterPatient {
                 alert.setHeaderText(null);
                 alert.setContentText("Mot de passe invalide ! Il doit contenir au moins 8 caractères alphanumériques.");
                 alert.showAndWait();
+            }else
+                // Vérifier si une seule case à cocher est sélectionnée pour le genre
+                if (!(genreTF.isSelected() ^ genreTF1.isSelected())) {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Message d'erreur");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Veuillez sélectionner un seul genre !");
+                    alert.showAndWait();
+                    return; // Arrêter l'exécution de la méthode
             } else {
                 String check = "SELECT cin FROM global_user WHERE cin = ?";
                 connect = MyConnection.getInstance().getCnx();
@@ -387,7 +394,7 @@ public class AjouterPatient {
                     alert.showAndWait();
 
                 } else {
-                    String checkNumCarte = "SELECT numcarte FROM numacarte WHERE numcarte = ?";
+                    String checkNumCarte = "SELECT numcarte FROM patient WHERE numcarte = ?";
                     prepare = connect.prepareStatement(checkNumCarte);
                     prepare.setInt(1, Integer.parseInt(carteTF.getText()));
                     ResultSet resultNumCarte = prepare.executeQuery();
@@ -475,6 +482,7 @@ public class AjouterPatient {
             e.printStackTrace();
         }
     }
+
     @FXML
     public void supprimerPatientdelete() {
         String sqlGlobalUser = "DELETE FROM global_user WHERE cin = ?";
@@ -488,7 +496,7 @@ public class AjouterPatient {
 
         try {
             Alert alert;
-            if (carteTF.getText().isEmpty() ||cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
+            if (carteTF.getText().isEmpty() || cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
                     genreTF.getText().isEmpty() || date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty() ||
                     emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() || interlockTF.getText().isEmpty() ||
                     getData.path == null || getData.path.equals("")) {
@@ -574,78 +582,90 @@ public class AjouterPatient {
                 alert.setHeaderText(null);
                 alert.setContentText("Nom ou prénom invalide !");
                 alert.showAndWait();
-            } else if (!isValidDateOfBirth(date_de_naissanceTF.getValue())) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Message d'erreur");
-                alert.setHeaderText(null);
-                alert.setContentText("L'utilisateur doit avoir plus de 23 ans !");
-                alert.showAndWait();
-            } else if (!isValidPhoneNumber(numtelTF.getText())) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Message d'erreur");
-                alert.setHeaderText(null);
-                alert.setContentText("Numéro de téléphone invalide !");
-                alert.showAndWait();
-            } else if (!isValidEmail(emailTF.getText())) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Message d'erreur");
-                alert.setHeaderText(null);
-                alert.setContentText("Email invalide !");
-                alert.showAndWait();
-            } else if (!isValidPassword(passwordTF.getText())) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Message d'erreur");
-                alert.setHeaderText(null);
-                alert.setContentText("Mot de passe invalide ! Il doit contenir au moins 8 caractères alphanumériques.");
-                alert.showAndWait();
-            } else {
-                alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Voulez-vous modifier ces informations!");
-                Optional<ButtonType> option = alert.showAndWait();
+            }else
+                    // Vérifier si une seule case à cocher est sélectionnée pour le genre
+                    if (!(genreTF.isSelected() ^ genreTF1.isSelected())) {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Message d'erreur");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Veuillez sélectionner un seul genre !");
+                        alert.showAndWait();
+                        return; // Arrêter l'exécution de la méthode
+                    } else if (!isValidDateOfBirth(date_de_naissanceTF.getValue())) {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Message d'erreur");
+                        alert.setHeaderText(null);
+                        alert.setContentText("L'utilisateur doit avoir plus de 23 ans !");
+                        alert.showAndWait();
+                    } else if (!isValidPhoneNumber(numtelTF.getText())) {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Message d'erreur");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Numéro de téléphone invalide !");
+                        alert.showAndWait();
+                    } else if (!isValidEmail(emailTF.getText())) {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Message d'erreur");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Email invalide !");
+                        alert.showAndWait();
+                    } else if (!isValidPassword(passwordTF.getText())) {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Message d'erreur");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Mot de passe invalide ! Il doit contenir au moins 8 caractères alphanumériques.");
+                        alert.showAndWait();
+                    } else {
+                        alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Confirmation Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Voulez-vous modifier ces informations!");
+                        Optional<ButtonType> option = alert.showAndWait();
 
-                if (option.isPresent() && option.get() == ButtonType.OK) {
-                    int genreSelectionne = genreTF.isSelected() ? 1 : 0;
+                        if (option.isPresent() && option.get() == ButtonType.OK) {
+                            int genreSelectionne = genreTF.isSelected() ? 1 : 0;
 
-                    connect = MyConnection.getInstance().getCnx();
-                    String hashedPassword = BCrypt.hashpw(passwordTF.getText(), BCrypt.gensalt());
+                            connect = MyConnection.getInstance().getCnx();
+                            String hashedPassword = BCrypt.hashpw(passwordTF.getText(), BCrypt.gensalt());
 
-                    prepareGlobalUser = connect.prepareStatement(sqlGlobalUser);
-                    preparePatient = connect.prepareStatement(sqlPatient);
+                            prepareGlobalUser = connect.prepareStatement(sqlGlobalUser);
+                            preparePatient = connect.prepareStatement(sqlPatient);
 
-                    prepareGlobalUser.setInt(1, Integer.parseInt(cinTF.getText()));
-                    prepareGlobalUser.setString(2, nomTF.getText());
-                    prepareGlobalUser.setString(3, prenomTF.getText());
-                    prepareGlobalUser.setInt(4, genreSelectionne);
-                    prepareGlobalUser.setObject(5, date_de_naissanceTF.getValue());
-                    prepareGlobalUser.setInt(6, Integer.parseInt(numtelTF.getText()));
-                    prepareGlobalUser.setString(7, hashedPassword);
-                    int interlockValue = interlockTF.isSelected() ? 1 : 0;
-                    prepareGlobalUser.setInt(8, interlockValue);
-                    prepareGlobalUser.setString(9, uri);
-                    prepareGlobalUser.setString(10, cinTF.getText());
+                            prepareGlobalUser.setInt(1, Integer.parseInt(cinTF.getText()));
+                            prepareGlobalUser.setString(2, nomTF.getText());
+                            prepareGlobalUser.setString(3, prenomTF.getText());
+                            prepareGlobalUser.setInt(4, genreSelectionne);
+                            prepareGlobalUser.setObject(5, date_de_naissanceTF.getValue());
+                            prepareGlobalUser.setInt(6, Integer.parseInt(numtelTF.getText()));
+                            prepareGlobalUser.setString(7, hashedPassword);
+                            int interlockValue = interlockTF.isSelected() ? 1 : 0;
+                            prepareGlobalUser.setInt(8, interlockValue);
+                            prepareGlobalUser.setString(9, uri);
+                            prepareGlobalUser.setString(10, cinTF.getText());
 
-                    preparePatient.setString(1, carteTF.getText());
-                    preparePatient.setString(2, cinTF.getText());
+                            preparePatient.setString(1, carteTF.getText());
+                            preparePatient.setString(2, cinTF.getText());
 
-                    prepareGlobalUser.executeUpdate();
-                    preparePatient.executeUpdate();
+                            prepareGlobalUser.executeUpdate();
+                            preparePatient.executeUpdate();
 
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Modification avec succès !");
-                    alert.showAndWait();
+                            alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Information Message");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Modification avec succès !");
+                            alert.showAndWait();
 
-                    addPatientShowList();
-                    ajouterPatientReset();
-                }
+                            addPatientShowList();
+                            ajouterPatientReset();
+                        }
+                    }
+
+            } catch(SQLException e){
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-    }
+
+
 
     @FXML
     private Button gererpatientbtn;
@@ -757,10 +777,9 @@ public class AjouterPatient {
     }
 
     private boolean isValidDateOfBirth(LocalDate dateOfBirth) {
-        // Vérifie si l'utilisateur a plus de 23 ans
+        // Vérifie si la date de naissance est postérieure à la date actuelle
         LocalDate now = LocalDate.now();
-        Period period = Period.between(dateOfBirth, now);
-        return period.getYears() > 23;
+        return !dateOfBirth.isAfter(now);
     }
 
     private boolean isValidPhoneNumber(String phoneNumber) {

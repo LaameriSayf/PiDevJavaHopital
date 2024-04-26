@@ -36,6 +36,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.applicationmilitaire.models.Medecin;
 import tn.esprit.applicationmilitaire.models.getData;
+import tn.esprit.applicationmilitaire.services.PasswordComplexityChecker;
 import tn.esprit.applicationmilitaire.test.HelloApplication;
 import tn.esprit.applicationmilitaire.utils.MyConnection;
 
@@ -56,6 +57,8 @@ public class AjouterMedecin {
 
     @FXML
     private Button close;
+    @FXML
+    private Label passwordComplexityLabel;
 
     @FXML
     private DatePicker date_de_naissanceTF;
@@ -222,18 +225,17 @@ public class AjouterMedecin {
         String sql = "INSERT INTO global_user " +
                 "(cin, nom, prenom, genre, datenaissance, numtel, email, password, interlock, image, role) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        String sqlMedecin = "INSERT INTO medecin (specialite, etat, id) VALUES (?,?,LAST_INSERT_ID())";
+        String sqlMedecin = "INSERT INTO medecin (specialite,etat, id) VALUES (?,?,LAST_INSERT_ID())";
 
         Connection connect = null;
         PreparedStatement prepare = null;
 
         try {
             Alert alert;
-            if (etatTF.getText().isEmpty() || specialiteTF.getText().isEmpty() || cinTF.getText().isEmpty() ||
-                    nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() || genreTF.getText().isEmpty() ||
-                    interlockTF.getText().isEmpty() || date_de_naissanceTF.getValue() == null ||
-                    numtelTF.getText().isEmpty() || emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() ||
+            if (etatTF.getText().isEmpty() ||specialiteTF.getText().isEmpty() || cinTF.getText().isEmpty() || nomTF.getText().isEmpty() || prenomTF.getText().isEmpty() ||
+                    date_de_naissanceTF.getValue() == null || numtelTF.getText().isEmpty() ||
+                    emailTF.getText().isEmpty() || passwordTF.getText().isEmpty() ||
+                    (!interlockTF.isSelected() && !InterlockTF.isSelected()) ||
                     getData.path == null || getData.path.equals("")) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Message d'erreur");
@@ -244,103 +246,147 @@ public class AjouterMedecin {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Message d'erreur");
                 alert.setHeaderText(null);
-                alert.setContentText("Le CIN doit être composé de 8 chiffres uniquement !");
+                alert.setContentText("CIN invalide !");
                 alert.showAndWait();
             } else if (!isValidName(nomTF.getText()) || !isValidName(prenomTF.getText())) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Message d'erreur");
                 alert.setHeaderText(null);
-                alert.setContentText("Le nom et le prénom ne doivent contenir que des lettres !");
+                alert.setContentText("Nom ou prénom invalide !");
                 alert.showAndWait();
             } else if (!isValidDateOfBirth(date_de_naissanceTF.getValue())) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Message d'erreur");
                 alert.setHeaderText(null);
-                alert.setContentText("Le médecin doit avoir plus de 23 ans !");
+                alert.setContentText("L'utilisateur doit avoir plus de 23 ans !");
                 alert.showAndWait();
             } else if (!isValidPhoneNumber(numtelTF.getText())) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Message d'erreur");
                 alert.setHeaderText(null);
-                alert.setContentText("Le numéro de téléphone doit contenir exactement 8 chiffres !");
+                alert.setContentText("Numéro de téléphone invalide !");
                 alert.showAndWait();
             } else if (!isValidEmail(emailTF.getText())) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Message d'erreur");
                 alert.setHeaderText(null);
-                alert.setContentText("L'adresse e-mail n'est pas valide !");
+                alert.setContentText("Email invalide !");
                 alert.showAndWait();
             } else if (!isValidPassword(passwordTF.getText())) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Message d'erreur");
                 alert.setHeaderText(null);
-                alert.setContentText("Le mot de passe doit contenir au moins 8 caractères alphanumériques !");
+                alert.setContentText("Mot de passe invalide ! Il doit contenir au moins 8 caractères alphanumériques.");
                 alert.showAndWait();
-            } else {
-                String check = "SELECT cin FROM global_user WHERE cin = '" + cinTF.getText() + "'";
-                connect = MyConnection.getInstance().getCnx();
-                Statement statement = connect.createStatement();
-                ResultSet result = statement.executeQuery(check);
-                if (result.next()) {
+            }else
+                // Vérifier si une seule case à cocher est sélectionnée pour le genre
+                if (!(genreTF.isSelected() ^ genreTF1.isSelected())) {
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Message d'erreur");
                     alert.setHeaderText(null);
-                    alert.setContentText("Le médecin existe déjà !");
+                    alert.setContentText("Veuillez sélectionner un seul genre !");
                     alert.showAndWait();
+                    return; // Arrêter l'exécution de la méthode
                 } else {
-                    // Afficher une alerte de confirmation pour ajouter le médecin
-                    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                    confirmationAlert.setTitle("Confirmation");
-                    confirmationAlert.setHeaderText(null);
-                    confirmationAlert.setContentText("Voulez-vous ajouter ce médecin ?");
-
-                    // Ajouter des boutons de confirmation et d'annulation
-                    ButtonType confirmButton = new ButtonType("Confirmer", ButtonBar.ButtonData.OK_DONE);
-                    ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
-
-                    // Ajouter les boutons à l'alerte
-                    confirmationAlert.getButtonTypes().setAll(confirmButton, cancelButton);
-
-                    // Attendre la réponse de l'utilisateur
-                    Optional<ButtonType> userChoice = confirmationAlert.showAndWait();
-
-                    // Si l'utilisateur confirme, procéder à l'ajout du médecin
-                    if (userChoice.isPresent() && userChoice.get() == confirmButton) {
-                        String hashedPassword = BCrypt.hashpw(passwordTF.getText(), BCrypt.gensalt());
-
-                        prepare = connect.prepareStatement(sql);
-                        prepare.setInt(1, Integer.parseInt(cinTF.getText()));
-                        prepare.setString(2, nomTF.getText());
-                        prepare.setString(3, prenomTF.getText());
-                        prepare.setBoolean(4, genreTF.isSelected());
-                        prepare.setString(5, date_de_naissanceTF.getValue().toString());
-                        prepare.setInt(6, Integer.parseInt(numtelTF.getText()));
-                        prepare.setString(7, emailTF.getText());
-                        prepare.setString(8, hashedPassword); // Utiliser le mot de passe crypté
-                        prepare.setInt(10, Integer.parseInt(interlockTF.getText()));
-
-                        prepare.setString(9, getData.path.replace("\\", "\\\\"));
-                        prepare.setString(11, "Medecin");
-
-                        prepare.executeUpdate();
-
-                        prepare = connect.prepareStatement(sqlMedecin);
-                        prepare.setString(1, specialiteTF.getText());
-                        prepare.setBoolean(2, etatTF.isSelected());
-                        prepare.executeUpdate();
-
-                        alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Information Message");
+                    String check = "SELECT cin FROM global_user WHERE cin = ?";
+                    connect = MyConnection.getInstance().getCnx();
+                    prepare = connect.prepareStatement(check);
+                    prepare.setString(1, cinTF.getText());
+                    ResultSet result = prepare.executeQuery();
+                    if (result.next()) {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Message d'erreur");
                         alert.setHeaderText(null);
-                        alert.setContentText("Ajout avec succès !");
+                        alert.setContentText("Medecin existe déjà !");
                         alert.showAndWait();
 
-                        addMedecinShowList();
-                        addMedecinSelect();
+                    } else {
+                        if (!(etatTF.isSelected() ^ etatTF1.isSelected())) {
+                            alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Message d'erreur");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Veuillez sélectionner un seul etat !");
+                            alert.showAndWait();
+                        } else {
+                            // Afficher une alerte de confirmation pour ajouter le patient
+                            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                            confirmationAlert.setTitle("Confirmation");
+                            confirmationAlert.setHeaderText(null);
+                            confirmationAlert.setContentText("Voulez-vous ajouter ce medecin ?");
+
+                            // Ajouter des boutons de confirmation et d'annulation
+                            ButtonType confirmButton = new ButtonType("Confirmer", ButtonBar.ButtonData.OK_DONE);
+                            ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                            // Ajouter les boutons à l'alerte
+                            confirmationAlert.getButtonTypes().setAll(confirmButton, cancelButton);
+
+                            // Attendre la réponse de l'utilisateur
+                            Optional<ButtonType> userChoice = confirmationAlert.showAndWait();
+
+                            // Si l'utilisateur confirme, procéder à l'ajout du patient
+                            if (userChoice.isPresent() && userChoice.get() == confirmButton) {
+                                prepare = connect.prepareStatement(sql);
+                                prepare.setInt(1, Integer.parseInt(cinTF.getText()));
+                                prepare.setString(2, nomTF.getText());
+                                prepare.setString(3, prenomTF.getText());
+
+                                // Determine the gender based on which CheckBox is selected
+                                if (genreTF.isSelected()) {
+                                    prepare.setBoolean(4, true); // Assuming genreTF represents "Homme"
+                                } else {
+                                    prepare.setBoolean(4, false); // Assuming genreTF1 represents "Femme"
+                                }
+
+                                LocalDate dateNaissance = date_de_naissanceTF.getValue();
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                                String dateNaissanceFormatee = dateNaissance.format(formatter);
+                                prepare.setString(5, dateNaissanceFormatee);
+                                prepare.setInt(6, Integer.parseInt(numtelTF.getText()));
+                                prepare.setString(7, emailTF.getText());
+
+                                // Crypter le mot de passe avec BCrypt avant de l'insérer dans la base de données
+                                String hashedPassword = BCrypt.hashpw(passwordTF.getText(), BCrypt.gensalt());
+                                prepare.setString(8, hashedPassword);
+
+                                prepare.setString(10, getData.path.replace("\\", "\\\\"));
+
+                                // Determine the interlock value based on which CheckBox is selected
+                                if (interlockTF.isSelected()) {
+                                    prepare.setInt(9, 1); // Assuming interlockTF represents "Oui", so set 1
+                                } else {
+                                    prepare.setInt(9, 0); // Assuming InterlockTF represents "Non", so set 0
+                                }
+
+                                // Set the role to "Patient" by default
+                                prepare.setString(11, "Medecin");
+
+                                // Execute the SQL statement to insert into global_user table
+                                prepare.executeUpdate();
+
+                                // Now, insert numcarte into patient table
+                                prepare = connect.prepareStatement(sqlMedecin);
+                                prepare.setString(1, specialiteTF.getText());
+                                if (interlockTF.isSelected()) {
+                                    prepare.setInt(2, 1); // Assuming interlockTF represents "Disponible", so set 1
+                                } else {
+                                    prepare.setInt(2, 0); // Assuming InterlockTF represents "Non disponible", so set 0
+                                }
+                                prepare.executeUpdate();
+
+                                alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Information Message");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Ajout avec succès !");
+                                alert.showAndWait();
+
+                                addMedecinShowList();
+                                addMedecinSelect();
+                            }
+                        }
                     }
                 }
-            }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -521,6 +567,16 @@ public class AjouterMedecin {
                 agelabel.setText(""); // Réinitialiser le Label si aucune date de naissance n'est sélectionnée
             }
         });
+
+
+        // Ajouter un écouteur au champ de mot de passe pour calculer la complexité
+        passwordTF.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Vérifier la complexité du mot de passe
+            String passwordComplexity = PasswordComplexityChecker.checkPasswordComplexity(newValue);
+            // Mettre à jour le Label avec la complexité du mot de passe
+            passwordComplexityLabel.setText("Complexité du mot de passe : " + passwordComplexity);
+        });
+
     }
 
 

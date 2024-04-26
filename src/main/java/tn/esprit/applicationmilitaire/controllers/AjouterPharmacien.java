@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import tn.esprit.applicationmilitaire.models.Patient;
 import tn.esprit.applicationmilitaire.models.Pharmacien;
 import tn.esprit.applicationmilitaire.models.getData;
+import tn.esprit.applicationmilitaire.services.PasswordComplexityChecker;
 import tn.esprit.applicationmilitaire.test.HelloApplication;
 import tn.esprit.applicationmilitaire.utils.MyConnection;
 
@@ -44,6 +45,9 @@ public class AjouterPharmacien {
 
     @FXML
     private TextField cinTF;
+
+    @FXML
+    private Label passwordComplexityLabel;
 
     @FXML
     private Button close;
@@ -493,6 +497,14 @@ public class AjouterPharmacien {
             } else {
                 agelabel.setText(""); // Réinitialiser le Label si aucune date de naissance n'est sélectionnée
             }
+        });
+
+        // Ajouter un écouteur au champ de mot de passe pour calculer la complexité
+        passwordTF.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Vérifier la complexité du mot de passe
+            String passwordComplexity = PasswordComplexityChecker.checkPasswordComplexity(newValue);
+            // Mettre à jour le Label avec la complexité du mot de passe
+            passwordComplexityLabel.setText("Complexité du mot de passe : " + passwordComplexity);
         });
     }
 

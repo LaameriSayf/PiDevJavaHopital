@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.applicationmilitaire.models.getData;
@@ -16,6 +17,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 
 import javafx.scene.image.ImageView;
+import tn.esprit.applicationmilitaire.services.PasswordComplexityChecker;
 import tn.esprit.applicationmilitaire.test.HelloApplication;
 import tn.esprit.applicationmilitaire.utils.MyConnection;
 
@@ -24,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 public class Inscription {
@@ -32,6 +35,11 @@ public class Inscription {
 
     @FXML
     private Button close;
+    @FXML
+    private Label agelabel;
+
+    @FXML
+    private Label passwordComplexityLabel;
     @FXML
     private Button inscription_patientbtn;
 
@@ -291,6 +299,30 @@ public class Inscription {
     public void minimise(){
         Stage stage = (Stage)main_form.getScene().getWindow();
         stage.setIconified(true);
+    }
+
+
+    public void initialize() throws SQLException {
+        date_de_naissanceTF.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Calculer l'âge à partir de la date de naissance
+            if (newValue != null) {
+                LocalDate currentDate = LocalDate.now();
+                Period period = Period.between(newValue, currentDate);
+                int age = period.getYears();
+                agelabel.setTextFill(Color.RED);
+                agelabel.setText("L'Âge est : " + age); // Mettre à jour le Label avec l'âge calculé
+            } else {
+                agelabel.setText(""); // Réinitialiser le Label si aucune date de naissance n'est sélectionnée
+            }
+        });
+
+        // Ajouter un écouteur au champ de mot de passe pour calculer la complexité
+        passwordTF.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Vérifier la complexité du mot de passe
+            String passwordComplexity = PasswordComplexityChecker.checkPasswordComplexity(newValue);
+            // Mettre à jour le Label avec la complexité du mot de passe
+            passwordComplexityLabel.setText("Complexité du mot de passe : " + passwordComplexity);
+        });
     }
 
 

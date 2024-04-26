@@ -161,6 +161,7 @@
                                  </image>
                               </ImageView>
                               <Label fx:id="agelabel" layoutX="491.0" layoutY="400.0" text="L'Âge  est :0" />
+                              <Label fx:id="passwordComplexityLabel" layoutX="636.0" layoutY="441.0" prefHeight="17.0" prefWidth="226.0" text="Le mot de passe est:" />
                            </children>
                         </AnchorPane>
                      </children>

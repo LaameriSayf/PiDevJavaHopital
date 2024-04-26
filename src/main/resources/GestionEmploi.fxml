@@ -16,51 +16,73 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1061.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EmploiController">
-   <children>
-      <AnchorPane prefHeight="716.0" prefWidth="1063.0">
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EmploiController">
+   <center>
+      <AnchorPane prefHeight="666.0" prefWidth="989.0">
          <children>
-            <VBox layoutX="42.0" layoutY="115.0" prefHeight="525.0" prefWidth="254.0">
+            <AnchorPane prefHeight="716.0" prefWidth="862.0">
                <children>
-                  <Label prefHeight="33.0" prefWidth="175.0" text="Titre" />
-                  <TextField fx:id="titreLabel" prefHeight="41.0" prefWidth="262.0" promptText="Definir le titre..." />
-                  <Label prefHeight="33.0" prefWidth="175.0" text="Date de debut" />
-                  <DatePicker fx:id="startLabel" prefHeight="46.0" prefWidth="277.0" promptText="Choisir une date..." />
-                  <Label prefHeight="33.0" prefWidth="175.0" text="Date fin" />
-                  <DatePicker fx:id="endLabel" prefHeight="46.0" prefWidth="277.0" promptText="choisir une date...." />
-                  <Label prefHeight="29.0" prefWidth="146.0" text="Decription" />
-                  <TextArea fx:id="descLabel" prefHeight="200.0" prefWidth="200.0" promptText="Decrir le travail de cette semaine ...." />
-                  <Button fx:id="envoyer" mnemonicParsing="false" onAction="#ajouterEmploi" prefHeight="36.0" prefWidth="95.0" style="-fx-background-color: blue;" text="Ajtouer" textFill="WHITE">
-                     <VBox.margin>
-                        <Insets top="12.0" />
-                     </VBox.margin></Button>
+                  <VBox layoutX="42.0" layoutY="115.0" prefHeight="525.0" prefWidth="254.0">
+                     <children>
+                        <Label prefHeight="33.0" prefWidth="175.0" text="Titre" />
+                        <TextField fx:id="titreLabel" prefHeight="41.0" prefWidth="262.0" promptText="Definir le titre..." />
+                        <Label prefHeight="33.0" prefWidth="175.0" text="Date de debut" />
+                        <DatePicker fx:id="startLabel" prefHeight="46.0" prefWidth="277.0" promptText="Choisir une date..." />
+                        <Label prefHeight="33.0" prefWidth="175.0" text="Date fin" />
+                        <DatePicker fx:id="endLabel" prefHeight="46.0" prefWidth="277.0" promptText="choisir une date...." />
+                        <Label prefHeight="29.0" prefWidth="146.0" text="Decription" />
+                        <TextArea fx:id="descLabel" prefHeight="200.0" prefWidth="200.0" promptText="Decrir le travail de cette semaine ...." />
+                        <Button fx:id="envoyer" mnemonicParsing="false" onAction="#ajouterEmploi" prefHeight="36.0" prefWidth="95.0" style="-fx-background-color: blue;" text="Ajtouer" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets top="12.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <ImageView fitHeight="285.0" fitWidth="296.0" layoutX="752.0" layoutY="424.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@téléchargé-removebg-preview.png" />
+                     </image>
+                  </ImageView>
+                  <ListView fx:id="listeEmploi" layoutX="357.0" layoutY="103.0" prefHeight="266.0" prefWidth="648.0" stylesheets="@../java/CssBlog/RendezVous.css">
+                     <effect>
+                        <InnerShadow height="255.0" radius="102.20750000000001" width="155.83">
+                           <color>
+                              <Color red="0.19907407462596893" green="0.5594907402992249" blue="1.0" />
+                           </color>
+                        </InnerShadow>
+                     </effect>
+                  </ListView>
+                  <Label layoutX="357.0" layoutY="46.0" prefHeight="35.0" prefWidth="246.0" text="Liste des emplois" textFill="#08a3e1">
+                     <font>
+                        <Font name="System Bold Italic" size="24.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="updateEM" layoutX="805.0" layoutY="54.0" mnemonicParsing="false" onAction="#modifierEmploi" prefHeight="25.0" prefWidth="67.0" style="-fx-background-color: blue;" text="Modifier" textFill="WHITE" />
+                  <Button fx:id="deleteEM" layoutX="896.0" layoutY="54.0" mnemonicParsing="false" onAction="#supprimerEmploi" style="-fx-background-color: red;" text="Delete" textFill="WHITE" />
+                  <BorderPane fx:id="borderNav" layoutX="665.0" layoutY="54.0" prefHeight="25.0" prefWidth="123.0">
+                     <bottom>
+                        <Button fx:id="rdvNav" mnemonicParsing="false" onAction="#switchToRdv" prefHeight="25.0" prefWidth="117.0" style="-fx-background-color: green;" text="RendezVous" textFill="WHITE" BorderPane.alignment="CENTER" />
+                     </bottom>
+                  </BorderPane>
                </children>
-            </VBox>
-            <ImageView fitHeight="346.0" fitWidth="408.0" layoutX="703.0" layoutY="363.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../java/Template/back/images/téléchargé-removebg-preview.png" />
-               </image>
-            </ImageView>
-            <ListView fx:id="listeEmploi" layoutX="357.0" layoutY="88.0" prefHeight="293.0" prefWidth="664.0">
-               <effect>
-                  <InnerShadow height="255.0" radius="102.20750000000001" width="155.83">
-                     <color>
-                        <Color red="0.19907407462596893" green="0.5594907402992249" blue="1.0" />
-                     </color>
-                  </InnerShadow>
-               </effect></ListView>
-            <Label layoutX="357.0" layoutY="46.0" prefHeight="35.0" prefWidth="246.0" text="Liste des emplois" textFill="#08a3e1">
-               <font>
-                  <Font name="System Bold Italic" size="24.0" />
-               </font></Label>
-            <Button fx:id="updateEM" layoutX="805.0" layoutY="54.0" mnemonicParsing="false" onAction="#modifierEmploi" prefHeight="25.0" prefWidth="67.0" style="-fx-background-color: blue;" text="Modifier" textFill="WHITE" />
-            <Button fx:id="deleteEM" layoutX="896.0" layoutY="54.0" mnemonicParsing="false" onAction="#supprimerEmploi" style="-fx-background-color: red;" text="Delete" textFill="WHITE" />
-            <BorderPane fx:id="borderNav" layoutX="665.0" layoutY="54.0" prefHeight="25.0" prefWidth="123.0">
-               <bottom>
-                  <Button fx:id="rdvNav" mnemonicParsing="false" onAction="#switchToRdv" prefHeight="25.0" prefWidth="117.0" style="-fx-background-color: green;" text="RendezVous" textFill="WHITE" BorderPane.alignment="CENTER" />
-               </bottom>
-            </BorderPane>
+            </AnchorPane>
          </children>
       </AnchorPane>
-   </children>
-</AnchorPane>
+   </center>
+   <left>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to bottom right, #DFF5FF,#378CE7);" BorderPane.alignment="CENTER" />
+   </left>
+   <top>
+      <AnchorPane prefHeight="42.0" prefWidth="1208.0" style="-fx-background-color: linear-gradient(to bottom right, #DFF5FF,#378CE7);" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="54.0" fitWidth="235.0" layoutX="-4.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@140c4943-bb90-4670-a606-0cfd229fc45b.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>

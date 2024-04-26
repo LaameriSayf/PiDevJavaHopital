@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="779.0" prefWidth="1204.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ListeRdvController">
+   <children>
+      <TableView fx:id="rdvTableView" layoutX="181.0" layoutY="127.0" prefHeight="554.0" prefWidth="930.0">
+        <columns>
+          <TableColumn fx:id="rdvID" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="dateLabel" prefWidth="123.0" text="Date" />
+            <TableColumn fx:id="heureLabel" prefWidth="83.0" text="Heure" />
+            <TableColumn fx:id="descLabel" prefWidth="252.0" text="Description" />
+            <TableColumn fx:id="fileLabel" prefWidth="223.0" text="Lettre" />
+            <TableColumn prefWidth="173.0" text="Action" />
+        </columns>
+      </TableView>
+      <Label layoutX="233.0" layoutY="90.0" prefHeight="17.0" prefWidth="81.0" text="Search">
+         <font>
+            <Font name="System Bold Italic" size="21.0" />
+         </font>
+      </Label>
+      <TextField fx:id="keywordTextField" layoutX="327.0" layoutY="93.0" prefHeight="25.0" prefWidth="780.0" promptText="Chercher un rendezvous..." />
+   </children>
+</AnchorPane>

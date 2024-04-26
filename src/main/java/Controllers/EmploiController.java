@@ -8,14 +8,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import services.EmpService;
 import utils.MyDataBase;
 import entities.Emploi;
-
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.Connection;
@@ -28,10 +25,7 @@ import java.util.regex.Pattern;
 public class EmploiController {
     @FXML
     private ListView<String> listeEmploi;
-    @FXML
-    private Button deleteEM;
-    @FXML
-    private Button updateEM;
+
     @FXML
     private Button ajouterEmploi;
 
@@ -125,7 +119,7 @@ public class EmploiController {
     }
 
     private void showAlert(String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Inforamation");
         alert.setHeaderText(null);
         alert.setContentText(msg);
@@ -177,6 +171,7 @@ public class EmploiController {
                 descLabel.setText("");
                 showSuccess("Emploi ajouté avec succès!");
                 loadAndDisplayData();
+
             } catch (SQLException e) {
                 e.printStackTrace();
                 showAlert("Erreur lors de l'ajout de l'emploi. Veuillez réessayer.");
@@ -198,7 +193,7 @@ public class EmploiController {
             }
             listeEmploi.setItems(items);
 
-            
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -217,6 +212,7 @@ public class EmploiController {
                if (listeEmploi.getItems().isEmpty() == false){
                    listeEmploi.getItems().removeAll();
                    loadAndDisplayData();
+                   showSuccess("l'Emploi a été supprimé !");
 
                }else loadAndDisplayData();
            }catch (SQLException e){

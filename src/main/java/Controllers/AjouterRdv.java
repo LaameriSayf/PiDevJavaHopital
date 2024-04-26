@@ -62,6 +62,7 @@ public class AjouterRdv {
     @FXML
     private ListView<String> listeRdv;
     private RdvService rdvService;
+
     public int get_List_RDV(String chaine){
         String selectedItem =chaine;
         System.out.println("Selected item: " + selectedItem);
@@ -111,6 +112,21 @@ public class AjouterRdv {
                 System.out.println("ID not found");
             }
         });
+        /*UnaryOperator<TextFormatter.Change> filter = change -> {
+            String newText = change.getControlNewText();
+            // Check if the new text is empty or matches the pattern HH:mm
+            if (newText.isEmpty() || newText.matches("^([01]?[0-9]|2[0-3]):([0-5]?[0-9])?$")) {
+                // Valid format or empty, allow the change
+                return change;
+            } else {
+                // Invalid format, show an alert
+                showAlert("Invalid time format. Please use the format HH:mm.");
+                return null;
+            }
+        };
+
+        TextFormatter<String> textFormatter = new TextFormatter<>(filter);
+        heureLabel.setTextFormatter(textFormatter);*/
 
     }
 
@@ -144,6 +160,8 @@ public class AjouterRdv {
         LocalDate date = dateLabel.getValue();
         String heure = heureLabel.getText();
         String description = descriptionLabel.getText();
+        LocalDate currentDate = LocalDate.now();
+
 
 
         if (date == null || heure.isEmpty() || description.isEmpty() || fileList.getItems().isEmpty()) {
@@ -156,6 +174,10 @@ public class AjouterRdv {
             } else if (fileList.getItems().isEmpty()) {
                 showAlert("Ajouter fichier(s) de liaison");
             }
+            return;
+        }
+        if (date.isBefore(currentDate)) {
+            showAlert("La date de début ne peut pas être antérieure à aujourd'hui.");
             return;
         }
 
@@ -269,10 +291,17 @@ public class AjouterRdv {
     }
 
     private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Felicitation");
         alert.setHeaderText(null);
         alert.setContentText(message);
+        alert.showAndWait();
+    }
+    private void showSuccess(String msg) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Inforamation");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
         alert.showAndWait();
     }
     @FXML

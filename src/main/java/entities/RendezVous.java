@@ -1,13 +1,16 @@
 package entities;
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class RendezVous {
 private String description ,file;
-private int id;
+private Integer id;
 private LocalDate daterdv;
 private String heurerdv;
 private Boolean etat;
+
+private Button accept,delete;
 
 
 
@@ -18,6 +21,14 @@ private Boolean etat;
         this.heurerdv = heurerdv;
     }
     public RendezVous() {
+    }
+
+    public RendezVous(Integer id, String description, LocalDate date, String heurerdv, String file) {
+    this.id = id;
+    this.description=description;
+    this.daterdv=date;
+    this.file=file;
+    this.heurerdv=heurerdv;
     }
 
     public String getDescription() {

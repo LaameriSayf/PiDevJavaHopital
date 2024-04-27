@@ -71,6 +71,13 @@ public class Login {
 
             if (result.next()) {
                 String hashedPasswordFromDB = result.getString("password");
+                boolean interlock = result.getBoolean("interlock"); // Vérification de l'interlock
+
+                if (interlock) {
+                    showAlert("Compte bloqué", "Votre compte est bloqué", "Vous ne pouvez pas utiliser votre compte actuellement.");
+                    return; // Arrête le processus de connexion
+                }
+
                 if (BCrypt.checkpw(passwordTF.getText(), hashedPasswordFromDB)) {
                     // Login successful
                     String role = result.getString("role");

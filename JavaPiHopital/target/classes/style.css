@@ -1,0 +1,190 @@
+/* style.css */
+
+/* Styles généraux pour toute l'interface */
+.root {
+    /* Ajoutez ici les styles généraux pour votre interface */
+}
+
+/* Sidebar styles */
+#sidebar {
+    -fx-background-color: #333333; /* Couleur de fond du sidebar */
+    -fx-background-radius: 8px; /* Bord arrondi */
+    -fx-padding: 10px; /* Espacement interne */
+    -fx-pref-width: 200px; /* Largeur du sidebar */
+    -fx-min-width: 200px; /* Largeur minimale du sidebar */
+}
+
+.sidebardash {
+    /* Styles spécifiques au sidebar */
+    -fx-background-color: linear-gradient(to bottom right, #DFF5FF, #378CE7); /* Dégradé de couleurs */
+    -fx-background-radius: 8px; /* Bord arrondi */
+    -fx-padding: 10px; /* Espacement interne */
+    -fx-margin: 5px 0; /* Marge extérieure */
+}
+
+/* Navbar styles */
+#navbar {
+    -fx-background-color: #018ABE; /* Couleur de fond de la navbar */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-padding: 10px; /* Espacement interne */
+}
+
+/* Styles pour les boutons du navbar */
+#navbar Button {
+    -fx-background-color: transparent; /* Fond transparent */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-size: 14px; /* Taille de police */
+    -fx-padding: 5px 10px; /* Espacement interne */
+}
+
+#navbar Button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2); /* Fond semi-transparent au survol */
+}
+
+.add-btn {
+    -fx-background-color: transparent; /* Couleur de fond */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-size: 14px;
+    -fx-pref-height: 36px;
+    -fx-pref-width: 170px;
+    -fx-background-radius: 5px; /* Coins arrondis */
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 10px; /* Espacement interne */
+}
+
+.add-btn:hover {
+    -fx-background-color: transparent; /* Couleur au survol */
+}
+
+.add-btn:pressed {
+    -fx-background-color: #018ABE; /* Couleur au clic */
+}
+/* Style personnalisé pour les boutons */
+.custom-btn {
+    -fx-background-color: #015c92; /* Couleur de fond */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-pref-width: 150px; /* Largeur préférée */
+    -fx-pref-height: 36px; /* Hauteur préférée */
+    -fx-background-radius: 18px; /* Rayon du coin pour un aspect arrondi */
+}
+
+.custom-btn:hover {
+    -fx-background-color:#015c92; /* Couleur de fond au survol */
+}
+/* Style personnalisé pour les boutons */
+#btnDossiersMedicaux, #btnOrdonnances {
+    -fx-background-color: transparent; /* Couleur de fond transparente */
+    -fx-text-fill: #015c92; /* Couleur du texte */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-pref-width: 270px; /* Largeur préférée */
+    -fx-pref-height: 47px; /* Hauteur préférée */
+    -fx-background-radius: 25px; /* Rayon du coin pour un aspect arrondi */
+    -fx-border-color: #015c92; /* Couleur de la bordure */
+    -fx-border-width: 2px; /* Largeur de la bordure */
+    -fx-cursor: hand; /* Curseur de la souris */
+    -fx-transition: all 0.3s ease; /* Transition pour l'animation */
+}
+
+#btnDossiersMedicaux:hover, #btnOrdonnances:hover {
+    -fx-background-color: #015c92; /* Fond coloré au survol */
+    -fx-text-fill: white; /* Texte blanc au survol */
+    -fx-border-color: #015c92; /* Bordure colorée au survol */
+}
+
+#btnDossiersMedicaux:pressed, #btnOrdonnances:pressed {
+    -fx-background-color: transparent; /* Fond transparent au clic */
+    -fx-text-fill: #015c92; /* Texte coloré au clic */
+    -fx-border-color: #015c92; /* Bordure colorée au clic */
+}
+/* Style pour la TableView */
+.table-view {
+    -fx-control-inner-background: #f4f4f4; /* Couleur de fond */
+    -fx-table-cell-border-color: transparent; /* Couleur de la bordure des cellules */
+    -fx-table-header-border-color: transparent; /* Couleur de la bordure de l'en-tête */
+    -fx-padding: 10px; /* Espacement interne */
+}
+
+/* Style pour les cellules de la TableView */
+.table-cell {
+    -fx-text-fill: #333333; /* Couleur du texte */
+    -fx-alignment: CENTER_LEFT; /* Alignement du texte */
+    -fx-font-size: 14px; /* Taille de la police */
+}
+
+/* Style pour l'en-tête de la TableView */
+.table-header {
+    -fx-background-color: #018ABE; /* Couleur de fond */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-font-weight: bold; /* Texte en gras */
+}
+
+/* Style pour les lignes de la TableView */
+.table-row-cell {
+    -fx-background-color: #ffffff; /* Couleur de fond des lignes */
+    -fx-table-cell-border-color: #e0e0e0; /* Couleur de la bordure des lignes */
+    -fx-table-cell-border-width: 0px 0px 1px 0px; /* Épaisseur de la bordure (bas seulement) */
+}
+
+/* Style pour la sélection de la TableView */
+.table-row-cell:selected {
+    -fx-background-color: #DFF5FF; /* Couleur de fond de la ligne sélectionnée */
+}
+
+/* Style pour les lignes alternatives (striped rows) */
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9; /* Couleur de fond des lignes impaires */
+}
+
+/* Style pour la colonne de l'image */
+.table-cell.image-column {
+    -fx-alignment: CENTER; /* Alignement central pour la colonne de l'image */
+}
+
+/* Style pour redimensionner la TableView */
+.table-view .column-header-background {
+    -fx-background-color: #018ABE; /* Couleur de fond de la zone d'en-tête */
+}
+/* Styles pour les champs texte (TextField) */
+.text-field {
+    -fx-background-color: #f4f4f4; /* Couleur de fond */
+    -fx-border-color: #ccc; /* Couleur de la bordure */
+    -fx-text-fill: #333; /* Couleur du texte */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-font-family: "Arial"; /* Police de caractères */
+    -fx-padding: 5px; /* Espacement interne */
+}
+
+/* Styles pour les zones de texte (TextArea) */
+.text-area {
+    -fx-background-color: #f4f4f4; /* Couleur de fond */
+    -fx-border-color: #ccc; /* Couleur de la bordure */
+    -fx-text-fill: #333; /* Couleur du texte */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-font-family: "Arial"; /* Police de caractères */
+    -fx-padding: 5px; /* Espacement interne */
+}
+
+/* Styles pour les boutons */
+.custom-button {
+    -fx-background-color: #015c92; /* Couleur de fond */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-font-family: "Arial"; /* Police de caractères */
+    -fx-padding: 8px 16px; /* Espacement interne */
+    -fx-background-radius: 5px; /* Coins arrondis */
+}
+
+.custom-button:hover {
+    -fx-background-color: #018ABE; /* Couleur de fond au survol */
+}
+
+/* Styles pour les étiquettes (Label) */
+.label {
+    -fx-font-size: 16px; /* Taille de la police */
+    -fx-font-weight: bold; /* Police en gras */
+    -fx-text-fill: #333; /* Couleur du texte */
+    -fx-font-family: "Arial"; /* Police de caractères */
+    -fx-padding: 5px; /* Espacement interne */
+}

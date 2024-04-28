@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="638.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AjoutDossier">
+    <children>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <children>
+                <BorderPane layoutX="284.0" layoutY="154.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <top>
+                        <AnchorPane prefHeight="0.0" prefWidth="1254.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <AnchorPane layoutX="274.0" layoutY="62.0" prefHeight="62.0" prefWidth="999.0" styleClass="nav-form" stylesheets="@DashboarsDesign.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="274.0" AnchorPane.rightAnchor="274.79999999999995" AnchorPane.topAnchor="62.0">
+                                    <children>
+                                        <Label alignment="CENTER" layoutX="302.0" layoutY="6.0" prefHeight="22.0" prefWidth="250.0" text="Ajout Dossier">
+                                            <font>
+                                                <Font name="System Bold" size="24.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
+                    </top>
+                    <left>
+                        <AnchorPane prefHeight="623.0" prefWidth="227.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <AnchorPane layoutX="275.0" layoutY="-16.0" prefHeight="622.0" prefWidth="222.0" styleClass="nav-form" stylesheets="@DashboarsDesign.css" AnchorPane.bottomAnchor="45.59999999999991" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="-23.0" AnchorPane.topAnchor="-16.0">
+                                    <children>
+                                        <Label layoutX="49.0" layoutY="14.0" text="Bienvenue">
+                                            <font>
+                                                <Font name="System Bold" size="18.0" />
+                                            </font>
+                                        </Label>
+                                        <Line endX="84.5" layoutX="95.0" layoutY="42.0" startX="-74.5" />
+                                        <Button layoutX="52.0" layoutY="72.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="161.0" styleClass="add-btn" stylesheets="@style.css" text="Tableau de board" />
+                                        <Button layoutX="52.0" layoutY="124.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@style.css" text="Gérer Ordonnances " />
+                                        <Button layoutX="52.0" layoutY="176.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="126.0" styleClass="add-btn" stylesheets="@style.css" text="Gérer Dossiers " />
+                                        <Button layoutX="47.0" layoutY="504.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@style.css" text="Se déconnecter" />
+                                        <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="20.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@pictures/medecin.png" />
+                                            </image>
+                                        </ImageView>
+                                        <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="20.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@pictures/ordonD.png" />
+                                            </image>
+                                        </ImageView>
+                                        <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="20.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@pictures/dossierD.png" />
+                                            </image>
+                                        </ImageView>
+                                        <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="20.0" layoutY="508.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@pictures/logout.png" />
+                                            </image>
+                                        </ImageView>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
+                    </left>
+                    <center>
+
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <AnchorPane layoutX="26.0" prefHeight="652.0" prefWidth="1046.0">
+                                    <children>
+                                        <AnchorPane layoutX="-3.0" layoutY="-14.0" prefHeight="625.0" prefWidth="772.0" styleClass="white-bg" stylesheets="@DashboarsDesign.css">
+                                            <children>
+
+                                                <!-- Ajout de l'ImageView pour afficher l'image -->
+                                                <ImageView fx:id="imageView" fitHeight="168.0" fitWidth="176.0" layoutX="250.0" layoutY="295.0" />
+                                                <HBox layoutX="120.0" layoutY="311.0">
+                                                    <Text fx:id="imagePathText" />
+                                                </HBox>
+                                                <ImageView fx:id="imageView12" fitHeight="626.0" fitWidth="213.0" layoutY="-1.0">
+                                                    <image>
+                                                        <Image url="@pictures/doctor1.jpg" />
+                                                    </image>
+                                                </ImageView>
+                                                <TextArea fx:id="antecedentsField" layoutX="272.0" layoutY="133.0" prefHeight="91.0" prefWidth="336.0" promptText="Antécédents personnels" styleClass="text-input" />
+                                                <DatePicker fx:id="dateCreationPicker" layoutX="338.0" layoutY="14.0" />
+                                                <ImageView fx:id="imageView1" fitHeight="24.0" fitWidth="28.0" layoutX="294.0" layoutY="15.0">
+                                                    <image>
+                                                        <Image url="@pictures/clandreier.png" />
+                                                    </image>
+                                                </ImageView>
+                                                <TextArea fx:id="resultatExamenField" layoutX="272.0" layoutY="54.0" prefHeight="71.0" prefWidth="335.0" promptText="Résultat de l'examen" styleClass="text-input" />
+                                                <Button fx:id="chooseImageButton" layoutX="539.0" layoutY="233.0" prefHeight="31.0" prefWidth="99.0" styleClass="custom-btn" stylesheets="@style.css" text="Choisir un scanner " />
+                                                <Button fx:id="ajouterButton" layoutX="413.0" layoutY="497.0" prefHeight="22.0" prefWidth="109.0" styleClass="custom-btn" stylesheets="@style.css" text="Ajouter" />
+                                                <ImageView fx:id="imageView11" fitHeight="15.0" fitWidth="22.0" layoutX="250.0" layoutY="243.0">
+                                                    <image>
+                                                        <Image url="@pictures/rescan.png" />
+                                                    </image>
+                                                </ImageView>
+                                                <Label layoutX="273.0" layoutY="241.0" text="Chemin de l'image  :" />
+                                                <ImageView fx:id="imageView13" fitHeight="22.0" fitWidth="27.0" layoutX="426.0" layoutY="504.0">
+                                                    <image>
+                                                        <Image url="@pictures/addFolder.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </children>
+                                        </AnchorPane>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
+
+
+
+                    </center>
+                </BorderPane>
+            </children>
+        </AnchorPane>
+    </children>
+</StackPane>

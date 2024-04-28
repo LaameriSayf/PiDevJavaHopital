@@ -183,7 +183,7 @@
                         </ImageView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="anchordetailleblog" layoutY="148.0" prefHeight="387.0" prefWidth="1148.0" visible="false">
+                  <AnchorPane fx:id="anchordetailleblog" layoutY="148.0" prefHeight="387.0" prefWidth="1148.0">
                      <children>
                         <ImageView fx:id="imageviewdetaille" fitHeight="343.0" fitWidth="350.0" layoutX="88.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" />
                         <HBox layoutX="467.0" layoutY="248.0" prefHeight="26.0" prefWidth="157.0">
@@ -267,14 +267,14 @@
                               </Text>
                            </children>
                         </HBox>
-                        <VBox layoutX="27.0" layoutY="100.0" prefHeight="258.0" prefWidth="46.0">
+                        <VBox layoutX="27.0" layoutY="100.0" prefHeight="258.0" prefWidth="42.0">
                            <children>
-                              <ImageView fitHeight="33.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="btnsharefb" fitHeight="33.0" fitWidth="47.0" onMouseClicked="#shareFacebook" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Template/front/images/icons8-facebook-nouveau-48.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="32.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="32.0" fitWidth="46.0" onMouseClicked="#shareGoogle" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Template/front/images/icons8-logo-google-48.png" />
                                  </image>
@@ -282,12 +282,20 @@
                                     <Insets top="20.0" />
                                  </VBox.margin>
                               </ImageView>
-                              <ImageView fitHeight="32.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="btnsharetwitter" fitHeight="32.0" fitWidth="46.0" onMouseClicked="#shareTwitter" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Template/front/images/icons8-twitter-48.png" />
                                  </image>
                                  <VBox.margin>
                                     <Insets top="20.0" />
+                                 </VBox.margin>
+                              </ImageView>
+                              <ImageView fitHeight="31.0" fitWidth="34.0" onMouseClicked="#sharePintrest" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Template/front/images/icons8-pinterest-48.png" />
+                                 </image>
+                                 <VBox.margin>
+                                    <Insets top="12.0" />
                                  </VBox.margin>
                               </ImageView>
                            </children>

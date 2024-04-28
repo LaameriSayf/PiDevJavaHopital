@@ -236,16 +236,59 @@ public class BlogService implements IBlog<Blog> {
          e.printStackTrace();
      }
  }
+    public void shareTwitter(Blog blog) {
+        String facebookUrl = "https://twitter.com/intent/tweet?text=";
 
-    private String serializeBlog(Blog blog) {
+        String blogString = serializeBlog(blog);
 
-        blog.getDate();
-        blog.getDescription();
-        blog.getLieu();
-        return blog.toString();
+        try {
+            String encodedContent = URLEncoder.encode(blogString, "UTF-8");
+            facebookUrl += encodedContent;
+            Desktop.getDesktop().browse(new URI(facebookUrl));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
-public int NombreBlog(){
+    public void shareGoogle(Blog blog) {
+        String facebookUrl = "https://www.google.com/search?q=";
+
+        String blogString = serializeBlog(blog);
+
+        try {
+            String encodedContent = URLEncoder.encode(blogString, "UTF-8");
+            facebookUrl += encodedContent;
+            Desktop.getDesktop().browse(new URI(facebookUrl));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sharePintrest(Blog blog) {
+        String facebookUrl = "https://www.pinterest.com/pin/create/button/?url=";
+
+        String blogString = serializeBlog(blog);
+
+        try {
+            String encodedContent = URLEncoder.encode(blogString, "UTF-8");
+            facebookUrl += encodedContent;
+            Desktop.getDesktop().browse(new URI(facebookUrl));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String serializeBlog(Blog blog) {
+        // Assuming you want to serialize the blog's data into a string representation
+        // You need to use the data retrieved from the blog object
+        String serializedBlog = "Date: " + blog.getDate() +
+                ", Description: " + blog.getDescription() +
+                ", Lieu: " + blog.getLieu();
+        return serializedBlog;
+    }
+
+
+    public int NombreBlog(){
      String rqt="SELECT COUNT(*) FROM `blog`";
     int nombreblog=0;
 

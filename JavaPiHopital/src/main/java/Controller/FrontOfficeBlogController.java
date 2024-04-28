@@ -56,6 +56,8 @@ public class FrontOfficeBlogController {
     @FXML Text textcategoriedescription;
     @FXML ImageView btnajoutercommentfront;
     @FXML Text textrate1;
+    @FXML
+    private ImageView btnsharefacebbok;
     private BlogService blogService = new BlogService();
     private List<Blog> blogList = blogService.getAll();
 
@@ -285,6 +287,48 @@ public class FrontOfficeBlogController {
             }
         } else {
             System.out.println("Veuillez sélectionner un blog pour ajouter un commentaire.");
+        }
+    }
+
+
+    public void shareFacebook() {
+        BlogService bs = new BlogService();
+        List<Blog> blogs = bs.getAll();
+
+        for (Blog blog : blogs) {
+            if (titreDetaille.getText().equals(blog.getTitre())) {
+                bs.shareFacebook(blog);
+            }
+        }
+    }
+    public void shareTwitter() {
+        BlogService bs = new BlogService();
+        List<Blog> blogs = bs.getAll();
+
+        for (Blog blog : blogs) {
+            if (titreDetaille.getText().equals(blog.getTitre())) {
+                bs.shareTwitter(blog);
+            }
+        }
+    }
+    public void shareGoogle() {
+        BlogService bs = new BlogService();
+        List<Blog> blogs = bs.getAll();
+
+        for (Blog blog : blogs) {
+            if (titreDetaille.getText().equals(blog.getTitre())) {
+                bs.shareGoogle(blog);
+            }
+        }
+    }
+    public void sharePintrest() {
+        BlogService bs = new BlogService();
+        List<Blog> blogs = bs.getAll();
+
+        for (Blog blog : blogs) {
+            if (titreDetaille.getText().equals(blog.getTitre())) {
+                bs.sharePintrest(blog);
+            }
         }
     }
 

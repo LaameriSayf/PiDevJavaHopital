@@ -1,6 +1,7 @@
 package Service;
 
 import Interface.IMedicament;
+import Model.Categorie;
 import Model.Medicament;
 import Util.DataBase;
 
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 public class MedicamentService implements IMedicament <Medicament> {
     private Connection cnx;
@@ -17,19 +19,20 @@ public class MedicamentService implements IMedicament <Medicament> {
     }
     @Override
     public void addMedicament(Medicament medicament) {
-        String requete="INSERT INTO medicament (ref_med,nom_med,date_amm,date_expiration,qte,description,etat,image)"+
-                "VALUES (?,?,?,?,?,?,?,?)";
+        String requete="INSERT INTO medicament (categorie_id,ref_med,nom_med,date_amm,date_expiration,qte,description,etat,image)"+
+                "VALUES (?,?,?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement pst=cnx.prepareStatement(requete);
-            pst.setString(1, medicament.getRef_med());
-            pst.setString(2, medicament.getNom_med());
-            pst.setDate(3, Date.valueOf(medicament.getDate_amm()));
-            pst.setDate(4, Date.valueOf(medicament.getDate_expiration()));
-            pst.setInt(5, medicament.getQte());
-            pst.setString(6, medicament.getDescription());
-            pst.setString(7, medicament.getEtat());
-            pst.setString(8, medicament.getImage());
+            pst.setInt(1, medicament.getCategorie().getId());
+            pst.setString(2, medicament.getRef_med());
+            pst.setString(3, medicament.getNom_med());
+            pst.setDate(4, Date.valueOf(medicament.getDate_amm()));
+            pst.setDate(5, Date.valueOf(medicament.getDate_expiration()));
+            pst.setInt(6, medicament.getQte());
+            pst.setString(7, medicament.getDescription());
+            pst.setString(8, medicament.getEtat());
+            pst.setString(9, medicament.getImage());
 
             pst.executeUpdate();
             System.out.println("Medicament Ajouté ");
@@ -56,18 +59,19 @@ public class MedicamentService implements IMedicament <Medicament> {
 
     @Override
     public void updateMedicament(Medicament medicament) {
-        String requete="UPDATE `medicament` SET `ref_med` = ? , `nom_med`=? , `date_amm`=?,`date_expiration` = ? , `qte`=? , `description`=?,`etat` = ? , `image`=?  WHERE `id` = ? ";
+        String requete="UPDATE `medicament` SET `categorie_id` = ? ,`ref_med` = ? , `nom_med`=? , `date_amm`=?,`date_expiration` = ? , `qte`=? , `description`=?,`etat` = ? , `image`=?  WHERE `id` = ? ";
         try {
             PreparedStatement pst = cnx.prepareStatement(requete);
-            pst.setString(1, medicament.getRef_med());
-            pst.setString(2, medicament.getNom_med());
-            pst.setDate(3, Date.valueOf(medicament.getDate_amm()));
-            pst.setDate(4, Date.valueOf(medicament.getDate_expiration()));
-            pst.setInt(5, medicament.getQte());
-            pst.setString(6, medicament.getDescription());
-            pst.setString(7, medicament.getEtat());
-            pst.setString(8, medicament.getImage());
-            pst.setInt(9,medicament.getId());
+            pst.setInt(1, medicament.getCategorie().getId());
+            pst.setString(2, medicament.getRef_med());
+            pst.setString(3, medicament.getNom_med());
+            pst.setDate(4, Date.valueOf(medicament.getDate_amm()));
+            pst.setDate(5, Date.valueOf(medicament.getDate_expiration()));
+            pst.setInt(6, medicament.getQte());
+            pst.setString(7, medicament.getDescription());
+            pst.setString(8, medicament.getEtat());
+            pst.setString(9, medicament.getImage());
+            pst.setInt(10,medicament.getId());
             pst.executeUpdate();
             System.out.println("Medicament updated ");
         } catch (SQLException e) {
@@ -75,6 +79,14 @@ public class MedicamentService implements IMedicament <Medicament> {
         }
 
 
+    }
+
+    public  Categorie getBlogById(int id) {
+        CategorieService cs = new CategorieService();
+        List<Categorie> blog = cs.getData(); // Récupérer la liste des catégories une seule fois
+        Optional<Categorie> optionalCategory =   blog.stream().filter(e->e.getId()==id).findFirst();
+
+        return optionalCategory.orElse(null) ;
     }
 
     @Override
@@ -88,6 +100,9 @@ public class MedicamentService implements IMedicament <Medicament> {
             while(rs.next()){
                 Medicament m = new Medicament();
                 m.setId(rs.getInt(1));
+                int categorie_id  = rs.getInt("categorie_id");
+                Categorie CategorieMedicament= getBlogById(categorie_id);
+                m.setCategorie(CategorieMedicament);
                 m.setRef_med(rs.getString("ref_med"));
                 m.setNom_med(rs.getString("nom_med"));
                 m.setDate_amm(rs.getDate("date_amm").toLocalDate());
@@ -102,6 +117,14 @@ public class MedicamentService implements IMedicament <Medicament> {
             throw new RuntimeException("message !!!!!"+e);
         }
         return data;
+    }
+    public boolean referenceExists(String reference) {
+        for (Medicament medicament : getData()) {
+            if (medicament.getRef_med().equals(reference)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

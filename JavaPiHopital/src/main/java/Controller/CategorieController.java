@@ -49,6 +49,9 @@ import static javafx.collections.FXCollections.observableArrayList;
 public class CategorieController implements Initializable {
     CategorieService cs =new CategorieService();
     MedicamentService ms =new MedicamentService();
+
+    @FXML
+    private ComboBox<String> ComboCategorie;
     @FXML
     private AnchorPane MedicamentForm;
 
@@ -414,7 +417,18 @@ public class CategorieController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
+        etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
+        List<Categorie> categories1 = cs.getData();
+        List<String> categoryNames = new ArrayList<>();
+
+        // Ajouter les noms des catégories à la liste
+        for (Categorie category : categories1) {
+            categoryNames.add(category.getNom_cat());
+        }
+
+        // Ajouter les noms des catégories à la ComboBox
+        ComboCategorie.setItems(FXCollections.observableArrayList(categoryNames));
+
             fileChooser.setInitialDirectory(new File("."));
         loadAndDisplayData();
 
@@ -551,12 +565,21 @@ etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
             return ""; // Gérer le cas où le chemin de l'image n'est pas trouvé
         }
     }
+    private Categorie getCategoryByName(String categoryName) {
+        List<Categorie> categories = cs.getData(); // Supposons que vous ayez une méthode getCategories() dans votre service
+        for (Categorie categorie : categories) {
+            if (categorie.getNom_cat().equals(categoryName)) {
+                return categorie;
+            }
+        }
+        return null; // Retourne null si aucune catégorie correspondante n'est trouvée
+    }
     @FXML
     void AjouterMed(ActionEvent event) {
         // Vérification si tous les champs sont remplis
         if (dateamm.getValue() == null || dateexp.getValue() == null || desc.getText().isEmpty() ||
                 nom_med.getText().isEmpty() || ref_med.getText().isEmpty() || etat.getSelectionModel().isEmpty() ||
-                textArea.getText().isEmpty() || qte.getText().isEmpty()) {
+                ComboCategorie.getSelectionModel().isEmpty()||textArea.getText().isEmpty() || qte.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur");
             alert.setContentText("Veuillez remplir tous les champs.");
@@ -564,6 +587,9 @@ etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
             return; // Sortie de la méthode en cas de champs manquants
         }
 
+        String catName = Optional.ofNullable(ComboCategorie.getSelectionModel().getSelectedItem()).orElse("");
+        // Recherche de la catégorie correspondante dans la liste des catégories
+        Categorie categorie = getCategoryByName(catName);
         LocalDate date = dateamm.getValue();
         LocalDate date1 = dateexp.getValue();
         String description = desc.getText();
@@ -571,7 +597,15 @@ etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
         String ref1 = ref_med.getText();
         String etat1 = etat.getSelectionModel().getSelectedItem();
         String image1 = textArea.getText();
-
+        // Vérification si la référence est unique
+        String reference = ref_med.getText();
+        if (ms.referenceExists(reference)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setContentText("La référence du médicament déjà existante.");
+            alert.showAndWait();
+            return; // Sortie de la méthode en cas de référence déjà existante
+        }
         // Vérification si la date d'expiration est supérieure à la date d'ajout
         if (date1.isBefore(date)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -599,7 +633,7 @@ etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
 
         // Appel de la méthode addMedicament avec les données récupérées
         if (ms != null) {
-            Medicament medicament = new Medicament(1, ref1, nom1, date, date1, qte1, description, etat1, image1);
+           Medicament medicament = new Medicament(1, categorie,ref1, nom1, date, date1, qte1, description, etat1, image1);
             ms.addMedicament(medicament);
 
             // Affichage de l'alerte de succès
@@ -733,26 +767,32 @@ etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
     }
 
 
-    private void loadAndDisplayData() {
-        ObservableList<String> items = observableArrayList();
-        System.out.println("loading");
-        // Retrieve data from the database
 
+    private void loadAndDisplayData() {
+        ObservableList<String> items = FXCollections.observableArrayList();
+        System.out.println("loading");
+
+        // Récupérer les données de la base de données
         List<Medicament> medicamentList = ms.getData();
 
-        // Convert the data into strings and add them to the list
+        // Parcourir la liste des médicaments et formater chaque élément
         for (Medicament med : medicamentList) {
+            // Récupérer le nom de la catégorie associée au médicament
+            String categoryName = med.getCategorie() != null ? med.getCategorie().getNom_cat() : "null";
 
-            String item = String.format("ID: %d, Reference: %s, nom medicament: %s," +
-                            " Description: %s, Date expiration: %s, date amm: %s," +
-                            " etat: %s, Quantite: %s, image: %s",
-                    med.getId(), med.getRef_med(), med.getNom_med(),
+            // Formater la chaîne de caractères avec le nom de la catégorie
+            String item = String.format("ID: %d, Catégorie: %s, Référence: %s, Nom du médicament: %s," +
+                            " Description: %s, Date d'expiration: %s, Date d'AMM: %s," +
+                            " État: %s, Quantité: %s, Image: %s",
+                    med.getId(), categoryName, med.getRef_med(), med.getNom_med(),
                     med.getDescription(), med.getDate_expiration(),
                     med.getDate_amm(), med.getEtat(), med.getQte(), med.getImage());
+
+            // Ajouter l'élément à la liste observable
             items.add(item);
         }
 
-        // Set the items to the ListView
+        // Définir les éléments dans la ListView
         table_med.setItems(items);
     }
 
@@ -762,20 +802,23 @@ etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
         if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 1) {
             // Récupérer la ligne sélectionnée
             String medLineSelected = table_med.getSelectionModel().getSelectedItem();
-
+            int selectedIndex = table_med.getSelectionModel().getSelectedIndex();
             // Vérifier si la ligne sélectionnée n'est pas nulle
-            if (medLineSelected != null) {
+            if (medLineSelected != null && selectedIndex != -1) {
                 // Extraire les valeurs de la ligne sélectionnée
-                int id = getIdFromLine(medLineSelected);
-                String ref = getRefFromLine(medLineSelected);
-                String nom = getNomFromLine(medLineSelected);
-                String description = getDescriptionFromLine(medLineSelected);
-                LocalDate dateAmm = getDateAmmFromLine(medLineSelected);
-                LocalDate dateExp = getDateExpFromLine(medLineSelected);
-                int qte1 = getQteFromLine(medLineSelected);
-                String etata = getEtatFromLine(medLineSelected);
-                String img = getImageFromLine(medLineSelected);
-                // Extraire les autres valeurs de la ligne sélectionnée ici ...
+                Medicament selectedMedicament = ms.getData().get(selectedIndex);
+
+                String[] parts = medLineSelected.split(","); // Diviser la chaîne en parties en utilisant ","
+                String cat = parts[1].substring(parts[1].indexOf(":") + 1).trim(); // Récupérer la catégorie
+                String nom = selectedMedicament.getNom_med();
+                String ref = selectedMedicament.getRef_med();
+                String description = selectedMedicament.getDescription();
+                LocalDate dateAmm = selectedMedicament.getDate_amm();
+                LocalDate dateExp = selectedMedicament.getDate_expiration();
+                String etata = selectedMedicament.getEtat();
+                int qte1 = selectedMedicament.getQte();
+                String img = selectedMedicament.getImage();
+
 
                 // Afficher les valeurs dans les zones de texte
                 nom_med.setText(nom);
@@ -783,10 +826,15 @@ etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
                 desc.setText(description);
                 dateamm.setValue(dateAmm);
                 dateexp.setValue(dateExp);
-                qte.setText(String.valueOf(qte1));
                 etat.setValue(etata);
+                qte.setText(String.valueOf(qte1));
                 textArea.setText(img);
+
+                // Sélectionner la catégorie correspondante dans la liste déroulante
+                ComboCategorie.getSelectionModel().select(cat);
             }
         }
     }
+
+
 }

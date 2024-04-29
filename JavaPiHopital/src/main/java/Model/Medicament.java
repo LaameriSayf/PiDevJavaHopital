@@ -18,8 +18,9 @@ public class Medicament {
 
 
 
-    public Medicament(int id,String ref_med, String nom_med, LocalDate date_amm, LocalDate date_expiration, int qte, String description, String etat, String image) {
+    public Medicament(int id,Categorie categorie,String ref_med, String nom_med, LocalDate date_amm, LocalDate date_expiration, int qte, String description, String etat, String image) {
        this.id=id;
+
         this.ref_med = ref_med;
         this.nom_med = nom_med;
         this.date_amm = date_amm;
@@ -32,6 +33,16 @@ public class Medicament {
     }
     public Medicament() {
     }
+
+
+    public Categorie getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(Categorie categorie) {
+        this.categorie = categorie;
+    }
+
     public String getRef_med() {
         return ref_med;
     }

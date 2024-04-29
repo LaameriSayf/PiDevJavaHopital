@@ -9,7 +9,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane prefHeight="781.0" prefWidth="1133.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AfficherController">
    <children>
       <BorderPane prefHeight="781.0" prefWidth="1133.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -34,8 +33,8 @@
          <center>
             <AnchorPane fx:id="wost" prefHeight="587.0" prefWidth="1133.0" styleClass="wost" stylesheets="@cssCategorie/sideBar.css" BorderPane.alignment="CENTER">
                <children>
-                  <ListView fx:id="frontWost" layoutX="182.0" layoutY="77.0" prefHeight="320.0" prefWidth="734.0" />
-                  <Text fill="#378ce7" layoutX="443.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des médicaments" wrappingWidth="272.8385314941406">
+                  <ListView fx:id="frontWost" layoutX="234.0" layoutY="54.0" prefHeight="367.0" prefWidth="691.0" />
+                  <Text fill="#378ce7" layoutX="443.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des médicaments" wrappingWidth="272.8385314941406">
                      <font>
                         <Font name="Times New Roman Bold" size="22.0" />
                      </font>

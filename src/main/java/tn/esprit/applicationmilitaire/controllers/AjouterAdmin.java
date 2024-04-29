@@ -296,8 +296,8 @@ public class AjouterAdmin {
 
 
     public void initialize() throws SQLException {
-        addAdminList = addAdminListData(); // Initialize addEventList
-        addAdminShowList(); // Populate TableView with data from addEventList
+        addAdminList = addAdminListData(); // Initialize addAdminList
+        addAdminShowList(); // Populate TableView with data from addAminList
         addAdminSelect();
         //setupSearchListener();
 

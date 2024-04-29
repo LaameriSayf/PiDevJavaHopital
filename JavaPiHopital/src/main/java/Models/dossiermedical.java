@@ -83,13 +83,10 @@ public class dossiermedical {
                 ", patient_id=" + patient_id +
                 '}';
     }
+    private Patient patient;
 
 
-
-    //*  private Patient patient;
-
-
-  /*  public Patient getPatient() {
+    public Patient getPatient() {
         return patient;
     }
 
@@ -103,5 +100,9 @@ public class dossiermedical {
         } else {
             return 1;
         }
-    }*/
+    }
+
+
+
+
 }

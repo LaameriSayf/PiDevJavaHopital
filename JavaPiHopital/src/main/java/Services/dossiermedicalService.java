@@ -41,17 +41,14 @@ public class dossiermedicalService implements IService <dossiermedical> {
 
         return dossier;
     }
-
-
-
     @Override
     public void ajouter(dossiermedical dossiermedical) throws SQLException {
         // Obtention de la date actuelle
         Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
 
         // Préparation de la requête SQL avec des paramètres de substitution
-        String requete = "INSERT INTO dossiermedical(date_creation,resultatexamen,antecedentspersonelles ,image) " +
-                "VALUES (?, ?, ?, ?)";
+        String requete = "INSERT INTO dossiermedical(date_creation,resultatexamen,antecedentspersonelles ,image,patient_id) " +
+                "VALUES (?, ?, ?, ?,?)";
 
         try (Connection connection = new DataBase().getCnx();
              PreparedStatement statement = connection.prepareStatement(requete)) {
@@ -61,6 +58,7 @@ public class dossiermedicalService implements IService <dossiermedical> {
             statement.setString(2, dossiermedical.getResultatexamen());
             statement.setString(3, dossiermedical.getAntecedentspersonelles());
             statement.setString(4, dossiermedical.getImage());
+            statement.setInt(5, 1);
 
             // Exécution de la requête d'insertion
             int rowsInserted = statement.executeUpdate();
@@ -74,32 +72,65 @@ public class dossiermedicalService implements IService <dossiermedical> {
             System.out.println("Erreur lors de l'ajout du dossier medical: " + e.getMessage());
         }
 
-
     }
+
+
+
+
+
+
+
     @Override
     public void modifier(dossiermedical dossiermedical) throws SQLException {
+        // Obtention de la date actuelle
+        Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
+
+        // Préparation de la requête SQL pour obtenir le nom et prénom du patient
+        String requetePatient = "SELECT nom, prenom FROM global_user WHERE id = ?";
+        String nomPatient = "";
+        String prenomPatient = "";
+
+        try (Connection connection = new DataBase().getCnx();
+             PreparedStatement statementPatient = connection.prepareStatement(requetePatient)) {
+            // Attribution de l'ID du patient à la requête
+            statementPatient.setInt(1, 1); // Vous avez mentionné que vous voulez récupérer les informations pour l'ID 1
+
+            // Exécution de la requête pour obtenir les informations du patient
+            ResultSet rs = statementPatient.executeQuery();
+            if (rs.next()) {
+                nomPatient = rs.getString("nom");
+                prenomPatient = rs.getString("prenom");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des informations du patient: " + e.getMessage());
+        }
+
         // Préparation de la requête SQL avec des paramètres de substitution
-        String requete = "UPDATE dossiermedical SET resultatexamen=?, antecedentspersonelles=?, image=? WHERE id=?";
+        String requete = "INSERT INTO dossiermedical(date_creation,resultatexamen,antecedentspersonelles,image,patient_id,nom_patient,prenom_patient) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = new DataBase().getCnx();
              PreparedStatement statement = connection.prepareStatement(requete)) {
 
             // Attribution des valeurs aux paramètres de la requête
-            statement.setString(1, dossiermedical.getResultatexamen());
-            statement.setString(2, dossiermedical.getAntecedentspersonelles());
-            statement.setString(3, dossiermedical.getImage());
-            statement.setInt(4, dossiermedical.getId()); // Utilisation de l'ID pour identifier le dossier à modifier
+            statement.setTimestamp(1, dateActuelle); // Date actuelle pour la date de creation
+            statement.setString(2, dossiermedical.getResultatexamen());
+            statement.setString(3, dossiermedical.getAntecedentspersonelles());
+            statement.setString(4, dossiermedical.getImage());
+            statement.setInt(5, 1); // ID du patient
+            statement.setString(6, nomPatient); // Nom du patient
+            statement.setString(7, prenomPatient); // Prénom du patient
 
-            // Exécution de la requête de mise à jour
-            int rowsUpdated = statement.executeUpdate();
+            // Exécution de la requête d'insertion
+            int rowsInserted = statement.executeUpdate();
 
-            if (rowsUpdated > 0) {
-                System.out.println("Dossier modifié avec succès !");
+            if (rowsInserted > 0) {
+                System.out.println("Dossier ajouté avec succès !");
             } else {
-                System.out.println("Échec de la modification du dossier médical !");
+                System.out.println("Échec de l'ajout du dossier medical !");
             }
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la modification du dossier médical: " + e.getMessage());
+            System.out.println("Erreur lors de l'ajout du dossier medical: " + e.getMessage());
         }
     }
 

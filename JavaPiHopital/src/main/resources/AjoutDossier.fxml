@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="638.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AjoutDossier">
     <children>
         <AnchorPane prefHeight="200.0" prefWidth="200.0">
@@ -81,7 +85,7 @@
                                             <children>
 
                                                 <!-- Ajout de l'ImageView pour afficher l'image -->
-                                                <ImageView fx:id="imageView" fitHeight="168.0" fitWidth="176.0" layoutX="250.0" layoutY="295.0" />
+                                                <ImageView fx:id="imageView" fitHeight="177.0" fitWidth="183.0" layoutX="291.0" layoutY="376.0" />
                                                 <HBox layoutX="120.0" layoutY="311.0">
                                                     <Text fx:id="imagePathText" />
                                                 </HBox>
@@ -90,23 +94,30 @@
                                                         <Image url="@pictures/doctor1.jpg" />
                                                     </image>
                                                 </ImageView>
-                                                <TextArea fx:id="antecedentsField" layoutX="272.0" layoutY="133.0" prefHeight="91.0" prefWidth="336.0" promptText="Antécédents personnels" styleClass="text-input" />
+                                                <!-- Ajout de champs pour afficher les informations du patient -->
+                                                <Label layoutX="303.0" layoutY="60.0" text="Nom du patient : " />
+                                                <TextField fx:id="nomPatientField" layoutX="413.0" layoutY="56.0" />
+
+                                                <Label layoutX="295.0" layoutY="99.0" text="Prénom du patient : " />
+                                                <TextField fx:id="prenomPatientField" layoutX="413.0" layoutY="95.0" />
+
+                                                <TextArea fx:id="antecedentsField" layoutX="292.0" layoutY="151.0" prefHeight="85.0" prefWidth="329.0" promptText="Antécédents personnels" styleClass="text-input" />
                                                 <DatePicker fx:id="dateCreationPicker" layoutX="338.0" layoutY="14.0" />
                                                 <ImageView fx:id="imageView1" fitHeight="24.0" fitWidth="28.0" layoutX="294.0" layoutY="15.0">
                                                     <image>
                                                         <Image url="@pictures/clandreier.png" />
                                                     </image>
                                                 </ImageView>
-                                                <TextArea fx:id="resultatExamenField" layoutX="272.0" layoutY="54.0" prefHeight="71.0" prefWidth="335.0" promptText="Résultat de l'examen" styleClass="text-input" />
-                                                <Button fx:id="chooseImageButton" layoutX="539.0" layoutY="233.0" prefHeight="31.0" prefWidth="99.0" styleClass="custom-btn" stylesheets="@style.css" text="Choisir un scanner " />
-                                                <Button fx:id="ajouterButton" layoutX="413.0" layoutY="497.0" prefHeight="22.0" prefWidth="109.0" styleClass="custom-btn" stylesheets="@style.css" text="Ajouter" />
-                                                <ImageView fx:id="imageView11" fitHeight="15.0" fitWidth="22.0" layoutX="250.0" layoutY="243.0">
+                                                <TextArea fx:id="resultatExamenField" layoutX="289.0" layoutY="259.0" prefHeight="71.0" prefWidth="335.0" promptText="Résultat de l'examen" styleClass="text-input" />
+                                                <Button fx:id="chooseImageButton" layoutX="513.0" layoutY="343.0" prefHeight="31.0" prefWidth="99.0" styleClass="custom-btn" stylesheets="@style.css" text="Choisir un scanner " />
+                                                <Button fx:id="ajouterButton" layoutX="513.0" layoutY="482.0" prefHeight="22.0" prefWidth="109.0" styleClass="custom-btn" stylesheets="@style.css" text="Ajouter" />
+                                                <ImageView fx:id="imageView11" fitHeight="15.0" fitWidth="22.0" layoutX="278.0" layoutY="346.0">
                                                     <image>
                                                         <Image url="@pictures/rescan.png" />
                                                     </image>
                                                 </ImageView>
-                                                <Label layoutX="273.0" layoutY="241.0" text="Chemin de l'image  :" />
-                                                <ImageView fx:id="imageView13" fitHeight="22.0" fitWidth="27.0" layoutX="426.0" layoutY="504.0">
+                                                <Label layoutX="303.0" layoutY="345.0" text="Chemin de l'image  :" />
+                                                <ImageView fx:id="imageView13" fitHeight="22.0" fitWidth="27.0" layoutX="536.0" layoutY="489.0">
                                                     <image>
                                                         <Image url="@pictures/addFolder.png" />
                                                     </image>

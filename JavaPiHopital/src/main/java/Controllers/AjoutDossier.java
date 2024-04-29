@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.Patient;
 import Models.dossiermedical;
 import Services.dossiermedicalService;
 import javafx.fxml.FXML;
@@ -41,6 +42,8 @@ public class AjoutDossier implements Initializable {
 
     @FXML
     private Text imagePathText;
+    @FXML
+    private Patient patient;
 
     @FXML
     private ImageView imageView;
@@ -96,6 +99,10 @@ public class AjoutDossier implements Initializable {
             afficherAlerteErreur("Erreur lors de l'ajout du dossier médical : " + e.getMessage());
         }
     }
+
+
+
+
 
     private boolean isValidImageType(String imagePath) {
         String extension = imagePath.substring(imagePath.lastIndexOf(".")).toLowerCase();

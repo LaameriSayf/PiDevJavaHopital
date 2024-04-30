@@ -203,17 +203,41 @@ public void dislike(Commentaire cmtr,Admin admin){
 
 /***********************************Verifier si utilisateur mettre like *********************************************************************************/
 
-    private boolean hasUserLikedComment( int commentaireId, int userId) throws SQLException {
-        String query = "SELECT * FROM `like` WHERE commentaire_id = ? AND userr_id = ?";
+
+public boolean update(int commentaireId, String nouveauContenu, int userId) {
+    // Vérifier si le commentaire appartient à l'utilisateur
+    if (belongsToUser(commentaireId, userId)) {
+        String rqt = "UPDATE commentaire SET contenue = ? WHERE id = ?";
+        try {
+            PreparedStatement stm = cnx.prepareStatement(rqt);
+            stm.setString(1, nouveauContenu);
+            stm.setInt(2, commentaireId);
+            int rowsAffected = stm.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la modification du contenu du commentaire : " + e);
+        }
+    } else {
+        // Le commentaire n'appartient pas à l'utilisateur
+        return false;
+    }
+}
+
+    public boolean belongsToUser(int commentaireId, int userId) {
+        String query = "SELECT * FROM commentaire WHERE id = ? AND idadmin_id = ?";
         try (PreparedStatement statement = cnx.prepareStatement(query)) {
             statement.setInt(1, commentaireId);
             statement.setInt(2, userId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 return resultSet.next();
             }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la vérification de l'appartenance du commentaire à l'utilisateur : " + e);
         }
     }
-/************************************Verifier si utilisaateur mettre dilike **********************************************************/
+
+
+    /************************************Verifier si utilisaateur mettre dilike **********************************************************/
 
     private boolean hasUserDislikedComment( int commentaireId, int userId) throws SQLException {
         String query = "SELECT * FROM `dislike` WHERE commentaire_id = ? AND userr_id = ?";
@@ -255,5 +279,14 @@ public boolean removeDisLike(int commentaireId, int userId){
 }
 /*******************************************************************Fin************************************************************************/
 
-
+private boolean hasUserLikedComment( int commentaireId, int userId) throws SQLException {
+    String query = "SELECT * FROM `like` WHERE commentaire_id = ? AND userr_id = ?";
+    try (PreparedStatement statement = cnx.prepareStatement(query)) {
+        statement.setInt(1, commentaireId);
+        statement.setInt(2, userId);
+        try (ResultSet resultSet = statement.executeQuery()) {
+            return resultSet.next();
+        }
+    }
+}
 }

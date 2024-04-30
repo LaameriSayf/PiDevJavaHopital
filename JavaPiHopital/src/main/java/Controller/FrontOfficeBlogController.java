@@ -207,6 +207,7 @@ public class FrontOfficeBlogController {
 
                 // Ajouter un événement de clic aux ImageView pour gérer les actions de like/dislike
                 CommentaireService cs = new CommentaireService();
+
                 supprimercommentaire.setOnMouseClicked(event -> {
                     // Suppression du commentaire
                     cs.delete(comment);
@@ -229,10 +230,58 @@ public class FrontOfficeBlogController {
                             .position(Pos.TOP_CENTER)
                             .show();
                 });
+
                 Admin a = new Admin(6, 4545, "", "", "");
                 likeImageView.setOnMouseClicked(event -> cs.like(comment, a));
                 modifiercommentaire.setStyle("-fx-text-fill:green;");
                 supprimercommentaire.setStyle("-fx-text-fill:red;");
+
+                modifiercommentaire.setOnMouseClicked(event -> {
+                    // Récupérer le contenu actuel du commentaire
+                    String contenuActuel = comment.getContenue();
+
+                    // Vérifier si le champ de texte est vide ou s'il contient le contenu actuel du commentaire
+                    if (inputaddcommentaire.getText().isEmpty() || inputaddcommentaire.getText().equals(contenuActuel)) {
+                        // Si le champ de texte est vide ou contient déjà le contenu actuel, remplissez-le avec le contenu actuel du commentaire
+                        inputaddcommentaire.setText(contenuActuel);
+                    } else {
+                        // Si le champ de texte contient un nouveau contenu, cela signifie que l'utilisateur a déjà modifié le commentaire
+                        // Récupérer le nouveau contenu du champ de texte
+                        String nouveauContenu = inputaddcommentaire.getText();
+
+                        // Récupérer l'ID de l'utilisateur actuel (vous devrez obtenir cela à partir de votre système d'authentification)
+                        int userId = 4; // ID de l'utilisateur à remplacer par l'ID réel de l'utilisateur
+
+                        // Vérifier si le commentaire appartient à l'utilisateur actuel
+                        if (cs.belongsToUser(comment.getId(), userId)) {
+                            // Créer un nouvel objet Commentaire avec le nouveau contenu
+                            Commentaire commentaire = new Commentaire();
+                            commentaire.setId(comment.getId()); // Définir l'ID du commentaire à modifier
+                            commentaire.setContenue(nouveauContenu);
+
+                            // Appeler la méthode update avec l'ID du commentaire, le nouveau contenu et l'ID de l'utilisateur
+                            cs.update(commentaire.getId(), nouveauContenu, userId);
+                            
+
+                            // Réinitialiser le champ de texte
+                            inputaddcommentaire.clear();
+                            Blog updatedBlog = bs.getBlogById(blog.getId());
+                            if (updatedBlog != null) {
+                                // Afficher les détails du blog mis à jour avec la liste de commentaires mise à jour
+                                displayBlogDetail(updatedBlog);
+                            }
+                                listviewcommentfront.refresh();
+                        } else {
+                            // Afficher une alerte indiquant que l'utilisateur n'est pas autorisé à modifier ce commentaire
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Modification non autorisée");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Vous n'êtes pas autorisé à modifier ce commentaire.");
+                            alert.showAndWait();
+                        }
+                    }
+                });
+
 
                 HBox commentBox = new HBox(commentLabel, modifiercommentaire, supprimercommentaire, likeImageView, nbrlike, dislikeImageView, nbrdislike);
                 commentBox.setSpacing(10);
@@ -345,6 +394,11 @@ public class FrontOfficeBlogController {
                 bs.sharePintrest(blog);
             }
         }
+    }
+
+    public void modifierCommentaire(){
+
+
     }
 
 

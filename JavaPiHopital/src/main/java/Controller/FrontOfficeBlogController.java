@@ -85,10 +85,25 @@ public class FrontOfficeBlogController {
 
                             for (Blog blog : itemList) {
                                 ImageView imageView = new ImageView(blog.getIamge());
+                                Text titleText = new Text(blog.getTitre());
+                                titleText.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;"); // Style du texte du titre
                                 imageView.setFitWidth(300); // Ajustez la largeur de l'image
                                 imageView.setFitHeight(200); // Ajustez la hauteur de l'image
 
-                                AnchorPane anchorPane = new AnchorPane(imageView);
+                                VBox vbox = new VBox(); // Créez un VBox pour empiler les éléments verticalement
+                                vbox.getChildren().addAll(imageView, titleText); // Ajoutez l'image et le titre au VBox
+                                vbox.setAlignment(Pos.CENTER); // Centrez les éléments à l'intérieur du VBox
+
+                                imageView.setFitWidth(300); // Ajustez la largeur de l'image
+                                imageView.setFitHeight(200); // Ajustez la hauteur de l'image
+
+                                AnchorPane anchorPane = new AnchorPane();
+                                AnchorPane.setTopAnchor(titleText, 10.0); // Position du texte du titre par rapport au haut
+                                AnchorPane.setLeftAnchor(titleText, 10.0); // Position du texte du titre par rapport à gauche
+                                AnchorPane.setBottomAnchor(imageView, 0.0); // Position de l'image par rapport au bas
+                                AnchorPane.setLeftAnchor(imageView, 0.0); // Position de l'image par rapport à gauche
+
+                                anchorPane.getChildren().addAll(imageView, titleText);
                                 anchorPane.setOnMouseClicked(event -> {
                                     // Récupérer l'ID du blog sélectionné
                                     int blogId = blog.getId();

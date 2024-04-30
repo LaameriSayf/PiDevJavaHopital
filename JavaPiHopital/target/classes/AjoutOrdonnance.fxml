@@ -96,6 +96,8 @@
 
                                                 <Label layoutX="95.0" layoutY="197.0" prefHeight="18.0" prefWidth="78.0" text="Adresse:" />
                                                 <TextField fx:id="adresseField" layoutX="180.0" layoutY="194.0" />
+                                                <Label layoutX="35.0" layoutY="247.0" text="Signature Numérique:" />
+                                                <TextField fx:id="signatureField" layoutX="180.0" layoutY="244.0" prefWidth="400.0" />
 
                                                 <Button layoutX="234.0" layoutY="404.0" onAction="#ajouterOrdonnance" prefHeight="26.0" prefWidth="202.0" styleClass="custom-btn" stylesheets="@style.css" text="Ajouter" />
                                                 <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="22.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">

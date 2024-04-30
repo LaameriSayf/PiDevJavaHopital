@@ -24,7 +24,7 @@ public class dossiermedical {
 
 
 
-    public int getId() {
+    public  int getId() {
         return id;
     }
 
@@ -32,7 +32,7 @@ public class dossiermedical {
         this.id = id;
     }
 
-    public String getResultatexamen() {
+    public  String getResultatexamen() {
         return resultatexamen;
     }
 
@@ -48,7 +48,7 @@ public class dossiermedical {
         this.date_creation = date_creation;
     }
 
-    public String getAntecedentspersonelles() {
+    public  String getAntecedentspersonelles() {
         return antecedentspersonelles;
     }
 

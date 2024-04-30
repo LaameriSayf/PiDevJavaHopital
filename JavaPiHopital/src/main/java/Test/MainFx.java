@@ -15,7 +15,7 @@ public class MainFx extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AjoutDossier.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AllDossier.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 550);
         primaryStage.setTitle("Ajouter ordonnance");
         primaryStage.setScene(scene);

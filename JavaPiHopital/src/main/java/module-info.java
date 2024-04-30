@@ -3,6 +3,10 @@ module JavaPiHopital {
     requires javafx.fxml;
     requires javafx.graphics;
     requires java.sql;
+    requires org.apache.commons.codec;
+    requires java.xml.bind;
+    requires kernel;
+    requires layout;
 
     //  exports votre.package.contenant.les.classes; // Spécifiez les packages que vous souhaitez exporter
 

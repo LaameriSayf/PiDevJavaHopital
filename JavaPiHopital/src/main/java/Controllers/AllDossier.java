@@ -4,6 +4,7 @@ import Models.dossiermedical;
 import Services.dossiermedicalService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,9 +18,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.w3c.dom.events.MouseEvent;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -52,6 +56,8 @@ public class AllDossier implements Initializable {
     private Button btnGestionOrdonnances;
     @FXML
     private Button btnDashBord;
+    @FXML
+    private Button PDF;
 
 
 
@@ -217,8 +223,38 @@ public class AllDossier implements Initializable {
             ex.printStackTrace();
         }
     }
+    @FXML
+    private void PDF( ActionEvent event) {
+        // Récupérer la réclamation sélectionnée dans la liste
+        dossiermedical selectedDossier = dossierTableView.getSelectionModel().getSelectedItem();
 
+        if (selectedDossier != null) {
+            // Créer un sélecteur de fichiers pour choisir l'emplacement où enregistrer le PDF
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save PDF");
+            fileChooser.setInitialFileName("MesInformations.pdf");
 
+            // Afficher la boîte de dialogue pour enregistrer le fichier et obtenir le chemin du fichier choisi
+            File file = fileChooser.showSaveDialog(new Stage());
+
+            if (file != null) {
+                // Si l'utilisateur a choisi un emplacement, générez le PDF et enregistrez-le à cet emplacement
+                pdf pd = new pdf();
+                try {
+                    pd.GeneratePdf(file.getAbsolutePath(), selectedDossier, selectedDossier.getId());
+                    System.out.println("PDF saved successfully.");
+
+                } catch (Exception ex) {
+                    Logger.getLogger(AllDossier.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            showAlert("Please select a Dossier to generate PDF.");
+        }
+    }
+
+    private void showAlert(String s) {
+    }
 
 
 }

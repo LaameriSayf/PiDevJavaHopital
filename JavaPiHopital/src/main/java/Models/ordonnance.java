@@ -11,20 +11,12 @@ public class ordonnance {
     int idpatient_id ;
 
     int dossiermedical_id;
+    String digitalSignature;
 
 
     public ordonnance() {
     }
 
-    public ordonnance(int id, int idpatient_id, Date dateprescription, Date renouvellement, String medecamentprescrit, String adresse) {
-        this.id = id;
-        this.idpatient_id = idpatient_id;
-        this.dateprescription = dateprescription;
-        this.renouvellement = renouvellement;
-        this.medecamentprescrit = medecamentprescrit;
-        this.adresse = adresse;
-
-    }
 
     public int getId() {
         return id;
@@ -75,16 +67,12 @@ public class ordonnance {
         this.adresse = adresse;
     }
 
-    @Override
-    public String toString() {
-        return "ordonnance{" +
-                "id=" + id +
-                ", dateprescription=" + dateprescription +
-                ", renouvellement=" + renouvellement +
-                ", medecamentprescrit='" + medecamentprescrit + '\'' +
-                ", adresse='" + adresse + '\'' +
-                ", idpatient_id=" + idpatient_id +
-                '}';
+    public String getDigitalSignature() {
+        return digitalSignature;
+    }
+
+    public void setDigitalSignature(String digitalSignature) {
+        this.digitalSignature = digitalSignature;
     }
 
 
@@ -92,8 +80,9 @@ public class ordonnance {
 
 
 
-    public ordonnance(int id, Date dateprescription, Date renouvellement, String medecamentprescrit, String adresse, int idpatient_id, int dossiermedical_id) {
+    public ordonnance(int id, Date dateprescription, Date renouvellement, String medecamentprescrit, String adresse, int idpatient_id, int dossiermedical_id,String digitalSignature ) {
         this.id = id;
+        this.digitalSignature =digitalSignature ;
         this.dateprescription = dateprescription;
         this.renouvellement = renouvellement;
         this.medecamentprescrit = medecamentprescrit;
@@ -110,7 +99,17 @@ public class ordonnance {
         this.dossiermedical_id = dossiermedical_id;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "ordonnance{" +
+                "id=" + id +
+                ", dateprescription=" + dateprescription +
+                ", renouvellement=" + renouvellement +
+                ", medecamentprescrit='" + medecamentprescrit + '\'' +
+                ", adresse='" + adresse + '\'' +
+                ", idpatient_id=" + idpatient_id +
+                ", dossiermedical_id=" + dossiermedical_id +
+                ", digitalSignature='" + digitalSignature + '\'' +
+                '}';
+    }
 }

@@ -31,6 +31,7 @@ public class AjoutOrdonnance implements Initializable {
     @FXML
     private TextField adresseField;
 
+
     // Méthode pour définir le dossier médical sélectionné
     public void setSelectedDossier(dossiermedical dossier) {
         this.selectedDossier = dossier;
@@ -43,6 +44,8 @@ public class AjoutOrdonnance implements Initializable {
         LocalDate renouvellement = renouvellementPicker.getValue();
         String medecament = medecamentField.getText();
         String adresse = adresseField.getText();
+
+
 
         // Vérifier si les champs sont remplis
         if (datePrescription == null || renouvellement == null || medecament.isEmpty() || adresse.isEmpty()) {
@@ -67,6 +70,8 @@ public class AjoutOrdonnance implements Initializable {
         ordonnance.setRenouvellement(renouvellementSQL);
         ordonnance.setMedecamentprescrit(medecament);
         ordonnance.setAdresse(adresse);
+
+
 
         // Définir l'ID du dossier médical à partir du dossier sélectionné
         ordonnance.setDossiermedical_id(selectedDossier.getId());

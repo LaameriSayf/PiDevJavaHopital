@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -69,18 +70,25 @@
 
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane layoutX="-4.0" layoutY="-3.0" prefHeight="628.0" prefWidth="842.0">
+                                <AnchorPane layoutX="-2.0" layoutY="-1.0" prefHeight="628.0" prefWidth="842.0">
                                     <children>
-                                        <TableView fx:id="dossierTableView" layoutX="20.0" layoutY="34.0" prefHeight="342.0" prefWidth="797.0" styleClass="table-view" stylesheets="@style.css">
+                                        <TableView fx:id="dossierTableView" layoutX="22.0" layoutY="99.0" prefHeight="342.0" prefWidth="797.0" styleClass="table-view" stylesheets="@style.css">
                                             <columns>
-                                                <TableColumn fx:id="idColumn" prefWidth="75.0" text="ID" />
+                                                <TableColumn fx:id="numdossierColumn" prefWidth="75.0" text="N°Dossier" />
                                                 <TableColumn fx:id="resultatExamenColumn" prefWidth="150.0" text="Résultat Examen" />
                                                 <TableColumn fx:id="dateCreationColumn" prefWidth="150.0" text="Date de Création" />
                                                 <TableColumn fx:id="antecedentsColumn" prefWidth="150.0" text="Antécédents Personnels" />
                                                 <TableColumn fx:id="imageColumn" prefWidth="150.0" text="Image" />
                                             </columns>
                                         </TableView>
-                                     <Button fx:id="PDF" layoutX="369.0" layoutY="416.0" mnemonicParsing="false" onAction="#PDF" text="PDF" />
+                                     <Button fx:id="PDF" layoutX="613.0" layoutY="497.0" mnemonicParsing="false" onAction="#PDF" prefHeight="26.0" prefWidth="94.0" text="PDF" />
+                              <TextField fx:id="rechercheDossier" layoutX="20.0" layoutY="65.0" onAction="#searchFilter" prefHeight="25.0" prefWidth="178.0" promptText="Recherche" styleClass="search" stylesheets="@DashboarsDesign.css" />
+                              <ImageView fitHeight="76.0" fitWidth="97.0" layoutX="247.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="26.0" fitWidth="45.0" layoutX="198.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@pictures/iconsearch.png" />
+                                 </image>
+                              </ImageView>
                                     </children>
                                 </AnchorPane>
                             </children>

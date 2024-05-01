@@ -9,11 +9,13 @@ public class dossiermedical {
     String antecedentspersonelles;
     String image;
     int patient_id;
+    int numdossier;
     public dossiermedical() {
     }
 
-    public dossiermedical(int id, String resultatexamen, Date date_creation, String antecedentspersonelles, String image, int patient_id) {
+    public dossiermedical(int id, String resultatexamen, Date date_creation, String antecedentspersonelles, String image, int patient_id,int numdossier) {
         this.id = id;
+        this.numdossier = numdossier;
         this.patient_id = patient_id;
         this.resultatexamen = resultatexamen;
         this.date_creation = date_creation;
@@ -30,6 +32,14 @@ public class dossiermedical {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getNumdossier() {
+        return numdossier;
+    }
+
+    public void setNumdossier(int numdossier) {
+        this.numdossier = numdossier;
     }
 
     public  String getResultatexamen() {
@@ -81,8 +91,11 @@ public class dossiermedical {
                 ", antecedentspersonelles='" + antecedentspersonelles + '\'' +
                 ", image='" + image + '\'' +
                 ", patient_id=" + patient_id +
+                ", numdossier=" + numdossier +
+                ", patient=" + patient +
                 '}';
     }
+
     private Patient patient;
 
 

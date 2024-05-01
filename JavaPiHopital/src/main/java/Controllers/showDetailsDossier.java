@@ -18,6 +18,8 @@ public class showDetailsDossier implements Initializable {
 
     @FXML
     private Label idLabel;
+    @FXML
+    private Label numDossierLabel;
 
     @FXML
     private Label resultatExamenLabel;
@@ -56,6 +58,7 @@ public class showDetailsDossier implements Initializable {
 
     private void updateDetailsLabels() {
         if (selectedDossier != null) {
+            numDossierLabel.setText("ID: " + selectedDossier.getNumdossier());
             idLabel.setText("ID: " + selectedDossier.getId());
             resultatExamenLabel.setText("Résultat Examen: " + selectedDossier.getResultatexamen());
             dateCreationLabel.setText("Date de Création: " + selectedDossier.getDate_creation());
@@ -65,6 +68,7 @@ public class showDetailsDossier implements Initializable {
             afficherImage(selectedDossier.getImage());
         } else {
             idLabel.setText("ID: N/A");
+            numDossierLabel.setText("N°Dossier: N/A");
             resultatExamenLabel.setText("Résultat Examen: N/A");
             dateCreationLabel.setText("Date de Création: N/A");
             antecedentsLabel.setText("Antécédents Personnels: N/A");

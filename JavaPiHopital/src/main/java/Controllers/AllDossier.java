@@ -4,16 +4,15 @@ import Models.dossiermedical;
 import Services.dossiermedicalService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,6 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,7 +37,8 @@ public class AllDossier implements Initializable {
 
     @FXML
     private TableColumn<dossiermedical, Integer> idColumn;
-
+    @FXML
+    private TableColumn<dossiermedical, Integer> numdossierColumn;
     @FXML
     private TableColumn<dossiermedical, String> resultatExamenColumn;
 
@@ -59,12 +60,12 @@ public class AllDossier implements Initializable {
     @FXML
     private Button PDF;
 
-
-
-
+    @FXML
+    private TextField rechercheDossier;
 
 
     private final dossiermedicalService dossierService = new dossiermedicalService();
+    private Labeled SearchBar;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -76,7 +77,8 @@ public class AllDossier implements Initializable {
         btnGestionDossiers.setOnAction(event -> ouvrirAjoutDossier());
         btnGestionOrdonnances.setOnAction(event -> ouvrirAjoutOrdonnance());
         btnDashBord.setOnAction(event -> ouvrirFrontEnd());
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        numdossierColumn.setCellValueFactory(new PropertyValueFactory<>("numdossier"));
+        //idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         resultatExamenColumn.setCellValueFactory(new PropertyValueFactory<>("resultatexamen"));
         dateCreationColumn.setCellValueFactory(new PropertyValueFactory<>("date_creation"));
         antecedentsColumn.setCellValueFactory(new PropertyValueFactory<>("antecedentspersonelles"));
@@ -183,6 +185,7 @@ public class AllDossier implements Initializable {
             Logger.getLogger(AllDossier.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     private void ouvrirAjoutDossier() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutDossier.fxml"));
@@ -210,6 +213,7 @@ public class AllDossier implements Initializable {
             ex.printStackTrace();
         }
     }
+
     private void ouvrirFrontEnd() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FrontEnd.fxml"));
@@ -223,8 +227,9 @@ public class AllDossier implements Initializable {
             ex.printStackTrace();
         }
     }
+
     @FXML
-    private void PDF( ActionEvent event) {
+    private void PDF(ActionEvent event) {
         // Récupérer la réclamation sélectionnée dans la liste
         dossiermedical selectedDossier = dossierTableView.getSelectionModel().getSelectedItem();
 
@@ -253,8 +258,50 @@ public class AllDossier implements Initializable {
         }
     }
 
-    private void showAlert(String s) {
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
+    @FXML
+    private void searchFilter() {
+        // Création d'une liste filtrée initialisée avec la liste des dossiers médicaux
+        FilteredList<dossiermedical> filterData = new FilteredList<>(dossierTableView.getItems());
+
+        // Obtention du texte saisi dans la barre de recherche
+        String searchInput = rechercheDossier.getText().trim();
+
+        // Mise à jour du prédicat en fonction du nouveau texte de recherche
+        filterData.setPredicate(dossier -> {
+            // Si le texte de recherche est vide, toutes les dossiers sont affichées
+            if (searchInput == null || searchInput.isEmpty()) {
+                return true;
+            }
+
+            // Tentative de conversion du texte en entier
+            try {
+                int searchNumber = Integer.parseInt(searchInput);
+                // Vérifier si le numéro de dossier du dossier médical correspond au numéro recherché
+                return dossier.getNumdossier() == searchNumber;
+            } catch (NumberFormatException ex) {
+                // Gérer l'exception si le texte n'est pas un nombre entier
+                return false;
+            }
+        });
+
+        // Création d'une liste triée à partir de la liste filtrée
+        SortedList<dossiermedical> sortedData = new SortedList<>(filterData);
+        // Liaison du comparateur de la liste triée avec le comparateur de la table des dossiers médicaux
+        sortedData.comparatorProperty().bind(dossierTableView.comparatorProperty());
+        // Mise à jour de la table des dossiers médicaux avec la liste triée
+        dossierTableView.setItems(sortedData);
+    }
+
+    
 
 }
+
+
+

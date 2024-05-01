@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="648.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.FrontEnd">
     <children>
         <AnchorPane prefHeight="574.0" prefWidth="662.0">
@@ -19,15 +17,15 @@
                         <Image url="@pictures/imageFront.jpg" />
                     </image>
                 </ImageView>
-                <Button fx:id="btnDossiersMedicaux" layoutX="215.0" layoutY="125.0" prefHeight="47.0" prefWidth="270.0" stylesheets="@style.css" text="Gestion Dossiers Médicaux" id="btnDossiersMedicaux" />
-                <Button fx:id="btnOrdonnances" layoutX="215.0" layoutY="197.0" prefHeight="46.0" prefWidth="279.0" stylesheets="@style.css" text="Gestion Ordonnances" id="btnOrdonnances"/>
+                <Button id="btnDossiersMedicaux" fx:id="btnDossiersMedicaux" layoutX="215.0" layoutY="125.0" prefHeight="47.0" prefWidth="270.0" stylesheets="@style.css" text="Gestion Dossiers Médicaux" />
+                <Button id="btnOrdonnances" fx:id="btnOrdonnances" layoutX="215.0" layoutY="197.0" prefHeight="46.0" prefWidth="279.0" stylesheets="@style.css" text="Gestion Ordonnances" />
                 <Text fx:id="titleText" fill="WHITE" fontSmoothingType="LCD" layoutX="157.0" layoutY="75.0" stroke="WHITE" strokeWidth="0.0" text="Hey Doctor's !" textAlignment="CENTER" wrappingWidth="354.69532012939453">
                     <font>
                         <Font name="System Bold" size="23.0" />
                     </font>
                 </Text>
+            <Button fx:id="btn1" layoutX="14.0" layoutY="535.0" mnemonicParsing="false" text="ChatGPT" />
             </children>
         </AnchorPane>
     </children>
 </StackPane>
-

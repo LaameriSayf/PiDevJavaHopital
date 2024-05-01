@@ -42,6 +42,9 @@ public class UpdateDossierMedical implements Initializable {
     @FXML
     private ImageView imageView;
 
+    @FXML
+    private Button modifierDossier;
+
     private dossiermedical dossierModifier;
 
     @Override

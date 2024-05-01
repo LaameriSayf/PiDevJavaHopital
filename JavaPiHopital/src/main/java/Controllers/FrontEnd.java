@@ -1,5 +1,6 @@
 package Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,6 +20,8 @@ public class FrontEnd implements Initializable {
 
     @FXML
     private Button btnOrdonnances;
+    @FXML
+    private Button btn1;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -52,6 +55,26 @@ public class FrontEnd implements Initializable {
             stage.showAndWait();
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    void chatgpt(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChatGPT.fxml"));
+            Parent root = loader.load();
+
+            ChatGPTApp ChatGPTApp = loader.getController();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Close the current window
+            btn1.getScene().getWindow().hide();
+
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception as needed
         }
     }
 }

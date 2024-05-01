@@ -27,12 +27,13 @@ public class dossiermedicalService implements IService <dossiermedical> {
                 // Vérification s'il y a un résultat
                 if (resultSet.next()) {
                     dossier = new dossiermedical();
-                    dossier.setId(resultSet.getInt("id"));
+                    //dossier.setId(resultSet.getInt("id"));
+                    dossier.setNumdossier(resultSet.getInt("numdossier"));
                     dossier.setResultatexamen(resultSet.getString("resultatexamen"));
                     dossier.setDate_creation(resultSet.getDate("date_creation"));
                     dossier.setAntecedentspersonelles(resultSet.getString("antecedentspersonelles"));
                     dossier.setImage(resultSet.getString("image"));
-                    dossier.setPatient_id(resultSet.getInt("patient_id"));
+                    //dossier.setPatient_id(resultSet.getInt("patient_id"));
                 }
             }
         } catch (SQLException e) {
@@ -47,8 +48,8 @@ public class dossiermedicalService implements IService <dossiermedical> {
         Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
 
         // Préparation de la requête SQL avec des paramètres de substitution
-        String requete = "INSERT INTO dossiermedical(date_creation,resultatexamen,antecedentspersonelles ,image,patient_id) " +
-                "VALUES (?, ?, ?, ?,?)";
+        String requete = "INSERT INTO dossiermedical(date_creation,resultatexamen,antecedentspersonelles ,image,patient_id,numdossier) " +
+                "VALUES (?, ?, ?, ?,?,?)";
 
         try (Connection connection = new DataBase().getCnx();
              PreparedStatement statement = connection.prepareStatement(requete)) {
@@ -59,6 +60,7 @@ public class dossiermedicalService implements IService <dossiermedical> {
             statement.setString(3, dossiermedical.getAntecedentspersonelles());
             statement.setString(4, dossiermedical.getImage());
             statement.setInt(5, 1);
+            statement.setInt(6,dossiermedical.getNumdossier() );
 
             // Exécution de la requête d'insertion
             int rowsInserted = statement.executeUpdate();
@@ -86,7 +88,7 @@ public class dossiermedicalService implements IService <dossiermedical> {
         Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
 
         // Préparation de la requête SQL pour obtenir le nom et prénom du patient
-        String requetePatient = "SELECT nom, prenom FROM global_user WHERE id = ?";
+      String requetePatient = "SELECT nom, prenom FROM global_user WHERE id = ?";
         String nomPatient = "";
         String prenomPatient = "";
 
@@ -106,8 +108,8 @@ public class dossiermedicalService implements IService <dossiermedical> {
         }
 
         // Préparation de la requête SQL avec des paramètres de substitution
-        String requete = "INSERT INTO dossiermedical(date_creation,resultatexamen,antecedentspersonelles,image,patient_id,nom_patient,prenom_patient) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String requete = "INSERT INTO dossiermedical(date_creation,resultatexamen,antecedentspersonelles,image,patient_id,nom_patient,prenom_patient,numdossier) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?,?)";
 
         try (Connection connection = new DataBase().getCnx();
              PreparedStatement statement = connection.prepareStatement(requete)) {
@@ -118,6 +120,7 @@ public class dossiermedicalService implements IService <dossiermedical> {
             statement.setString(3, dossiermedical.getAntecedentspersonelles());
             statement.setString(4, dossiermedical.getImage());
             statement.setInt(5, 1); // ID du patient
+            statement.setInt(8, dossiermedical.getNumdossier()); // ID du patient
             statement.setString(6, nomPatient); // Nom du patient
             statement.setString(7, prenomPatient); // Prénom du patient
 
@@ -156,6 +159,7 @@ public class dossiermedicalService implements IService <dossiermedical> {
             while (resultSet.next()) {
                 dossiermedical dossier = new dossiermedical();
                 dossier.setId(resultSet.getInt("id"));
+                dossier.setNumdossier(resultSet.getInt("numdossier"));
                 dossier.setResultatexamen(resultSet.getString("resultatexamen"));
                 dossier.setDate_creation(resultSet.getDate("date_creation"));
                 dossier.setAntecedentspersonelles(resultSet.getString("antecedentspersonelles"));
@@ -171,5 +175,36 @@ public class dossiermedicalService implements IService <dossiermedical> {
         return dossiers;
 
     }
+
+    public dossiermedical rechercherParNumDossier(int numDossier) throws SQLException {
+        dossiermedical dossier = null;
+
+        // Requête SQL pour sélectionner un dossier médical par numéro de dossier
+        String requete = "SELECT * FROM dossiermedical WHERE numdossier = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(requete)) {
+            statement.setInt(1, numDossier); // Ajout du paramètre numéro de dossier
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Vérification s'il y a un résultat
+                if (resultSet.next()) {
+                    dossier = new dossiermedical();
+                    dossier.setId(resultSet.getInt("id"));
+                    dossier.setNumdossier(resultSet.getInt("numdossier"));
+                    dossier.setResultatexamen(resultSet.getString("resultatexamen"));
+                    dossier.setDate_creation(resultSet.getDate("date_creation"));
+                    dossier.setAntecedentspersonelles(resultSet.getString("antecedentspersonelles"));
+                    dossier.setImage(resultSet.getString("image"));
+                    dossier.setPatient_id(resultSet.getInt("patient_id"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la recherche du dossier médical par numéro : " + e.getMessage());
+        }
+
+        return dossier;
+    }
+
+
 
 }

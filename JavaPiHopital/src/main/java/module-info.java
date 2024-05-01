@@ -7,6 +7,8 @@ module JavaPiHopital {
     requires java.xml.bind;
     requires kernel;
     requires layout;
+    requires chatgpt;
+    requires fastjson;
 
     //  exports votre.package.contenant.les.classes; // Spécifiez les packages que vous souhaitez exporter
 

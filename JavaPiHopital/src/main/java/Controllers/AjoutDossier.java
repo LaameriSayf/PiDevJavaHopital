@@ -5,10 +5,7 @@ import Models.dossiermedical;
 import Services.dossiermedicalService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -47,6 +44,9 @@ public class AjoutDossier implements Initializable {
 
     @FXML
     private ImageView imageView;
+
+    @FXML
+    private TextField numdossierField ;
     @FXML
     private void chooseImage() {
         FileChooser fileChooser = new FileChooser();
@@ -73,6 +73,21 @@ public class AjoutDossier implements Initializable {
         LocalDate dateCreation = dateCreationPicker.getValue();
         String resultatExamen = resultatExamenField.getText();
         String antecedents = antecedentsField.getText();
+        String numdossierText = numdossierField.getText().trim();
+
+        // Vérifier si le champ numdossier est vide
+        if (numdossierText.isEmpty()) {
+            afficherAlerteErreur("Veuillez saisir un numéro de dossier.");
+            return;
+        }
+
+        Integer numdossier;
+        try {
+            numdossier = Integer.parseInt(numdossierText);
+        } catch (NumberFormatException e) {
+            afficherAlerteErreur("Le numéro de dossier doit être un nombre entier.");
+            return;
+        }
 
         if (dateCreation == null || resultatExamen.isEmpty() || antecedents.isEmpty() || imageFilePath == null) {
             afficherAlerteErreur("Veuillez remplir tous les champs.");
@@ -89,6 +104,7 @@ public class AjoutDossier implements Initializable {
         dossiermedical dossier = new dossiermedical();
         dossier.setDate_creation(timestamp);
         dossier.setResultatexamen(resultatExamen);
+        dossier.setNumdossier(numdossier); // Assurez-vous que setNumdossier accepte un Integer
         dossier.setAntecedentspersonelles(antecedents);
         dossier.setImage(imageFilePath);
 

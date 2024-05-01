@@ -7,6 +7,7 @@ import Model.Medicament;
 import Service.CategorieService;
 
 import Service.MedicamentService;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -17,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 
 import javafx.event.ActionEvent;
@@ -49,6 +51,24 @@ import static javafx.collections.FXCollections.observableArrayList;
 public class CategorieController implements Initializable {
     CategorieService cs =new CategorieService();
     MedicamentService ms =new MedicamentService();
+
+    @FXML
+    private BarChart<String,Integer> BarStat;
+    @FXML
+    private PieChart PieStat;
+    @FXML
+    private AnchorPane anchorPane;
+    @FXML
+    private PieChart PieStatCat;
+
+    @FXML
+    private ListView<String> ListTop;
+
+    @FXML
+    private AnchorPane statistiqueForm;
+
+    @FXML
+    private Button StatistiqueBtn;
 
     @FXML
     private ComboBox<String> ComboCategorie;
@@ -203,19 +223,23 @@ public class CategorieController implements Initializable {
     }
 
     public void switchForm(ActionEvent event) {
-
         if (event.getSource() == categorieBtn) {
             categorieForm.setVisible(true);
             medicamentForm.setVisible(false);
+            statistiqueForm.setVisible(false); // Assurez-vous de masquer le formulaire de statistiques si nécessaire
 
         } else if (event.getSource() == medicamentBtn) {
             categorieForm.setVisible(false);
             medicamentForm.setVisible(true);
+            statistiqueForm.setVisible(false); // Assurez-vous de masquer le formulaire de statistiques si nécessaire
 
-
+        } else if (event.getSource() == StatistiqueBtn) {
+            categorieForm.setVisible(false);
+            medicamentForm.setVisible(false);
+            statistiqueForm.setVisible(true);
         }
-
     }
+
 
 
 
@@ -310,10 +334,11 @@ public class CategorieController implements Initializable {
         table_med.getItems().clear();
         ObservableList<String> medStringList = FXCollections.observableArrayList();
         for (Medicament med : ms.getData()) {
-            String item = String.format("ID: %d, Reference: %s, nom medicament: %s," +
+            String categoryName = med.getCategorie() != null ? med.getCategorie().getNom_cat() : "null";
+            String item = String.format("ID: %d, Catégorie: %s,Reference: %s, nom medicament: %s," +
                             " Description: %s, Date expiration: %s, date amm: %s," +
                             " etat: %s, Quantite: %s, image: %s",
-                    med.getId(), med.getRef_med(), med.getNom_med(),
+                    med.getId(),categoryName, med.getRef_med(), med.getNom_med(),
                     med.getDescription(), med.getDate_expiration(),
                     med.getDate_amm(), med.getEtat(), med.getQte(), med.getImage());
             medStringList.add(item);
@@ -414,10 +439,124 @@ public class CategorieController implements Initializable {
                     input.toLowerCase().contains(word.toLowerCase()));
         }).collect(Collectors.toList());
     }
+    private List<Medicament> obtenirTop5MedicamentsProchesExpiration() {
+        // Supposons que vous avez une liste de médicaments quelconque
+        List<Medicament> tousLesMedicaments = ms.getData();
+
+        // Trier la liste en fonction de la date d'expiration, en ordre croissant
+        Collections.sort(tousLesMedicaments, Comparator.comparing(Medicament::getDate_expiration));
+
+        // Prendre les cinq premiers éléments de la liste triée
+        int nombreDeMedicaments = Math.min(tousLesMedicaments.size(), 5);
+        return tousLesMedicaments.subList(0, nombreDeMedicaments);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //Statistique
+        // Obtention des Top 5 des médicaments les plus proches de la date d'expiration
+        List<Medicament> top5Medicaments = obtenirTop5MedicamentsProchesExpiration();
 
-        etat.setItems(FXCollections.observableArrayList("En Stock","Non disponible"));
+// Création d'une liste formatée pour les éléments à afficher dans la ListView
+        ObservableList<String> items = FXCollections.observableArrayList();
+        for (Medicament medicament : top5Medicaments) {
+            String item = "Nom du médicament : " + medicament.getNom_med() + ", Date d'expiration : " + medicament.getDate_expiration();
+            items.add(item);
+        }
+
+// Définition de la liste formatée comme source de données de la ListView
+        ListTop.setItems(items);
+        try {
+            // Récupération des données des médicaments depuis le service
+            List<Medicament> medicaments = ms.getData();
+            List<Categorie> categories = cs.getData();
+
+            // Création d'une série de données pour le graphique à barres
+            XYChart.Series<String, Integer> series = new XYChart.Series<>();
+            series.setName("Quantité de médicaments");
+
+
+            // Parcours des données des médicaments pour obtenir la quantité de chaque médicament
+            for (Medicament medicament : medicaments) {
+                // Ajout d'un point de données au graphique à barres avec le nom du médicament et sa quantité
+                series.getData().add(new XYChart.Data<>(medicament.getNom_med(), medicament.getQte()));
+
+            }
+
+            // Ajout de la série de données au graphique à barres
+            BarStat.getData().add(series);
+            // Création d'une série de données pour le diagramme circulaire
+            ObservableList<PieChart.Data> pieChartData = observableArrayList();
+            // Comptage du nombre de médicaments pour chaque état
+            Map<String, Integer> etatCount = new HashMap<>();
+            for (Medicament medicament : medicaments) {
+                String etat = medicament.getEtat();
+                etatCount.put(etat, etatCount.getOrDefault(etat, 0) + 1);
+            }
+
+            // Création de tranches de données pour chaque état
+            for (String etat : etatCount.keySet()) {
+                int count = etatCount.get(etat);
+                pieChartData.add(new PieChart.Data(etat, count));
+            }
+            pieChartData.forEach(data ->
+                    data.nameProperty().bind(
+                            Bindings.concat(
+                                    data.getName(), " = ", data.pieValueProperty()
+                            )
+                    )
+            );
+            PieStat.getData().addAll(pieChartData);
+
+        } catch (Exception e) {
+            // Gestion des exceptions
+            e.printStackTrace();
+        }
+        //stat2
+        try {
+            // Simulation de données
+            List<Categorie> categories = cs.getData();
+            List<Medicament> medicaments = ms.getData();
+
+            // Création d'une carte pour stocker le nombre de médicaments par catégorie
+            Map<String, Integer> medicationDistributionStats = new HashMap<>();
+
+            // Initialiser le nombre de médicaments par catégorie à zéro
+            for (Categorie categorie : categories) {
+                medicationDistributionStats.put(categorie.getNom_cat(), 0);
+            }
+
+            // Parcourir chaque médicament et incrémenter le nombre de médicaments dans sa catégorie
+            for (Medicament medicament : medicaments) {
+                String categorie = medicament.getCategorie().getNom_cat();
+                int count = medicationDistributionStats.get(categorie);
+                medicationDistributionStats.put(categorie, count + 1);
+            }
+
+            // Création de la liste observable pour les données du diagramme circulaire
+            ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+            // Ajout des données de la carte à la liste observable
+            for (Map.Entry<String, Integer> entry : medicationDistributionStats.entrySet()) {
+                pieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
+            }
+            pieChartData.forEach(data ->
+                    data.nameProperty().bind(
+                            Bindings.concat(
+                                    data.getName(), " = ", data.pieValueProperty()
+                            )
+                    )
+            );
+            // Ajout des données au PieChart
+            PieStatCat.setData(pieChartData);
+
+        } catch (Exception e) {
+            // Gestion des exceptions
+            e.printStackTrace();
+        }
+
+
+        etat.setItems(observableArrayList("En Stock","Non disponible"));
         List<Categorie> categories1 = cs.getData();
         List<String> categoryNames = new ArrayList<>();
 
@@ -427,7 +566,7 @@ public class CategorieController implements Initializable {
         }
 
         // Ajouter les noms des catégories à la ComboBox
-        ComboCategorie.setItems(FXCollections.observableArrayList(categoryNames));
+        ComboCategorie.setItems(observableArrayList(categoryNames));
 
             fileChooser.setInitialDirectory(new File("."));
         loadAndDisplayData();
@@ -645,6 +784,7 @@ public class CategorieController implements Initializable {
             System.err.println("Échec de l'ajout du médicament!");
         }
         // Effacement des champs de saisie
+        ComboCategorie.getSelectionModel().clearSelection();
         nom_med.clear();
         ref_med.clear();
         dateamm.setValue(null);
@@ -665,7 +805,7 @@ public class CategorieController implements Initializable {
 
     @FXML
     void afficherMed(ActionEvent event) {
-
+        refreshTable();
     }
 
     @FXML
@@ -676,6 +816,9 @@ public class CategorieController implements Initializable {
             // Récupérer le médicament sélectionné
             Medicament medSelected = ms.getData().get(selectedIndex);
 
+            String catName = Optional.ofNullable(ComboCategorie.getSelectionModel().getSelectedItem()).orElse("");
+            // Recherche de la catégorie correspondante dans la liste des catégories
+            Categorie categorie = getCategoryByName(catName);
             String nomMed = nom_med.getText();
             String refMed = ref_med.getText();
             LocalDate dateAmm = dateamm.getValue();
@@ -687,11 +830,12 @@ public class CategorieController implements Initializable {
 
             try {
                 if (nomMed.isEmpty() || refMed.isEmpty() || dateAmm == null || dateExp == null ||
-                        description.isEmpty() || etatMed.isEmpty() || image.isEmpty()) {
+                        ComboCategorie.getSelectionModel().isEmpty()||description.isEmpty() || etatMed.isEmpty() || image.isEmpty()) {
                     throw new Exception("Veuillez remplir tous les champs !");
                 }
 
                 // Mettre à jour les valeurs du médicament sélectionné
+                medSelected.setCategorie(categorie);
                 medSelected.setNom_med(nomMed);
                 medSelected.setRef_med(refMed);
                 medSelected.setDate_amm(dateAmm);
@@ -756,6 +900,7 @@ public class CategorieController implements Initializable {
             alert.setContentText("Please select a medicament to delete.");
             alert.show();
         }
+        ComboCategorie.getSelectionModel().clearSelection();
         nom_med.clear();
         ref_med.clear();
         dateamm.setValue(null);
@@ -809,7 +954,7 @@ public class CategorieController implements Initializable {
                 Medicament selectedMedicament = ms.getData().get(selectedIndex);
 
                 String[] parts = medLineSelected.split(","); // Diviser la chaîne en parties en utilisant ","
-                String cat = parts[1].substring(parts[1].indexOf(":") + 1).trim(); // Récupérer la catégorie
+                String cat = parts[1].substring(parts[0].indexOf(":") + 10).trim(); // Récupérer la catégorie
                 String nom = selectedMedicament.getNom_med();
                 String ref = selectedMedicament.getRef_med();
                 String description = selectedMedicament.getDescription();

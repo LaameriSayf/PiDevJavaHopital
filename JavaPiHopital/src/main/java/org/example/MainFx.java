@@ -14,7 +14,7 @@ public class MainFx extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterCategorie.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FrontOffice.fxml"));
         try {
             Parent root = loader.load();
 

@@ -107,6 +107,9 @@ public class AjouterAdmin {
 
     @FXML
     private Button minimise;
+
+    @FXML
+    private Button editprofil;
     @FXML
     private AnchorPane main_form;
 
@@ -811,6 +814,19 @@ public class AjouterAdmin {
             Parent root = fxmlLoader.load();
 
             Stage stage = (Stage)  logout_btn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    @FXML
+    void editprofil(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/EditProfil.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage) editprofil.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {
             throw new RuntimeException(e);

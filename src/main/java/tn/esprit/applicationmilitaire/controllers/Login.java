@@ -6,10 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import tn.esprit.applicationmilitaire.test.HelloApplication;
@@ -37,6 +34,9 @@ public class Login {
 
     @FXML
     private PasswordField passwordTF;
+    @FXML
+    private CheckBox showpassword;
+
 
     @FXML
     private Button login;
@@ -166,6 +166,25 @@ public class Login {
     }
     public void initialize() throws SQLException {
 
+    }
+    @FXML
+    private TextField loginshowpassword;
+
+    @FXML
+    void showPassword(ActionEvent event) {
+        if (showpassword.isSelected()) {
+            if (loginshowpassword != null && passwordTF != null) {
+                loginshowpassword.setText(passwordTF.getText());
+                loginshowpassword.setVisible(true);
+                passwordTF.setVisible(false);
+            }
+        } else {
+            if (loginshowpassword != null && passwordTF != null) {
+                passwordTF.setText(loginshowpassword.getText());
+                loginshowpassword.setVisible(false);
+                passwordTF.setVisible(true);
+            }
+        }
     }
 }
 

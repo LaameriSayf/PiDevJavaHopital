@@ -1,7 +1,6 @@
 package services;
 
 import entities.Emploi;
-import entities.RendezVous;
 import utils.MyDataBase;
 
 import java.sql.*;
@@ -35,6 +34,7 @@ public class EmpService implements EmploiService {
     public void modifierEmploi(Emploi E, int id) throws SQLException {
         String sql = "update emploi set titre = ?, start = ?, end = ?, description = ? WHERE id = ?";
         PreparedStatement ps = connection.prepareStatement(sql);
+
         ps.setString(1, E.getTitre());
         ps.setDate(2, Date.valueOf(E.getStart()));
         ps.setDate(3, Date.valueOf(E.getEnd()));

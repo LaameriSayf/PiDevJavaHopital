@@ -1,13 +1,10 @@
 package Controller;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import Model.Admin;
 import Model.Blog;
@@ -17,21 +14,28 @@ import Service.CommentaireService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
 import javafx.util.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.controlsfx.control.Notifications;
 
+import org.apache.http.client.fluent.Request;
+import org.controlsfx.control.Notifications;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import javafx.event.EventHandler;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 public class FrontOfficeBlogController {
     @FXML
     private ListView<List<Blog>> listViewFrontBlog;
@@ -64,11 +68,57 @@ public class FrontOfficeBlogController {
     @FXML Text textrate1;
     @FXML
     private ImageView btnsharefacebbok;
+    private final double zoomFactor = 1.5;
+    @FXML
+    private FlowPane imagePane;
+    @FXML
+    private TextField ttc;
+    @FXML
+    private ScrollPane scrollPane;
+
+   @FXML
+   private  ImageView searchButton;
+   @FXML
+   private AnchorPane pangoogle;
+   @FXML
+   private ImageView btnbackgoogle;
+
+   @FXML
+   private ImageView btngorecherche;
+    private static final String API_KEY = "AIzaSyCdCuUdiDDEz7TiHTtfJik8XnXZg24UJEg";
+    private static final String SEARCH_ENGINE_ID = "623dc2de16ef345cc";
+
     private BlogService blogService = new BlogService();
     private List<Blog> blogList = blogService.getAll();
 
     @FXML
     public void initialize() {
+        // Assigner le gestionnaire d'événements à chaque ImageView dans le FlowPane
+        for (javafx.scene.Node node : imagePane.getChildren()) {
+            if (node instanceof ImageView) {
+                ImageView imageView = (ImageView) node;
+                imageView.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event) {
+                        zoomImage(event);
+                    }
+                });
+            }
+        }
+
+
+        btngorecherche.setOnMouseClicked(event->switchrechercheGoogle());
+
+        searchButton.setOnMouseClicked(event -> {
+            try {
+                String query = ttc.getText(); // Example query for demonstration
+                displayImageSearchResults(query, imagePane);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        btnbackgoogle.setOnMouseClicked(event->switchbackfromsearch());
         btnretournerback.setOnMouseClicked(event -> switchbloglist());
         btnajoutercommentfront.setOnMouseClicked(event ->addCommentaireFront());
 
@@ -139,10 +189,42 @@ public class FrontOfficeBlogController {
         }
         return chunks;
     }
+    private void zoomImage(javafx.scene.input.MouseEvent event) {
+        ImageView imageView = (ImageView) event.getSource();
+
+        // Supprimer les transformations existantes pour réinitialiser le zoom
+        imageView.getTransforms().clear();
+
+        // Définir le point central du zoom au centre de l'image
+        imageView.setTranslateX(imageView.getBoundsInLocal().getWidth() / 2);
+        imageView.setTranslateY(imageView.getBoundsInLocal().getHeight() / 2);
+
+        // Appliquer le zoom sur l'ImageView
+        double zoomFactor = 1.5; // Facteur de zoom
+        Scale scaleTransform = new Scale(zoomFactor, zoomFactor);
+        imageView.getTransforms().add(scaleTransform);
+    }
+
     public void switchbloglist() {
         if (anchordetailleblog != null) {
             anchordetailleblog.setVisible(!anchordetailleblog.isVisible());
             anchorlisteblog.setVisible(true);
+        }
+    }
+
+    public  void switchbackfromsearch(){
+        if (pangoogle!=null){
+            pangoogle.setVisible(!pangoogle.isVisible());
+            anchordetailleblog.setVisible(true);
+
+
+        }
+    }
+    public void switchrechercheGoogle(){
+        if (pangoogle!=null){
+            pangoogle.setVisible(true);
+            anchordetailleblog.setVisible(false);
+            anchorlisteblog.setVisible(false);
         }
     }
     public void displayBlogDetail(Blog blog) {
@@ -420,5 +502,30 @@ public class FrontOfficeBlogController {
         }
         reader.close();
     }
+
+    private void displayImageSearchResults(String query, FlowPane imagePane) throws IOException {
+        String url = "https://www.googleapis.com/customsearch/v1?key=" + API_KEY + "&cx=" + SEARCH_ENGINE_ID + "&q=" + query + "&searchType=image";
+        String response = Request.Get(url).execute().returnContent().asString();
+
+        JSONObject json = new JSONObject(response);
+        JSONArray items = json.getJSONArray("items");
+
+        imagePane.getChildren().clear();
+
+        for (int i = 0; i < items.length(); i++) {
+            JSONObject item = items.getJSONObject(i);
+            String imageUrl = item.getString("link");
+            Image image = new Image(imageUrl, true);
+
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(200);
+            imageView.setPreserveRatio(true);
+            imageView.setSmooth(true);
+
+            imagePane.getChildren().add(imageView);
+        }
+    }
+
+
 
 }

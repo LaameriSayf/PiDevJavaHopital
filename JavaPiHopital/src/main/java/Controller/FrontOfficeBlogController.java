@@ -1,5 +1,11 @@
 package Controller;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -146,6 +152,8 @@ public class FrontOfficeBlogController {
             contenuDetaille.setText(blog.getDescription());
             textdate.setText(blog.getDate().toString());
             textlieu.setText(blog.getLieu());
+            BlogService bss=new BlogService();
+            textlieu.setOnMouseClicked(event->bss.shareMaps(blog.getLieu()));
             // Charger l'image associée au blog s'il y en a une
             String imagePath = "C:\\Users\\laame\\Desktop\\HopitalMeliataire\\PIDev\\public\\uploads\\images\\products\\"; // Chemin d'accès au répertoire des images
             String fileName = blog.getIamge(); // Nom de fichier de l'image
@@ -401,5 +409,16 @@ public class FrontOfficeBlogController {
 
     }
 
+    public void traduire() throws MalformedURLException, IOException {
+        URL url = new URL("//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit");
+        URLConnection conn = url.openConnection();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+        String inputLine;
+        while ((inputLine = reader.readLine()) != null) {
+            System.out.println(inputLine);
+        }
+        reader.close();
+    }
 
 }

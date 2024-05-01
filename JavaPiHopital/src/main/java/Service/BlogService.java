@@ -222,7 +222,23 @@ public class BlogService implements IBlog<Blog> {
    }*/
 
  /*************************************Partager Blog SUr facebook*******************************************************************************/
+ private String serializeLocation(String lieu) {
+     return lieu;
+ }
 
+    public void shareMaps(String lieu) {
+        String mapsUrl = "https://www.google.com/maps/search/?api=1&query=";
+
+        String locationString = serializeLocation(lieu);
+
+        try {
+            String encodedContent = URLEncoder.encode(locationString, "UTF-8");
+            mapsUrl += encodedContent;
+            Desktop.getDesktop().browse(new URI(mapsUrl));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
  public void shareFacebook(Blog blog) {
      String facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=";
 

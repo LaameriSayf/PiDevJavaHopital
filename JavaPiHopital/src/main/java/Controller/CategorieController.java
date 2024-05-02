@@ -40,6 +40,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,6 +52,9 @@ import static javafx.collections.FXCollections.observableArrayList;
 public class CategorieController implements Initializable {
     CategorieService cs =new CategorieService();
     MedicamentService ms =new MedicamentService();
+    @FXML
+    private Pagination PaginationCat;
+
 
     @FXML
     private BarChart<String,Integer> BarStat;
@@ -159,6 +163,7 @@ public class CategorieController implements Initializable {
     private ResultSet resultSet;
     private PreparedStatement preparedStatement;
     FileChooser fileChooser=new FileChooser();
+    private int itemsPage =10;
 
     @FXML
     void importerImage(ActionEvent event) {
@@ -275,6 +280,8 @@ public class CategorieController implements Initializable {
         // Ajouter la nouvelle catégorie
         Categorie c = new Categorie(1, nom_cat1, type_cat1, description1_cat);
         cs.addCategorie(c);
+        // Ajouter la nouvelle catégorie à la liste observable
+        allCategories.add(c);
 
         // Affichage d'une alerte de succès
         new Alert(Alert.AlertType.INFORMATION, "Catégorie ajoutée avec succès!").showAndWait();
@@ -284,8 +291,14 @@ public class CategorieController implements Initializable {
         description_cat.clear();
         type_cat.clear();
 
+
         // Rafraîchissement automatique de la table
         refreshTable();
+
+        // Mettre à jour la pagination
+        int newPageCount = (int) Math.ceil((double) (allCategories.size() + 1) / itemsPage);
+        PaginationCat.setPageCount(newPageCount);
+        PaginationCat.setCurrentPageIndex(newPageCount - 1);
     }
 
     private boolean isValidName(String name) {
@@ -310,21 +323,34 @@ public class CategorieController implements Initializable {
     void SupprimerCategorie(ActionEvent event) {
         Categorie categorieSelectionnee = table.getSelectionModel().getSelectedItem();
         if (categorieSelectionnee != null) {
+            // Supprimer la catégorie sélectionnée
             cs.deleteCategorie(categorieSelectionnee);
 
+            // Supprimer la catégorie de la liste observable
+            allCategories.remove(categorieSelectionnee);
+
+            // Afficher une alerte de succès
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setContentText("Categorie removed successfully!");
             alert.show();
+
+            // Rafraîchir la table
             refreshTable();
+
+            // Mettre à jour la pagination
+            int newPageCount = (int) Math.ceil((double) allCategories.size() / itemsPage);
+            PaginationCat.setPageCount(newPageCount);
+            PaginationCat.setCurrentPageIndex(Math.min(PaginationCat.getCurrentPageIndex(), newPageCount - 1));
+
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning");
             alert.setContentText("Please select a category to delete.");
             alert.show();
         }
-
     }
+
 
 
 
@@ -398,13 +424,13 @@ public class CategorieController implements Initializable {
     }
 
 
-    @FXML
+    /* @FXML
     void rechercher(ActionEvent event) {
         table.getItems().clear();
         table.getItems().addAll(searchList(recherche.getText(), cs.getData()));
-    }
+    }*/
 
-    private List<Categorie> searchList(String searchWords, List<Categorie> data) {
+    /*private List<Categorie> searchList(String searchWords, List<Categorie> data) {
         List<String> searchWordsArray = Arrays.asList(searchWords.trim().split(" "));
 
         return data.stream().filter(input -> {
@@ -428,9 +454,9 @@ public class CategorieController implements Initializable {
             // Renvoie vrai si le nom, le type ou la description correspond à l'un des mots de recherche
             return matchNom || matchType || matchDescription;
         }).collect(Collectors.toList());
-    }
+    }*/
 
-    private List<String> searchList1(String searchWords, List<String> listOfStrings) {
+    /*private List<String> searchList1(String searchWords, List<String> listOfStrings) {
 
         List<String> searchWordsArray = Arrays.asList(searchWords.trim().split(" "));
 
@@ -438,7 +464,7 @@ public class CategorieController implements Initializable {
             return searchWordsArray.stream().allMatch(word ->
                     input.toLowerCase().contains(word.toLowerCase()));
         }).collect(Collectors.toList());
-    }
+    }*/
     private List<Medicament> obtenirTop5MedicamentsProchesExpiration() {
         // Supposons que vous avez une liste de médicaments quelconque
         List<Medicament> tousLesMedicaments = ms.getData();
@@ -450,21 +476,88 @@ public class CategorieController implements Initializable {
         int nombreDeMedicaments = Math.min(tousLesMedicaments.size(), 5);
         return tousLesMedicaments.subList(0, nombreDeMedicaments);
     }
+    private ObservableList<Categorie> allCategories = FXCollections.observableArrayList();
+    private ObservableList<Categorie> displayedCategories = FXCollections.observableArrayList();
+    @FXML
+    public void addcategorieTable() {
+        // Load all categories if not already loaded
+        if (allCategories.isEmpty()) {
+            loadCategories();
+        }
 
+        // Calculate total number of pages
+        int pageCount = (int) Math.ceil((double) allCategories.size() / itemsPage);
+
+        // Set up pagination
+        PaginationCat.setPageCount(pageCount);
+        PaginationCat.setCurrentPageIndex(0); // Set to first page
+    }
+
+    private void loadCategories() {
+        List<Categorie> all = cs.getData();
+        allCategories.addAll(all);
+    }
+
+    private void createPage(int pageIndex) {
+        int fromIndex = pageIndex * itemsPage;
+        int toIndex = Math.min(fromIndex + itemsPage, allCategories.size());
+        displayedCategories.setAll(allCategories.subList(fromIndex, toIndex));
+        table.setItems(displayedCategories);
+    }
+
+    @FXML
+    public void searchCategories(String searchText) {
+        if (searchText.isEmpty()) {
+
+            addcategorieTable();
+        } else {
+
+            Categorie searchCriteria = new Categorie();
+            searchCriteria.setNom_cat(searchText);
+            searchCriteria.setType_cat(searchText);
+
+            // Send AJAX request to the backend and update the TableView with search results
+            ArrayList<Categorie> searchResults = cs.getBytitreDescription(searchCriteria);
+            ObservableList<Categorie> searchResultsList = FXCollections.observableArrayList(searchResults);
+            table.setItems(searchResultsList);
+        }
+
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //Recherche
+        recherche.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchCategories(newValue);
+        });
+
+
+        //Pagination
+        // Chargez toutes les catégories si elles ne sont pas déjà chargées
+        PaginationCat.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> createPage(newIndex.intValue()));
+        loadCategories();
+
+
+        // Calculez le nombre total de pages
+        int pageCount = (int) Math.ceil((double) allCategories.size() / itemsPage);
+        PaginationCat.setPageCount(pageCount);
+        PaginationCat.setCurrentPageIndex(0); // Définir sur la première page
+
+
+
+
+
         //Statistique
         // Obtention des Top 5 des médicaments les plus proches de la date d'expiration
         List<Medicament> top5Medicaments = obtenirTop5MedicamentsProchesExpiration();
 
-// Création d'une liste formatée pour les éléments à afficher dans la ListView
+        // Création d'une liste formatée pour les éléments à afficher dans la ListView
         ObservableList<String> items = FXCollections.observableArrayList();
         for (Medicament medicament : top5Medicaments) {
             String item = "Nom du médicament : " + medicament.getNom_med() + ", Date d'expiration : " + medicament.getDate_expiration();
             items.add(item);
         }
 
-// Définition de la liste formatée comme source de données de la ListView
+        // Définition de la liste formatée comme source de données de la ListView
         ListTop.setItems(items);
         try {
             // Récupération des données des médicaments depuis le service
@@ -769,16 +862,17 @@ public class CategorieController implements Initializable {
             alert.showAndWait();
             return; // Sortie de la méthode en cas d'erreur
         }
-
+        // Calcul de la différence entre la date d'expiration et la date de mise en marché
+        long joursRestants = ChronoUnit.DAYS.between(date, date1);
         // Appel de la méthode addMedicament avec les données récupérées
         if (ms != null) {
            Medicament medicament = new Medicament(1, categorie,ref1, nom1, date, date1, qte1, description, etat1, image1);
             ms.addMedicament(medicament);
 
-            // Affichage de l'alerte de succès
+            // Affichage de l'alerte avec le nombre de jours restants
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Succès");
-            alert.setContentText("Médicament ajouté avec succès !");
+            alert.setContentText("Médicament ajouté avec succès ! " + joursRestants + " jours restants avant l'expiration.");
             alert.showAndWait();
         } else {
             System.err.println("Échec de l'ajout du médicament!");
@@ -796,6 +890,7 @@ public class CategorieController implements Initializable {
 
         // Rafraîchissement automatique de la table
         refreshTable();
+
     }
 
 

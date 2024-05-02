@@ -1,5 +1,8 @@
 package Interface;
 
+import Model.Categorie;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ICategorie <T>{
@@ -9,4 +12,5 @@ public interface ICategorie <T>{
         void updateCategorie(T t);
         List<T> getData();
 
+    ArrayList<Categorie> getBytitreDescription(Categorie ctegorieBlog);
 }

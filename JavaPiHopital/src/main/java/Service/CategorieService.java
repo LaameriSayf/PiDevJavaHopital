@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CategorieService implements ICategorie<Categorie> {
     private static Connection cnx;
@@ -87,7 +88,31 @@ String requete= "DELETE FROM `categorie` WHERE `id` = ?";
         }
         return data;
     }
+    @Override
+    public ArrayList<Categorie> getBytitreDescription(Categorie ctegorieBlog) {
+        ArrayList<Categorie> listrechercheCatblog = new ArrayList<>();
+        String rqt = "SELECT * FROM categorie WHERE nom_cat LIKE ? OR type_cat LIKE ?";
+        try {
+            PreparedStatement stm = cnx.prepareStatement(rqt);
+            stm.setString(1, "%" + ctegorieBlog.getNom_cat() + "%");
+            stm.setString(2, "%" + ctegorieBlog.getType_cat() + "%");
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Categorie ctm = new Categorie();
+                ctm.setId(rs.getInt("id"));
+                ctm.setNom_cat(rs.getString("nom_cat"));
+                ctm.setType_cat(rs.getString("type_cat"));
+                listrechercheCatblog.add(ctm);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la recherche des catégories de blog par titre ou description.", e);
+        }
 
+        return listrechercheCatblog.stream()
+                .filter(cat -> cat.getNom_cat().contains(ctegorieBlog.getNom_cat())
+                        || cat.getType_cat().contains(ctegorieBlog.getType_cat()))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
 
 
     public Set<Categorie> getAll() {

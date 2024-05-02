@@ -31,6 +31,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -246,13 +254,82 @@ public class CategorieController implements Initializable {
     }
 
 
+//Send mail
+public static void sendEmail(String recipientEmail) {
+    // Sender's email
+    final String senderEmail = "batoutbata5@gmail.com";
+    final String senderName = "Team MediConnect"; // Your desired sender name
+    if (recipientEmail == null || recipientEmail.isEmpty()) {
+        System.out.println("Recipient email is null or empty. Cannot send email.");
+        return;
+    }
+    // Password
+    final String password = "ialgvzhizvvrwozy";
 
+    // SMTP server properties
+    Properties properties = new Properties();
+    properties.put("mail.smtp.auth", "true");
+    properties.put("mail.smtp.starttls.enable", "true");
+    properties.put("mail.smtp.host", "smtp.gmail.com");
+    properties.put("mail.smtp.port", "587");
+
+    Session session = Session.getInstance(properties, new Authenticator() {
+        @Override
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(senderEmail, password);
+        }
+    });
+
+    try {
+        // Create a MimeMessage object
+        MimeMessage message = new MimeMessage(session);
+
+        // Set the sender's name and email address
+        message.setFrom(new InternetAddress(senderEmail, senderName));
+
+        // Set the recipient's email address
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
+
+        // Set the email subject
+        message.setSubject("Thank you for your feedback");
+
+        // Create a MimeMultipart object
+        Multipart multipart = new MimeMultipart();
+
+        MimeBodyPart htmlPart = new MimeBodyPart();
+        String htmlContent = "<p style=\"font-family: Arial, sans-serif; font-size: 14px;\">Cher patient,</p>"
+                + "<p style=\"font-family: Arial, sans-serif; font-size: 14px;\">Votre rendez-vous a été envoyé avec succès.</p>"
+                + "<p style=\"font-family: Arial, sans-serif; font-size: 14px;\">À bientôt,<br/>Hopital Militaire de Tunis<br/>@MediConnect</p>"
+                ;
+        htmlPart.setContent(htmlContent, "text/html");
+        multipart.addBodyPart(htmlPart);
+
+        // Create and add the image part of the message
+        MimeBodyPart imagePart = new MimeBodyPart();
+        DataSource source = new FileDataSource("C:\\Users\\ASUS\\Desktop\\PiDevJava\\PiDevJavaHopital\\JavaPiHopital\\src\\main\\resources\\uploads\\logo1.png"); // Replace with the path to your image file
+        imagePart.setDataHandler(new DataHandler(source));
+        imagePart.setHeader("Content-ID", "<image>");
+        multipart.addBodyPart(imagePart);
+
+        // Set the content of the message to the multipart object
+        message.setContent(multipart);
+
+        // Send the message
+        Transport.send(message);
+
+        System.out.println("Email sent successfully!");
+
+    } catch (MessagingException | IOException e) {
+        e.printStackTrace();
+    }
+}
 
     @FXML
     void ajouterCategorie(ActionEvent event) {
         String nom_cat1 = nom_cat.getText();
         String description1_cat = description_cat.getText();
         String type_cat1 = type_cat.getText();
+        String mail = "abdessalemchaouch9217@gmail.com";
 
         // Vérifier si les champs sont vides
         if (nom_cat1.isEmpty() || description1_cat.isEmpty() || type_cat1.isEmpty()) {
@@ -282,6 +359,7 @@ public class CategorieController implements Initializable {
         cs.addCategorie(c);
         // Ajouter la nouvelle catégorie à la liste observable
         allCategories.add(c);
+        sendEmail(mail);
 
         // Affichage d'une alerte de succès
         new Alert(Alert.AlertType.INFORMATION, "Catégorie ajoutée avec succès!").showAndWait();
@@ -438,7 +516,7 @@ public class CategorieController implements Initializable {
             boolean matchType = false;
             boolean matchDescription = false;
 
-            // Vérifie si le nom, le type ou la description contient l'un des mots de recherche
+            // Vérifie si le nom, le type ou la description contient l'un des mots derecherche
             for (String word : searchWordsArray) {
                 if (input.getNom_cat().toLowerCase().contains(word.toLowerCase())) {
                     matchNom = true;
@@ -451,7 +529,7 @@ public class CategorieController implements Initializable {
                 }
             }
 
-            // Renvoie vrai si le nom, le type ou la description correspond à l'un des mots de recherche
+            // Renvoie vrai si le nom, le type ou la description correspond à l'un des mots derecherche
             return matchNom || matchType || matchDescription;
         }).collect(Collectors.toList());
     }*/
@@ -508,21 +586,25 @@ public class CategorieController implements Initializable {
     @FXML
     public void searchCategories(String searchText) {
         if (searchText.isEmpty()) {
-
-            addcategorieTable();
+            refreshTable();
         } else {
-
+            // Création d'un objet Categorie pour chaque critère de recherche
             Categorie searchCriteria = new Categorie();
-            searchCriteria.setNom_cat(searchText);
-            searchCriteria.setType_cat(searchText);
+            searchCriteria.setNom_cat(searchText); // Recherche par nom de catégorie
+            searchCriteria.setType_cat(searchText); // Recherche par type de catégorie
+            searchCriteria.setDescription_cat(searchText); // Recherche par description de catégorie
 
-            // Send AJAX request to the backend and update the TableView with search results
+            // Envoyer une requête au backend pour récupérer les résultats de la recherche
             ArrayList<Categorie> searchResults = cs.getBytitreDescription(searchCriteria);
+
+            // Mettre les résultats de la recherche dans une liste observable
             ObservableList<Categorie> searchResultsList = FXCollections.observableArrayList(searchResults);
+
+            // Mettre à jour la table avec les résultats de la recherche
             table.setItems(searchResultsList);
         }
-
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Recherche

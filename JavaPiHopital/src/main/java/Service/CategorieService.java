@@ -88,32 +88,35 @@ String requete= "DELETE FROM `categorie` WHERE `id` = ?";
         }
         return data;
     }
+
     @Override
     public ArrayList<Categorie> getBytitreDescription(Categorie ctegorieBlog) {
         ArrayList<Categorie> listrechercheCatblog = new ArrayList<>();
-        String rqt = "SELECT * FROM categorie WHERE nom_cat LIKE ? OR type_cat LIKE ?";
+        String rqt = "SELECT * FROM categorie WHERE nom_cat LIKE ? OR type_cat LIKE ? OR description_cat LIKE ?";
         try {
             PreparedStatement stm = cnx.prepareStatement(rqt);
             stm.setString(1, "%" + ctegorieBlog.getNom_cat() + "%");
             stm.setString(2, "%" + ctegorieBlog.getType_cat() + "%");
+            stm.setString(3, "%" + ctegorieBlog.getDescription_cat() + "%");
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Categorie ctm = new Categorie();
                 ctm.setId(rs.getInt("id"));
                 ctm.setNom_cat(rs.getString("nom_cat"));
                 ctm.setType_cat(rs.getString("type_cat"));
+                ctm.setDescription_cat(rs.getString("description_cat")); // Correction ici
                 listrechercheCatblog.add(ctm);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la recherche des catégories de blog par titre ou description.", e);
+            throw new RuntimeException("Erreur lors de la recherche des catégories .", e);
         }
 
         return listrechercheCatblog.stream()
                 .filter(cat -> cat.getNom_cat().contains(ctegorieBlog.getNom_cat())
-                        || cat.getType_cat().contains(ctegorieBlog.getType_cat()))
+                        || cat.getType_cat().contains(ctegorieBlog.getType_cat())
+                        || cat.getDescription_cat().contains(ctegorieBlog.getDescription_cat()))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
-
 
     public Set<Categorie> getAll() {
         return (Set<Categorie>) getData();

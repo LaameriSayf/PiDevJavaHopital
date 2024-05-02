@@ -303,6 +303,7 @@ public class Inscription {
 
 
     public void initialize() throws SQLException {
+
         date_de_naissanceTF.valueProperty().addListener((observable, oldValue, newValue) -> {
             // Calculer l'âge à partir de la date de naissance
             if (newValue != null) {

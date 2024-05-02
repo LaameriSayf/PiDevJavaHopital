@@ -40,13 +40,13 @@
                      </font>
                   </Label>
                   <Button fx:id="inscri_btn" layoutX="58.0" layoutY="337.0" mnemonicParsing="false" onAction="#inscription_btn" prefHeight="25.0" prefWidth="150.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Inscription" />
-                  <Hyperlink layoutX="150.0" layoutY="229.0" text="Mot de passe oubliée ?" />
+                  <Hyperlink fx:id="MDPoublie" layoutX="150.0" layoutY="229.0" onAction="#MDPoubliebtn" text="Mot de passe oubliée ?" />
                   <Button fx:id="close" layoutX="269.0" layoutY="8.0" mnemonicParsing="false" onAction="#close" styleClass="close" stylesheets="@DashboarsDesign.css" text="X" />
                   <Line endX="121.0" layoutX="144.0" layoutY="123.0" startX="-119.0" />
                   <Button fx:id="minimise" layoutX="247.0" layoutY="8.0" mnemonicParsing="false" onAction="#minimise" styleClass="minimize" stylesheets="@DashboarsDesign.css" text="-" />
                   <TextField fx:id="loginshowpassword" layoutX="16.0" layoutY="175.0" prefHeight="25.0" prefWidth="241.0" promptText="Mot de passe" />
                   <PasswordField fx:id="passwordTF" layoutX="16.0" layoutY="175.0" prefHeight="25.0" prefWidth="241.0" promptText="mot de passe" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
-                  <ImageView layoutY="8.0">
+                  <ImageView>
                      <image>
                         <Image url="@logomediconnect.PNG" />
                      </image>

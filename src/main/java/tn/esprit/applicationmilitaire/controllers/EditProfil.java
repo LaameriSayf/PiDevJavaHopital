@@ -2,20 +2,14 @@ package tn.esprit.applicationmilitaire.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import tn.esprit.applicationmilitaire.models.Global_user;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import tn.esprit.applicationmilitaire.utils.MyConnection;
-
-import java.sql.*;
 
 public class EditProfil {
-
-
-
     @FXML
     private Button annulerbtn;
 
@@ -60,15 +54,16 @@ public class EditProfil {
 
     @FXML
     private TextField prenomTF;
-    private Global_user currentUser;
 
     @FXML
     void annuler(ActionEvent event) {
 
     }
 
+    @FXML
+    void close(ActionEvent event) {
 
-
+    }
 
     @FXML
     void editimage(ActionEvent event) {
@@ -80,16 +75,10 @@ public class EditProfil {
 
     }
 
+    @FXML
+    void minimise(ActionEvent event) {
 
-    public void close(){
-        System.exit(0);
     }
-    public void minimise(){
-        Stage stage = (Stage)main_form.getScene().getWindow();
-        stage.setIconified(true);
-    }
-
-
 
 
 }

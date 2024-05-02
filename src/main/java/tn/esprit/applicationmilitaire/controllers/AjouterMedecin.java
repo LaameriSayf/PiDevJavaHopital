@@ -423,7 +423,7 @@ public class AjouterMedecin {
         ObservableList<Medecin> list = FXCollections.observableArrayList();
         String sql = "SELECT u.id, u.cin, u.nom, u.prenom, u.genre, u.datenaissance, u.numtel, u.role, u.email, u.password, u.interlock, u.image, m.specialite , m.etat " +
                 "FROM global_user u " +
-                "JOIN medecin m ON u.id = m.id";
+                "JOIN medecin m ON u.id = m.id"; 
         connect = MyConnection.getInstance().getCnx();
 
         try {

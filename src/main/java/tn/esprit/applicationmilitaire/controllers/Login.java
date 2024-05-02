@@ -31,6 +31,8 @@ public class Login {
 
     @FXML
     private Button minimise;
+    @FXML
+    private Hyperlink MDPoublie;
 
     @FXML
     private PasswordField passwordTF;
@@ -88,13 +90,13 @@ public class Login {
                         case "Admin":
                             root = loader.load(getClass().getResource("/Dashboard.fxml").openStream());
                             break;
-                        case "patient":
+                        case "Patient":
                             root = loader.load(getClass().getResource("/PatientDashboard.fxml").openStream());
                             break;
-                        case "medecin":
+                        case "Medecin":
                             root = loader.load(getClass().getResource("/MedecinDashboard.fxml").openStream());
                             break;
-                        case "pharmacien":
+                        case "Pharmacien":
                             root = loader.load(getClass().getResource("/PharmacienDashboard.fxml").openStream());
                             break;
                         default:
@@ -185,6 +187,20 @@ public class Login {
                 passwordTF.setVisible(true);
             }
         }
+    }
+
+    @FXML
+    void MDPoubliebtn(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/forgotPassword.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage) MDPoublie.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
 

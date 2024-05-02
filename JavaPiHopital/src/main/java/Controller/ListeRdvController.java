@@ -151,7 +151,7 @@ public class ListeRdvController implements Initializable {
         try {
             Map<EncodeHintType, Object> hintMap = new HashMap<>();
             hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-            BitMatrix matrix = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, 200, 200, hintMap);
+            BitMatrix matrix = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, 250, 250, hintMap);
             BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(matrix);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "png", out);

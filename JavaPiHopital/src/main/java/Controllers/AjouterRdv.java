@@ -112,22 +112,7 @@ public class AjouterRdv {
                 System.out.println("ID not found");
             }
         });
-        /*UnaryOperator<TextFormatter.Change> filter = change -> {
-            String newText = change.getControlNewText();
-            // Check if the new text is empty or matches the pattern HH:mm
-            if (newText.isEmpty() || newText.matches("^([01]?[0-9]|2[0-3]):([0-5]?[0-9])?$")) {
-                // Valid format or empty, allow the change
-                return change;
-            } else {
-                // Invalid format, show an alert
-                showAlert("Invalid time format. Please use the format HH:mm.");
-                return null;
-            }
-        };
-
-        TextFormatter<String> textFormatter = new TextFormatter<>(filter);
-        heureLabel.setTextFormatter(textFormatter);*/
-
+        
     }
 
     @FXML

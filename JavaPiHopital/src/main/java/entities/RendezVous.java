@@ -3,14 +3,24 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
+
 public class RendezVous {
 private String description ,file;
 private Integer id;
 private LocalDate daterdv;
 private String heurerdv;
 private Boolean etat;
+private Patient patient;
 
-private Button accept,delete;
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    private Button accept,delete;
 
 
 

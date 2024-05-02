@@ -1,6 +1,8 @@
 package Controller;
 
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
 import entities.RendezVous;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,10 +19,16 @@ import services.RdvService;
 import services.RendezVousService;
 import utils.MyDataBase;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -28,11 +36,16 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class AjouterRdv {
 
+    @FXML
+    private Button pdfLabel;
 
     @FXML
     private DatePicker dateLabel;
@@ -175,7 +188,11 @@ public class AjouterRdv {
 
 
                 }
-                sendEmail(email);
+                String content = "<p style=\\\"font-family: Arial, sans-serif; font-size: 14px;\\\">Cher patient,</p>\"\n" +
+                        "                    + \"<p style=\\\"font-family: Arial, sans-serif; font-size: 14px;\\\">Votre rendez-vous a été envoyé avec succès.</p>\"\n" +
+                        "                    + \"<p style=\\\"font-family: Arial, sans-serif; font-size: 14px;\\\">À bientôt,<br/>Hopital Militaire de Tunis<br/>@MediConnect</p>";
+
+                sendEmail(email,content);
                 showAlert("RendezVous ajouté avec succès!");
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -292,26 +309,31 @@ public class AjouterRdv {
         stage.setScene(scene);
         stage.show();
     }
+    @FXML
+    public void switchToListeRDV(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/ListeRDV.fxml"));
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
 
-    public static void sendEmail(String recipientEmail) {
-        // Sender's email
-        String senderEmail = "batoutbata5@gmail.com";
+    public static void sendEmail(String recipientEmail, String contenue) {
+        final String senderName = "Team MediConnect"; // Your desired sender name
         if (recipientEmail == null || recipientEmail.isEmpty()) {
             System.out.println("Recipient email is null or empty. Cannot send email.");
             return;
         }
-        // pass
-        String password = "ialgvzhizvvrwozy";
+        // Password
 
         // SMTP server properties
-        java.util.Properties properties = new java.util.Properties();
+        Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
 
-        Session session;
-        session = Session.getInstance(properties, new Authenticator() {
+        Session session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(senderEmail, password);
@@ -319,21 +341,87 @@ public class AjouterRdv {
         });
 
         try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(senderEmail));
+            // Create a MimeMessage object
+            MimeMessage message = new MimeMessage(session);
+
+            // Set the sender's name and email address
+            message.setFrom(new InternetAddress(senderEmail, senderName));
+
+            // Set the recipient's email address
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
-            message.setSubject("Merci de fixer un rendez-vous");
-            message.setText("Cher patient,\n\nVotre rendez-vous a ete envoye avec success\n\nA bientot\nHopital Miltaire de Tunis");
+
+            // Set the email subject
+            message.setSubject("Thank you for your feedback");
+
+            // Create a MimeMultipart object
+            Multipart multipart = new MimeMultipart();
+
+            MimeBodyPart htmlPart = new MimeBodyPart();
+            String htmlContent = "<p style=\"font-family: Arial, sans-serif; font-size: 14px;\">Cher patient,</p>"
+                    + "<p style=\"font-family: Arial, sans-serif; font-size: 14px;\">Votre rendez-vous a été envoyé avec succès.</p>"
+                    + "<p style=\"font-family: Arial, sans-serif; font-size: 14px;\">À bientôt,<br/>Hopital Militaire de Tunis<br/>@MediConnect</p>"
+                    ;
+            htmlPart.setContent(htmlContent, "text/html");
+            multipart.addBodyPart(htmlPart);
+
+            // Create and add the image part of the message
+            MimeBodyPart imagePart = new MimeBodyPart();
+            DataSource source = new FileDataSource("C:\\Users\\Mega-PC\\Desktop\\PIDEV1\\src\\main\\resources\\0dca79a4-6e06-4b14-aefe-ac46705d1113-removebg-preview.png"); // Replace with the path to your image file
+            imagePart.setDataHandler(new DataHandler(source));
+            imagePart.setHeader("Content-ID", "<image>");
+            multipart.addBodyPart(imagePart);
+
+            // Set the content of the message to the multipart object
+            message.setContent(multipart);
 
             // Send the message
             Transport.send(message);
 
             System.out.println("Email sent successfully!");
 
-        } catch (MessagingException e) {
+        } catch (MessagingException | IOException e) {
             e.printStackTrace();
         }
+    } @FXML
+    void generateAndSavePDF() {
+        String selectedData = listeRdv.getSelectionModel().getSelectedItem();
+        LocalDate currentDate = LocalDate.now();
+        String randomUUID = UUID.randomUUID().toString();
+        String filePath = "PDFfile_" + randomUUID + ".pdf";
+
+        try {
+            generatePDF(selectedData, filePath);
+        } catch (IOException | DocumentException e) {
+            e.printStackTrace();
+            showAlert("Error occurred while generating PDF.");
+        }
     }
+
+    private void generatePDF(String text, String filePath) throws IOException, DocumentException {
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream(filePath));
+        document.open();
+
+        // Add title to the document in the center with blue color
+        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA, 24, Font.BOLD, BaseColor.BLUE);
+        Paragraph title = new Paragraph("Votre rendez-vous", titleFont);
+        title.setAlignment(Element.ALIGN_CENTER);
+        document.add(title);
+
+        document.add(new Paragraph(" "));
+
+        // Add text content to the document
+        Font textFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL, BaseColor.RED);
+        Paragraph paragraph = new Paragraph(text, textFont);
+        paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
+        document.add(paragraph);
+
+        document.close();
+
+        showSuccess("PDF generated successfully!");
+    }
+
+
 
 
 

@@ -52,7 +52,8 @@ public class EmploiController {
     @FXML
     private BorderPane borderNav;
 
-  
+   
+
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -164,6 +165,7 @@ public class EmploiController {
                 endLabel.setValue(null);
                 titreLabel.setText("");
                 descLabel.setText("");
+                //SEND SMS TFAKARHA FEL VALIDATION
                 sendSMS(toPhoneNumber,messageBody);
                 showSuccess("Emploi ajouté avec succès!");
                 loadAndDisplayData();
@@ -272,7 +274,6 @@ public class EmploiController {
     }
     public static void sendSMS(String toPhoneNumber, String messageBody) {
         // Initialize Twilio
-        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
 
         try {

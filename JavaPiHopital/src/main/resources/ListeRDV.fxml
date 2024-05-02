@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="779.0" prefWidth="1204.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ListeRdvController">
@@ -22,14 +22,26 @@
             <TableColumn prefWidth="173.0" text="Action" />
         </columns>
       </TableView>
-      <Label layoutX="181.0" layoutY="88.0" prefHeight="33.0" prefWidth="107.0" text="Search">
-         <font>
-            <Font name="System Bold Italic" size="21.0" />
-         </font>
-      </Label>
       <TextField fx:id="keywordTextField" layoutX="327.0" layoutY="93.0" prefHeight="25.0" prefWidth="780.0" promptText="Chercher un rendezvous..." />
-      <VBox fx:id="qrcodeVbox" layoutX="379.0" layoutY="423.0" prefHeight="219.0" prefWidth="343.0" />
-      <ImageView fx:id="qrimageLabel" fitHeight="221.0" fitWidth="379.0" layoutX="563.0" layoutY="520.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="qrcodeLabel" layoutX="262.0" layoutY="576.0" mnemonicParsing="false" onAction="#handleGenerateQRCode" text="qrcode" />
+      <Button fx:id="qrcodeLabel" layoutX="252.0" layoutY="504.0" mnemonicParsing="false" onAction="#handleGenerateQRCode" prefHeight="35.0" prefWidth="177.0" style="-fx-background-color: #378CE7; -fx-border-radius: 20px;" text="Generate" textFill="WHITE">
+         <font>
+            <Font name="Franklin Gothic Medium" size="18.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="69.0" fitWidth="76.0" layoutX="217.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@icons8-search-48.png" />
+         </image>
+      </ImageView>
+      <HBox layoutX="235.0" layoutY="547.0" prefHeight="159.0" prefWidth="293.0">
+         <children>
+            <ImageView fitHeight="249.0" fitWidth="221.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@qr-code.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="qrimageLabel" fitHeight="221.0" fitWidth="379.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

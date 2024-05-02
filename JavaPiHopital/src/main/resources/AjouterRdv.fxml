@@ -24,7 +24,7 @@
       <left>
          <AnchorPane fx:id="sidebar" prefHeight="639.0" prefWidth="209.0" style="-fx-background-color: #378CE7;" BorderPane.alignment="CENTER">
             <children>
-               <VBox layoutY="15.0" prefHeight="689.0" prefWidth="209.0" style="-fx-background-color: linear-gradient(to bottom right, #DFF5FF,#378CE7);">
+               <VBox layoutY="15.0" prefHeight="708.0" prefWidth="209.0" style="-fx-background-color: linear-gradient(to bottom right, #DFF5FF,#378CE7);">
                   <children>
                      <ImageView fitHeight="137.0" fitWidth="194.0" pickOnBounds="true" preserveRatio="true">
                         <image>
@@ -41,9 +41,9 @@
          </AnchorPane>
       </left>
       <center>
-         <AnchorPane prefHeight="666.0" prefWidth="936.0" BorderPane.alignment="CENTER">
+         <AnchorPane prefHeight="659.0" prefWidth="756.0" BorderPane.alignment="CENTER">
             <children>
-               <AnchorPane fx:id="panblog" layoutX="91.0" layoutY="-16.0" prefHeight="717.0" prefWidth="912.0" style="-fx-background-color: white;">
+               <AnchorPane fx:id="panblog" layoutX="113.0" layoutY="1.0" prefHeight="718.0" prefWidth="878.0" style="-fx-background-color: white;">
                   <children>
                      <HBox layoutX="9.0" layoutY="53.0" prefHeight="48.0" prefWidth="815.0">
                         <children>
@@ -79,7 +79,7 @@
                            </HBox>
                         </children>
                      </AnchorPane>
-                     <VBox layoutX="35.0" layoutY="359.0" prefHeight="223.0" prefWidth="280.0">
+                     <VBox layoutX="35.0" layoutY="359.0" prefHeight="267.0" prefWidth="280.0">
                         <children>
                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date :" />
                            <DatePicker fx:id="dateLabel" prefHeight="45.0" prefWidth="298.0" promptText="choisir date ..." style="-fx-border-radius: 12px;" />
@@ -87,35 +87,50 @@
                            <TextField fx:id="heureLabel" prefHeight="40.0" prefWidth="285.0" promptText="Choisir Date ..." />
                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
                            <TextField fx:id="descriptionLabel" prefHeight="39.0" prefWidth="274.0" promptText="choisir description ..." styleClass="rechBlog" />
+                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="File" wrappingWidth="42.947265625" />
+                           <ListView fx:id="fileList" prefHeight="69.0" prefWidth="297.0" />
+                           <Button fx:id="importFile" mnemonicParsing="false" onAction="#importFile" prefHeight="45.0" prefWidth="301.0" text="Import file" />
 
-                                                      </children>
+                                                                  </children>
                      </VBox>
                      <Text layoutX="363.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                     <AnchorPane layoutX="374.0" layoutY="379.0" prefHeight="157.0" prefWidth="96.0">
+                     <AnchorPane layoutX="374.0" layoutY="379.0" prefHeight="42.0" prefWidth="356.0">
                         <children>
-                           <VBox layoutX="-3.0" prefHeight="260.0" prefWidth="358.0">
+                           <VBox layoutX="-3.0" prefHeight="48.0" prefWidth="359.0">
                               <children>
-                                 <Button fx:id="importFile" mnemonicParsing="false" onAction="#importFile" prefHeight="25.0" prefWidth="363.0" text="Import file" />
-                                 <ListView fx:id="fileList" prefHeight="175.0" prefWidth="318.0" />
+                                 <HBox prefHeight="48.0" prefWidth="359.0">
+                                    <children>
+                                       <Button mnemonicParsing="false" onAction="#modifier" prefHeight="38.0" prefWidth="105.0" style="-fx-background-color: green;" text="Modifier" textFill="WHITE" />
+                                       <Button fx:id="supprimerRDB" mnemonicParsing="false" onAction="#supprimerRDV" prefHeight="39.0" prefWidth="116.0" style="-fx-background-color: red;" text="suprimer" textFill="WHITE" />
+                                       <Button fx:id="ajouterButton" mnemonicParsing="false" onAction="#ajouterRDV" prefHeight="39.0" prefWidth="116.0" style="-fx-background-color: blue;" text="Ajouter" textFill="WHITE" />
+                                       <Button fx:id="pdfLabel" mnemonicParsing="false" onAction="#generateAndSavePDF" prefHeight="38.0" prefWidth="92.0" style="-fx-background-color: red;" text="PDF" textAlignment="CENTER" textFill="WHITE" />
+                                    </children>
+                                 </HBox>
                               </children>
                            </VBox>
                         </children>
                      </AnchorPane>
-                     <Text layoutX="376.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File" wrappingWidth="42.947265625" />
-                     <Button fx:id="ajouterButton" layoutX="298.0" layoutY="606.0" mnemonicParsing="false" onAction="#ajouterRDV" prefHeight="39.0" prefWidth="116.0" style="-fx-background-color: blue;" text="Ajouter" textFill="WHITE" />
-                     <Button fx:id="supprimerRDB" layoutX="171.0" layoutY="606.0" mnemonicParsing="false" onAction="#supprimerRDV" prefHeight="39.0" prefWidth="116.0" style="-fx-background-color: red;" text="suprimer" textFill="WHITE" />
-                     <Button layoutX="57.0" layoutY="607.0" mnemonicParsing="false" onAction="#modifier" prefHeight="38.0" prefWidth="105.0" style="-fx-background-color: green;" text="Modifier" textFill="WHITE" />
-                     <Button fx:id="gotoEmploi" layoutX="788.0" layoutY="622.0" mnemonicParsing="false" onAction="#switchToEmploi" prefHeight="35.0" prefWidth="106.0" style="-fx-background-color: #378CE7; -fx-border-radius: 20px;" text="Emploi" textFill="WHITE">
-                        <font>
-                           <Font name="Franklin Gothic Medium" size="18.0" />
-                        </font>
-                     </Button>
-                     <ImageView fitHeight="34.0" fitWidth="48.0" layoutX="824.0" layoutY="582.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox layoutX="521.0" layoutY="482.0" prefHeight="200.0" prefWidth="100.0" />
+                     <ImageView fitHeight="132.0" fitWidth="215.0" layoutX="372.0" layoutY="477.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                            <Image url="@téléchargé.png" />
                         </image>
                      </ImageView>
-                     <Button fx:id="mailLabel" layoutX="466.0" layoutY="657.0" mnemonicParsing="false" text="Mail" />
+                     <Button fx:id="gotoEmploi" layoutX="353.0" layoutY="608.0" mnemonicParsing="false" onAction="#switchToEmploi" prefHeight="35.0" prefWidth="194.0" style="-fx-background-color: #378CE7; -fx-border-radius: 20px;" text="Emploi" textFill="WHITE">
+                        <font>
+                           <Font name="Franklin Gothic Medium" size="18.0" />
+                        </font>
+                     </Button>
+                     <ImageView fitHeight="121.0" fitWidth="129.0" layoutX="634.0" layoutY="483.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@medical-appointment.png" />
+                        </image>
+                     </ImageView>
+                     <Button fx:id="switchToListeRDV" layoutX="591.0" layoutY="608.0" mnemonicParsing="false" onAction="#switchToListeRDV" prefHeight="36.0" prefWidth="194.0" style="-fx-background-color: #378CE7;" text="Liste rdv" textFill="WHITE">
+                        <font>
+                           <Font name="Franklin Gothic Medium" size="17.0" />
+                        </font>
+                     </Button>
                   </children>
                   <effect>
                      <InnerShadow>
@@ -125,7 +140,7 @@
                      </InnerShadow>
                   </effect>
                </AnchorPane>
-               <ImageView fitHeight="270.0" fitWidth="202.0" layoutX="-106.0" layoutY="448.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fitHeight="224.0" fitWidth="227.0" layoutX="-106.0" layoutY="448.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@téléchargé-removebg-preview.png" />
                   </image>

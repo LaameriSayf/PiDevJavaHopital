@@ -2,7 +2,7 @@ package Controller;
 
 import Interface.ICategorie;
 import Model.Categorie;
-
+import java.io.File;
 import Model.Medicament;
 import Service.CategorieService;
 import org.apache.poi.ss.usermodel.*;
@@ -1169,13 +1169,21 @@ public static void sendEmail(String recipientEmail) {
             }
         }
     }
+
+
     @FXML
     void exportToExcel(ActionEvent event) {
         ObservableList<String> items = table_med.getItems();
-        String filePath = "/C:\\\\Users\\\\ASUS\\\\Desktop\\\\ListViewData1.xlsx";
+        String filePath = "C:\\Users\\ASUS\\Desktop\\ListViewData1.xlsx";
         exportToExcel(filePath, items);
     }
+
     private void exportToExcel(String filePath, ObservableList<String> data) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            filePath = generateUniqueFileName(filePath);
+        }
+
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Medicament Data");
 
@@ -1184,7 +1192,7 @@ public static void sendEmail(String recipientEmail) {
             String[] headers = {"ID", "Catégorie", "Référence", "Nom du médicament", "Description", "Date d'expiration",
                     "Date d'AMM", "État", "Quantité", "Image"};
             for (int i = 0; i < headers.length; i++) {
-                var cell = headerRow.createCell(i); // Utiliser le type générique Cell
+                Cell cell = headerRow.createCell(i);
                 cell.setCellValue(headers[i]);
             }
 
@@ -1206,6 +1214,22 @@ public static void sendEmail(String recipientEmail) {
             e.printStackTrace();
         }
     }
+
+    private String generateUniqueFileName(String filePath) {
+        File file = new File(filePath);
+        String fileName = file.getName();
+        String fileExtension = "";
+
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex != -1) {
+            fileExtension = fileName.substring(dotIndex);
+            fileName = fileName.substring(0, dotIndex);
+        }
+
+        String uniqueFileName = fileName + "_" + System.currentTimeMillis() + fileExtension;
+        return file.getParent() + File.separator + uniqueFileName;
+    }
+
 
 
 }

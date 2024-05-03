@@ -5,7 +5,12 @@ import Model.Categorie;
 
 import Model.Medicament;
 import Service.CategorieService;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import Service.MedicamentService;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -30,18 +35,25 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.*;
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -291,14 +303,14 @@ public static void sendEmail(String recipientEmail) {
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
 
         // Set the email subject
-        message.setSubject("Thank you for your feedback");
+        message.setSubject("Catégorie est ajoutée");
 
         // Create a MimeMultipart object
         Multipart multipart = new MimeMultipart();
 
         MimeBodyPart htmlPart = new MimeBodyPart();
         String htmlContent = "<p style=\"font-family: Arial, sans-serif; font-size: 14px;\">Cher patient,</p>"
-                + "<p style=\"font-family: Arial, sans-serif; font-size: 14px;\">Votre rendez-vous a été envoyé avec succès.</p>"
+                + "<p style=\"font-family: Arial, sans-serif; font-size: 14px;\">Votre Catégoeie est ajoutée avec succès.</p>"
                 + "<p style=\"font-family: Arial, sans-serif; font-size: 14px;\">À bientôt,<br/>Hopital Militaire de Tunis<br/>@MediConnect</p>"
                 ;
         htmlPart.setContent(htmlContent, "text/html");
@@ -1155,6 +1167,43 @@ public static void sendEmail(String recipientEmail) {
                 // Sélectionner la catégorie correspondante dans la liste déroulante
                 ComboCategorie.getSelectionModel().select(cat);
             }
+        }
+    }
+    @FXML
+    void exportToExcel(ActionEvent event) {
+        ObservableList<String> items = table_med.getItems();
+        String filePath = "/C:\\\\Users\\\\ASUS\\\\Desktop\\\\ListViewData1.xlsx";
+        exportToExcel(filePath, items);
+    }
+    private void exportToExcel(String filePath, ObservableList<String> data) {
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Medicament Data");
+
+            // Créer l'en-tête
+            Row headerRow = sheet.createRow(0);
+            String[] headers = {"ID", "Catégorie", "Référence", "Nom du médicament", "Description", "Date d'expiration",
+                    "Date d'AMM", "État", "Quantité", "Image"};
+            for (int i = 0; i < headers.length; i++) {
+                var cell = headerRow.createCell(i); // Utiliser le type générique Cell
+                cell.setCellValue(headers[i]);
+            }
+
+            // Remplir les données
+            for (int i = 0; i < data.size(); i++) {
+                Row row = sheet.createRow(i + 1);
+                String[] parts = data.get(i).split(", ");
+                for (int j = 0; j < parts.length; j++) {
+                    row.createCell(j).setCellValue(parts[j].substring(parts[j].indexOf(":") + 1).trim());
+                }
+            }
+
+            // Enregistrer le fichier Excel
+            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+                workbook.write(fileOut);
+                System.out.println("Excel exporté avec succès !");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

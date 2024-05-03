@@ -18,6 +18,7 @@ public class CategorieService implements ICategorie<Categorie> {
     this.cnx = DataBase.getInstance().getCnx();
 }
 
+
     @Override
     public void addCategorie(Categorie categorie) {
         String requete="INSERT INTO categorie (nom_cat,type_cat,description_cat)"+

@@ -15,7 +15,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-    //  FXMLLoader loader=new FXMLLoader(getClass().getResource("/GUI/MenuDashboardLayout.fxml"));
+     //FXMLLoader loader=new FXMLLoader(getClass().getResource("/GUI/MenuDashboardLayout.fxml"));
        //
         FXMLLoader loader=new FXMLLoader(getClass().getResource("/GUI/FrontOfficeBlog.fxml"));
 

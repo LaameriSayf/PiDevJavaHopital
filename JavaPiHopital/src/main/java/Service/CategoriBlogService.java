@@ -146,7 +146,6 @@ public class CategoriBlogService implements IcategoriBlog<CtegorieBlog> {
             throw new RuntimeException("Erreur lors de la recherche des catégories de blog par titre ou description.", e);
         }
 
-        // Using stream to filter results
         return listrechercheCatblog.stream()
                 .filter(cat -> cat.getTitrecategorie().contains(ctegorieBlog.getTitrecategorie())
                         || cat.getDescription().contains(ctegorieBlog.getDescription()))

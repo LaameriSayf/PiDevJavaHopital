@@ -11,6 +11,9 @@ import Model.Blog;
 import Model.Commentaire;
 import Service.BlogService;
 import Service.CommentaireService;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,13 +25,27 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 import javafx.util.Callback;
-
-import java.util.ArrayList;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.util.Duration;
+import java.util.Arrays;
 import java.util.List;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javafx.util.Duration;
 import org.apache.http.client.fluent.Request;
 import org.controlsfx.control.Notifications;
 import org.json.JSONArray;
@@ -85,26 +102,64 @@ public class FrontOfficeBlogController {
 
    @FXML
    private ImageView btngorecherche;
+   @FXML
+   private HBox root;
     private static final String API_KEY = "AIzaSyCdCuUdiDDEz7TiHTtfJik8XnXZg24UJEg";
     private static final String SEARCH_ENGINE_ID = "623dc2de16ef345cc";
 
     private BlogService blogService = new BlogService();
     private List<Blog> blogList = blogService.getAll();
+    private static final List<String> NEWS = Arrays.asList(
+            "Adoptez une alimentation équilibrée pour fournir à votre corps les nutriments essentiels.",
+            "Faites de l'exercice régulièrement pour renforcer votre système cardiovasculaire et maintenir une santé musculaire.",
+            "Apprenez des techniques de gestion du stress telles que la méditation et la respiration profonde.",
+            "Assurez-vous de dormir suffisamment chaque nuit pour favoriser la récupération physique et mentale.",
+            "Buvez suffisamment d'eau chaque jour pour maintenir une hydratation adéquate.",
+            "Ne négligez pas les examens médicaux réguliers pour détecter les problèmes de santé à temps."
+    );
+
+    private static final double SPEED = 0.5; // Pixels par seconde
+
+    private int currentIndex = 0;
 
     @FXML
     public void initialize() {
-        // Assigner le gestionnaire d'événements à chaque ImageView dans le FlowPane
-        for (javafx.scene.Node node : imagePane.getChildren()) {
-            if (node instanceof ImageView) {
-                ImageView imageView = (ImageView) node;
-                imageView.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
-                    @Override
-                    public void handle(javafx.scene.input.MouseEvent event) {
-                        zoomImage(event);
-                    }
-                });
-            }
+
+        root.setPrefWidth(800); // Largeur de la bande de news
+        root.setPrefHeight(50); // Hauteur de la bande de news
+        root.setStyle("-fx-background-color: red; -fx-border-color: #ccc; -fx-border-width: 1px;");
+
+        Label allNewsLabel = new Label("All News:");
+        allNewsLabel.setFont(Font.font("System", 12));
+        allNewsLabel.setTextFill(Color.WHITE);
+        root.getChildren().add(allNewsLabel);
+
+        for (String news : NEWS) {
+            Label newsLabel = new Label(news);
+            newsLabel.setFont(Font.font("System", 12));
+            newsLabel.setTextFill(Color.WHITE);
+            root.getChildren().add(newsLabel);
+
+            Label separatorLabel = new Label(" News ");
+            separatorLabel.setFont(Font.font("System", FontWeight.BOLD, 12));
+            separatorLabel.setTextFill(Color.WHITE);
+            root.getChildren().add(separatorLabel);
         }
+
+        // Animer le défilement des actualités
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> {
+            for (int i = 0; i < root.getChildren().size(); i++) {
+                Label label = (Label) root.getChildren().get(i);
+                double newX = label.getTranslateX() - SPEED;
+                label.setTranslateX(newX);
+                if (newX < -root.getWidth()) {
+                    label.setTranslateX(root.getWidth()); // Réinitialiser la position
+                }
+            }
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
 
 
         btngorecherche.setOnMouseClicked(event->switchrechercheGoogle());

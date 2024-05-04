@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.applicationmilitaire.models.Admin;
@@ -86,6 +87,8 @@ public class AjouterAdmin {
 
     @FXML
     private TextField cinTF;
+    @FXML
+    private Text profineTF;
 
     @FXML
     private Button close;
@@ -190,6 +193,7 @@ public class AjouterAdmin {
         image = new Image(uri, 118, 139, false, true);
         imageTF.setImage(image);
     }
+
 
 
 

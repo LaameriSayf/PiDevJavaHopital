@@ -40,6 +40,7 @@ public class Login {
     private CheckBox showpassword;
 
 
+
     @FXML
     private Button login;
     @FXML
@@ -124,7 +125,11 @@ public class Login {
             e.printStackTrace();
             showAlert("Erreur", "Erreur de chargement", "Une erreur s'est produite lors du chargement de l'interface utilisateur.");
         }
+
     }
+
+
+
 
     private void showAlert(String title, String headerText, String contentText) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -134,8 +139,15 @@ public class Login {
         alert.showAndWait();
     }
 
+
+
+
+
+
+
     @FXML
     private Button inscri_btn;
+
     @FXML
     void inscription_btn(ActionEvent event) {
         try {

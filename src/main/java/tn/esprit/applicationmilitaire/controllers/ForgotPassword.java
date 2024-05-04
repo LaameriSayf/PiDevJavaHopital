@@ -1,15 +1,22 @@
 package tn.esprit.applicationmilitaire.controllers;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 import tn.esprit.applicationmilitaire.models.Global_user;
 import tn.esprit.applicationmilitaire.services.Global_userService;
+import tn.esprit.applicationmilitaire.test.HelloApplication;
 import tn.esprit.applicationmilitaire.utils.EmailUser;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class ForgotPassword {
@@ -49,8 +56,27 @@ public class ForgotPassword {
 
         // Après l'envoi de l'e-mail
 
+        redirectToLoginPage();
     }
 
+    private void redirectToLoginPage() {
+        try {
+            // Charger la scène de la page de connexion
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
+            Parent root = loader.load();
+
+            // Obtenir la fenêtre actuelle
+            Stage stage = (Stage) emailTF.getScene().getWindow();
+
+            // Changer la scène actuelle
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur lors du chargement de la page de connexion.", Alert.AlertType.ERROR);
+        }
+    }
 
     private void showAlert(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
@@ -69,4 +95,7 @@ public class ForgotPassword {
         }
         return password.toString();
     }
+
+
+
 }

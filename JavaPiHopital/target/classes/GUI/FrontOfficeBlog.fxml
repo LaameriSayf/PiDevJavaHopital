@@ -76,19 +76,19 @@
                <children>
                   <VBox layoutX="-3.0" layoutY="14.0" prefHeight="144.0" prefWidth="1148.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Liste De Blog Dans Notre Site" textAlignment="CENTER" wrappingWidth="917.9430389404297">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Liste De Blog Dans Notre Site" textAlignment="CENTER" wrappingWidth="1148.3431539535522">
                            <font>
                               <Font name="System Bold Italic" size="18.0" />
                            </font>
                         </Text>
-                        <HBox prefHeight="71.0" prefWidth="918.0">
+                        <HBox prefHeight="76.0" prefWidth="1155.0">
                            <children>
                               <ImageView fitHeight="74.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Template/back/images/Capture%20d'écran%202024-04-14%20125215.png" />
                                  </image>
                                  <HBox.margin>
-                                    <Insets left="250.0" />
+                                    <Insets left="400.0" />
                                  </HBox.margin>
                               </ImageView>
                               <Text fill="#0004ff" strokeType="OUTSIDE" strokeWidth="0.0" text=".....................">

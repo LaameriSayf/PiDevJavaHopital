@@ -13,11 +13,13 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
+
 import Service.CategoriBlogService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -34,7 +36,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import org.controlsfx.control.Notifications;
-
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.TextField;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import java.io.File;
 
 import java.io.IOException;
@@ -43,9 +58,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import static java.awt.Color.white;
 
@@ -232,10 +244,30 @@ public class CategorieBlogBack {
 
 
 
+
     /**************************Principe ngOnInit*******************************************************************************************/
+    private static final String API_KEY = "AIzaSyCQN8Tz7g6nX3BAmhBdFaVXq_Prb_04fLg";
 
     @FXML
     public void initialize() {
+        inputlieublog.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                // Récupérer les suggestions de lieu en fonction de ce que l'utilisateur saisit
+                List<String> suggestions = getPlaceSuggestions(newValue);
+                // Afficher les suggestions à l'utilisateur
+                if (!suggestions.isEmpty()) {
+                    ChoiceDialog<String> dialog = new ChoiceDialog<>(null, suggestions);
+                    dialog.setTitle("Choisir un lieu");
+                    dialog.setHeaderText("Choisissez un lieu parmi les suggestions :");
+                    dialog.setContentText("Lieu :");
+                    Optional<String> result = dialog.showAndWait();
+                    if (result.isPresent()) {
+                        inputlieublog.setText(result.get());
+                    }
+                }
+            }
+        });
+
 /************************** Blogs*******************************************************************************/
         thtitreblog.setCellValueFactory(new PropertyValueFactory<>("titre"));
         thtitredescriptionblog.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -294,6 +326,63 @@ public class CategorieBlogBack {
 
 
     }
+
+    // Méthode pour récupérer les suggestions de lieu statiques
+    // Afficher les suggestions en fonction de ce que l'utilisateur saisit
+    private List<String> getPlaceSuggestions(String input) {
+        List<String> suggestions = new ArrayList<>();
+        // Liste statique de lieux prédéfinis
+        List<String> predefinedPlaces = new ArrayList<>();
+        predefinedPlaces.add("Tunis");
+        predefinedPlaces.add("Ben Arous");
+        predefinedPlaces.add("Benzarte");
+        predefinedPlaces.add("Manouba ");
+        predefinedPlaces.add("Centre ville");
+        predefinedPlaces.add("Beja");
+
+
+        // Filtrer les lieux prédéfinis en fonction de ce que l'utilisateur saisit
+        for (String place : predefinedPlaces) {
+            if (place.toLowerCase().contains(input.toLowerCase())) {
+                suggestions.add(place);
+            }
+        }
+        return suggestions;
+    }
+   /* private List<String> getPlaceSuggestions(String input) {
+        List<String> suggestions = new ArrayList<>();
+        try {
+            String encodedInput = URLEncoder.encode(input, "UTF-8");
+            URL url = new URL("https://maps.googleapis.com/maps/api/place/autocomplete/json?input="
+                    + encodedInput + "&key=" + API_KEY);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            StringBuilder response = new StringBuilder();
+            String output;
+            while ((output = br.readLine()) != null) {
+                response.append(output);
+            }
+            JSONObject jsonResponse = new JSONObject(response.toString());
+            JSONArray predictions = jsonResponse.getJSONArray("predictions");
+            for (int i = 0; i < predictions.length(); i++) {
+                String description = predictions.getJSONObject(i).getString("description");
+                suggestions.add(description);
+            }
+            conn.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Afficher une alerte en cas d'erreur
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText(null);
+            alert.setContentText("Une erreur s'est produite lors de la récupération des suggestions de lieu.");
+            alert.showAndWait();
+        }
+        return suggestions;
+    }
+*/
 
     /****************************Visibilite Formulaire**********************************************************************************************/
 

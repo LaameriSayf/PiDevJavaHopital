@@ -307,7 +307,7 @@
                                  <Insets left="250.0" />
                               </HBox.margin>
                            </ImageView>
-                           <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                           <ImageView fx:id="btnmodifierblog" fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
                               <image>
                                  <Image url="@../Template/back/images/icons8-modifier-94.png" />
                               </image>

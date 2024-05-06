@@ -112,6 +112,8 @@ public class CategorieBlogBack {
     private AnchorPane panblog;
     @FXML
     private AnchorPane panformcateg;
+    @FXML
+    private ImageView btnmodifierblog;
 
     @FXML
 
@@ -250,6 +252,7 @@ public class CategorieBlogBack {
 
     @FXML
     public void initialize() {
+btnmodifierblog.setOnMouseClicked(event->modifierBlogs());
         inputlieublog.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
                 // Récupérer les suggestions de lieu en fonction de ce que l'utilisateur saisit
@@ -339,6 +342,8 @@ public class CategorieBlogBack {
         predefinedPlaces.add("Manouba ");
         predefinedPlaces.add("Centre ville");
         predefinedPlaces.add("Beja");
+        predefinedPlaces.add("Touzeur");
+
 
 
         // Filtrer les lieux prédéfinis en fonction de ce que l'utilisateur saisit
@@ -929,6 +934,48 @@ public class CategorieBlogBack {
         }
     }
 
+    @FXML
+    public void modifierBlogs() {
+        Blog selectedBlog = tabblog.getSelectionModel().getSelectedItem();
+
+        if (selectedBlog != null) {
+            String newTitre = inputtitreblog.getText();
+            String newDescription = inputdescriptionblog.getText();
+            String newLieu = inputlieublog.getText();
+            String newRate = inputrate.getText();
+            String newChoicetype = choicecategorie.getValue();
+            Image newFile = imageviewblog.getImage();
+
+            if (newTitre.isEmpty() || newDescription.isEmpty()) {
+                Notifications.create()
+                        .title("Modification échouée")
+                        .text("Le titre et la description ne peuvent pas être vides. \uD83D\uDE1E")
+                        .position(Pos.TOP_CENTER)
+                        .showWarning();
+                return;
+            }
+
+            selectedBlog.setTitre(newTitre);
+            selectedBlog.setDescription(newDescription);
+            // Assurez-vous de mettre à jour les autres attributs du blog également
+
+            tabblog.refresh();
+
+            Notifications.create()
+                    .title("Succès")
+                    .text("Blog mis à jour avec succès! \uD83D\uDE0A")
+                    .position(Pos.TOP_CENTER)
+                    .showInformation(); // Utilisation de showInformation() pour une notification d'information
+
+            ClearInput();
+        } else {
+            Notifications.create()
+                    .title("Avertissement")
+                    .text("Aucun blog sélectionné. Veuillez sélectionner un blog à modifier.")
+                    .position(Pos.TOP_CENTER)
+                    .showWarning();
+        }
+    }
 
 
 

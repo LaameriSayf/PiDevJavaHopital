@@ -295,8 +295,7 @@ public class BlogService implements IBlog<Blog> {
     }
 
     private String serializeBlog(Blog blog) {
-        // Assuming you want to serialize the blog's data into a string representation
-        // You need to use the data retrieved from the blog object
+
         String serializedBlog = "Date: " + blog.getDate() +
                 ", Description: " + blog.getDescription() +
                 ", Lieu: " + blog.getLieu();

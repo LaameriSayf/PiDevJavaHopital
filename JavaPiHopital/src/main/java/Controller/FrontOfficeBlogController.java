@@ -282,189 +282,204 @@ public class FrontOfficeBlogController {
             anchorlisteblog.setVisible(false);
         }
     }
-    public void displayBlogDetail(Blog blog) {
-        if (blog != null) {
+        public void displayBlogDetail(Blog blog) {
+            if (blog != null) {
 
-            titreDetaille.setText(blog.getTitre());
-            contenuDetaille.setText(blog.getDescription());
-            textdate.setText(blog.getDate().toString());
-            textlieu.setText(blog.getLieu());
-            BlogService bss=new BlogService();
-            textlieu.setOnMouseClicked(event->bss.shareMaps(blog.getLieu()));
-            // Charger l'image associée au blog s'il y en a une
-            String imagePath = "C:\\Users\\laame\\Desktop\\HopitalMeliataire\\PIDev\\public\\uploads\\images\\products\\"; // Chemin d'accès au répertoire des images
-            String fileName = blog.getIamge(); // Nom de fichier de l'image
+                titreDetaille.setText(blog.getTitre());
+                contenuDetaille.setText(blog.getDescription());
+                textdate.setText(blog.getDate().toString());
+                textlieu.setText(blog.getLieu());
+                BlogService bss=new BlogService();
+                textlieu.setOnMouseClicked(event->bss.shareMaps(blog.getLieu()));
+                // Charger l'image associée au blog s'il y en a une
+                String imagePath = "C:\\Users\\laame\\Desktop\\HopitalMeliataire\\PIDev\\public\\uploads\\images\\products\\"; // Chemin d'accès au répertoire des images
+                String fileName = blog.getIamge(); // Nom de fichier de l'image
 
-            if (fileName != null && !fileName.isEmpty()) {
-                String fullPath = imagePath + fileName;
-                Image image = new Image(fileName, 343, 350, false, true);
-                imageviewdetaille.setImage(image);
-            } else {
-                imageviewdetaille.setImage(null);
-            }
-            BlogService bs = new BlogService();
-            String titrecategories = bs.getTitleOfBlogById(blog.getId());
-            String descriptioncategorie = bs.getDescriptionOfBlogById(blog.getId());
-            texttitrecategoriefff.setText(titrecategories);
-            textcategoriedescription.setText(descriptioncategorie);
-            titreDetaille.setText(blog.getTitre());
-            contenuDetaille.setText(blog.getDescription());
-            String descriptionCategorie = bs.getDescriptionOfBlogById(blog.getId());
-
-            // Insérer un retour à la ligne après chaque groupe de 9 mots
-            StringBuilder stringBuilder = new StringBuilder();
-            String[] mots = descriptionCategorie.split("\\s+");
-            int compteur = 0;
-            for (String mot : mots) {
-                stringBuilder.append(mot).append(" ");
-                compteur++;
-                if (compteur % 5 == 0) {
-                    stringBuilder.append("\n");
+                if (fileName != null && !fileName.isEmpty()) {
+                    String fullPath = imagePath + fileName;
+                    Image image = new Image(fileName, 343, 350, false, true);
+                    imageviewdetaille.setImage(image);
+                } else {
+                    imageviewdetaille.setImage(null);
                 }
-            }
-            String descriptionAvecRetourLigne = stringBuilder.toString();
+                BlogService bs = new BlogService();
+                String titrecategories = bs.getTitleOfBlogById(blog.getId());
+                String descriptioncategorie = bs.getDescriptionOfBlogById(blog.getId());
+                texttitrecategoriefff.setText(titrecategories);
+                textcategoriedescription.setText(descriptioncategorie);
+                titreDetaille.setText(blog.getTitre());
+                contenuDetaille.setText(blog.getDescription());
+                String descriptionCategorie = bs.getDescriptionOfBlogById(blog.getId());
 
-            // Afficher la description de la catégorie dans le composant TextArea
-            textcategoriedescription.setText(descriptionAvecRetourLigne);            // Charger la liste des commentaires associés à ce blog
-            // Récupérer la liste des commentaires
-            List<Commentaire> comments = bs.getCommentsByBlogId(blog.getId());
-
-            // Créer une liste pour stocker les commentaires formatés avec le contenu et les logos de like/dislike
-            ObservableList<HBox> formattedComments = FXCollections.observableArrayList();
-
-            for (Commentaire comment : comments) {
-                // Créer un label pour afficher le contenu du commentaire
-                Label commentLabel = new Label(comment.getAdmin().getNom() + " " + comment.getAdmin().getPrenom() + "\n" +
-                        comment.getContenue());
-                // Créer deux ImageView pour les logos de like et dislike
-                ImageView likeImageView = new ImageView("Template/front/images/icons8-pouce-en-l'air-16.png");
-                ImageView dislikeImageView = new ImageView("Template/front/images/icons8-pouces-vers-le-bas-24.png");
-                Text supprimercommentaire = new Text();
-                Text modifiercommentaire = new Text();
-
-                // Créer un Text pour afficher le nombre de likes
-                Text nbrlike = new Text(String.valueOf(comment.getNbLike()));
-
-// Créer un Text pour afficher le nombre de dislikes
-                Text nbrdislike = new Text(String.valueOf(comment.getNbDislike()));
-                supprimercommentaire.setText("Supprimer");
-                modifiercommentaire.setText("Modifier");
-
-                // Ajouter un événement de clic aux ImageView pour gérer les actions de like/dislike
-                CommentaireService cs = new CommentaireService();
-
-                supprimercommentaire.setOnMouseClicked(event -> {
-                    // Suppression du commentaire
-                    cs.delete(comment);
-
-                    // Récupérer les détails du blog mis à jour après la suppression du commentaire
-                    Blog updatedBlog = bs.getBlogById(blog.getId());
-                    if (updatedBlog != null) {
-                        // Afficher les détails du blog mis à jour avec la liste de commentaires mise à jour
-                        displayBlogDetail(updatedBlog);
-                    } else {
-                        System.out.println("Impossible de récupérer les détails du blog mis à jour.");
+                // Insérer un retour à la ligne après chaque groupe de 9 mots
+                StringBuilder stringBuilder = new StringBuilder();
+                String[] mots = descriptionCategorie.split("\\s+");
+                int compteur = 0;
+                for (String mot : mots) {
+                    stringBuilder.append(mot).append(" ");
+                    compteur++;
+                    if (compteur % 5 == 0) {
+                        stringBuilder.append("\n");
                     }
+                }
+                String descriptionAvecRetourLigne = stringBuilder.toString();
 
-                    // Afficher une notification
-                    Image successIcon = new Image(getClass().getResourceAsStream("/Template/back/images/icons8-ok-94.png"));
-                    Notifications.create()
-                            .title("Suppression réussie")
-                            .text("Le commentaire a été supprimé avec succès. \uD83D\uDC4D")
-                            .graphic(new ImageView(successIcon))
-                            .position(Pos.TOP_CENTER)
-                            .show();
-                });
+                // Afficher la description de la catégorie dans le composant TextArea
+                textcategoriedescription.setText(descriptionAvecRetourLigne);            // Charger la liste des commentaires associés à ce blog
+                // Récupérer la liste des commentaires
+                List<Commentaire> comments = bs.getCommentsByBlogId(blog.getId());
 
-                Admin a = new Admin(6, 4545, "", "", "");
-                likeImageView.setOnMouseClicked(event -> cs.like(comment, a));
-                modifiercommentaire.setStyle("-fx-text-fill:green;");
-                supprimercommentaire.setStyle("-fx-text-fill:red;");
+                // Créer une liste pour stocker les commentaires formatés avec le contenu et les logos de like/dislike
+                ObservableList<HBox> formattedComments = FXCollections.observableArrayList();
+                CommentaireService cs=new CommentaireService();
+                for (Commentaire comment : comments) {
+                    // Créer un label pour afficher le contenu du commentaire
+                    Label commentLabel = new Label(comment.getAdmin().getNom() + " " + comment.getAdmin().getPrenom() + "\n" +
+                            comment.getContenue());
+                    // Créer deux ImageView pour les logos de like et dislike
+                    ImageView likeImageView = new ImageView("Template/front/images/icons8-pouce-en-l'air-16.png");
+                    ImageView dislikeImageView = new ImageView("Template/front/images/icons8-pouces-vers-le-bas-24.png");
+                    Text supprimercommentaire = new Text();
+                    Text modifiercommentaire = new Text();
 
-                modifiercommentaire.setOnMouseClicked(event -> {
-                    // Récupérer le contenu actuel du commentaire
-                    String contenuActuel = comment.getContenue();
 
-                    // Vérifier si le champ de texte est vide ou s'il contient le contenu actuel du commentaire
-                    if (inputaddcommentaire.getText().isEmpty() || inputaddcommentaire.getText().equals(contenuActuel)) {
-                        // Si le champ de texte est vide ou contient déjà le contenu actuel, remplissez-le avec le contenu actuel du commentaire
-                        inputaddcommentaire.setText(contenuActuel);
-                    } else {
-                        // Si le champ de texte contient un nouveau contenu, cela signifie que l'utilisateur a déjà modifié le commentaire
-                        // Récupérer le nouveau contenu du champ de texte
-                        String nouveauContenu = inputaddcommentaire.getText();
+                    // Créer un Text pour afficher le nombre de likes
+                    Text nbrlike = new Text();
+                    nbrlike.setText(String.valueOf(cs.nbrlike(comment)));
 
-                        // Récupérer l'ID de l'utilisateur actuel (vous devrez obtenir cela à partir de votre système d'authentification)
-                        int userId = 4; // ID de l'utilisateur à remplacer par l'ID réel de l'utilisateur
+                    // Créer un Text pour afficher le nombre de dislikes
+                    Text nbrdislike = new Text(String.valueOf(comment.getNbDislike()));
+                    supprimercommentaire.setText("Supprimer");
+                    modifiercommentaire.setText("Modifier");
 
-                        // Vérifier si le commentaire appartient à l'utilisateur actuel
-                        if (cs.belongsToUser(comment.getId(), userId)) {
-                            // Créer un nouvel objet Commentaire avec le nouveau contenu
-                            Commentaire commentaire = new Commentaire();
-                            commentaire.setId(comment.getId()); // Définir l'ID du commentaire à modifier
-                            commentaire.setContenue(nouveauContenu);
+                    // Ajouter un événement de clic aux ImageView pour gérer les actions de like/dislike
 
-                            // Appeler la méthode update avec l'ID du commentaire, le nouveau contenu et l'ID de l'utilisateur
-                            cs.update(commentaire.getId(), nouveauContenu, userId);
-                            
+                    supprimercommentaire.setOnMouseClicked(event -> {
+                        // Suppression du commentaire
+                        cs.delete(comment);
 
-                            // Réinitialiser le champ de texte
-                            inputaddcommentaire.clear();
-                            Blog updatedBlog = bs.getBlogById(blog.getId());
-                            if (updatedBlog != null) {
-                                // Afficher les détails du blog mis à jour avec la liste de commentaires mise à jour
-                                displayBlogDetail(updatedBlog);
-                            }
-                                listviewcommentfront.refresh();
+                        // Récupérer les détails du blog mis à jour après la suppression du commentaire
+                        Blog updatedBlog = bs.getBlogById(blog.getId());
+                        if (updatedBlog != null) {
+                            // Afficher les détails du blog mis à jour avec la liste de commentaires mise à jour
+                            displayBlogDetail(updatedBlog);
                         } else {
-                            // Afficher une alerte indiquant que l'utilisateur n'est pas autorisé à modifier ce commentaire
-                            Alert alert = new Alert(Alert.AlertType.WARNING);
-                            alert.setTitle("Modification non autorisée");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Vous n'êtes pas autorisé à modifier ce commentaire.");
-                            alert.showAndWait();
+                            System.out.println("Impossible de récupérer les détails du blog mis à jour.");
+                        }
+
+                        // Afficher une notification
+                        Image successIcon = new Image(getClass().getResourceAsStream("/Template/back/images/icons8-ok-94.png"));
+                        Notifications.create()
+                                .title("Suppression réussie")
+                                .text("Le commentaire a été supprimé avec succès. \uD83D\uDC4D")
+                                .graphic(new ImageView(successIcon))
+                                .position(Pos.TOP_CENTER)
+                                .show();
+                    });
+
+                    Admin a = new Admin(4, 4545, "", "", "");
+                    likeImageView.setOnMouseClicked(event -> {
+                        // Ajouter le like
+                        cs.like(comment, a);
+
+                        // Mettre à jour le nombre de likes affiché
+                        nbrlike.setText(String.valueOf(cs.nbrlike(comment)));
+                        nbrdislike.setText(String.valueOf(cs.nbrdislike(comment)));
+
+                    });
+                    dislikeImageView.setOnMouseClicked(event->{
+                        cs.dislike(comment,a);
+                        nbrdislike.setText(String.valueOf(cs.nbrdislike(comment)));
+                        nbrlike.setText(String.valueOf(cs.nbrlike(comment)));
+
+
+                    });
+
+                    modifiercommentaire.setStyle("-fx-text-fill:green;");
+                    supprimercommentaire.setStyle("-fx-text-fill:red;");
+
+                    modifiercommentaire.setOnMouseClicked(event -> {
+                        // Récupérer le contenu actuel du commentaire
+                        String contenuActuel = comment.getContenue();
+
+                        // Vérifier si le champ de texte est vide ou s'il contient le contenu actuel du commentaire
+                        if (inputaddcommentaire.getText().isEmpty() || inputaddcommentaire.getText().equals(contenuActuel)) {
+                            // Si le champ de texte est vide ou contient déjà le contenu actuel, remplissez-le avec le contenu actuel du commentaire
+                            inputaddcommentaire.setText(contenuActuel);
+                        } else {
+                            // Si le champ de texte contient un nouveau contenu, cela signifie que l'utilisateur a déjà modifié le commentaire
+                            // Récupérer le nouveau contenu du champ de texte
+                            String nouveauContenu = inputaddcommentaire.getText();
+
+                            // Récupérer l'ID de l'utilisateur actuel (vous devrez obtenir cela à partir de votre système d'authentification)
+                            int userId = 4; // ID de l'utilisateur à remplacer par l'ID réel de l'utilisateur
+
+                            // Vérifier si le commentaire appartient à l'utilisateur actuel
+                            if (cs.belongsToUser(comment.getId(), userId)) {
+                                // Créer un nouvel objet Commentaire avec le nouveau contenu
+                                Commentaire commentaire = new Commentaire();
+                                commentaire.setId(comment.getId()); // Définir l'ID du commentaire à modifier
+                                commentaire.setContenue(nouveauContenu);
+
+                                // Appeler la méthode update avec l'ID du commentaire, le nouveau contenu et l'ID de l'utilisateur
+                                cs.update(commentaire.getId(), nouveauContenu, userId);
+
+
+                                // Réinitialiser le champ de texte
+                                inputaddcommentaire.clear();
+                                Blog updatedBlog = bs.getBlogById(blog.getId());
+                                if (updatedBlog != null) {
+                                    // Afficher les détails du blog mis à jour avec la liste de commentaires mise à jour
+                                    displayBlogDetail(updatedBlog);
+                                }
+                                    listviewcommentfront.refresh();
+                            } else {
+                                // Afficher une alerte indiquant que l'utilisateur n'est pas autorisé à modifier ce commentaire
+                                Alert alert = new Alert(Alert.AlertType.WARNING);
+                                alert.setTitle("Modification non autorisée");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Vous n'êtes pas autorisé à modifier ce commentaire.");
+                                alert.showAndWait();
+                            }
+                        }
+                    });
+                    nbrlike.setText(String.valueOf(cs.nbrlike(comment)));
+
+                    HBox commentBox = new HBox(commentLabel, modifiercommentaire, supprimercommentaire, likeImageView, nbrlike, dislikeImageView, nbrdislike);
+                    commentBox.setSpacing(10);
+                    commentBox.setStyle("-fx-background-color: #f0f0f0; " +
+                            "-fx-padding: 10px; " +
+                            "-fx-border-color: #cccccc; " +
+                            "-fx-border-width: 1px; " +
+                            "-fx-border-radius: 5px;");
+
+                    formattedComments.add(commentBox);
+
+                }
+
+                // Personnaliser les cellules de la ListView pour afficher les commentaires sous forme de HBox
+                listviewcommentfront.setCellFactory(param -> new ListCell<HBox>() {
+                    @Override
+                    protected void updateItem(HBox item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (empty || item == null) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            // Afficher la HBox dans la cellule de la ListView
+                            setGraphic(item);
                         }
                     }
                 });
 
+                listviewcommentfront.getStyleClass().add("list-view-comment-back");
 
-                HBox commentBox = new HBox(commentLabel, modifiercommentaire, supprimercommentaire, likeImageView, nbrlike, dislikeImageView, nbrdislike);
-                commentBox.setSpacing(10);
-                commentBox.setStyle("-fx-background-color: #f0f0f0; " +
-                        "-fx-padding: 10px; " +
-                        "-fx-border-color: #cccccc; " +
-                        "-fx-border-width: 1px; " +
-                        "-fx-border-radius: 5px;");
-
-                nbrlike.setText(String.valueOf(comment.getNbLike()));
-                nbrdislike.setText(String.valueOf(comment.getNbDislike()));
-                formattedComments.add(commentBox);
-
+                listviewcommentfront.setItems(formattedComments);
+                anchordetailleblog.setVisible(true);
+                anchorlisteblog.setVisible(false);
             }
-
-            // Personnaliser les cellules de la ListView pour afficher les commentaires sous forme de HBox
-            listviewcommentfront.setCellFactory(param -> new ListCell<HBox>() {
-                @Override
-                protected void updateItem(HBox item, boolean empty) {
-                    super.updateItem(item, empty);
-
-                    if (empty || item == null) {
-                        setText(null);
-                        setGraphic(null);
-                    } else {
-                        // Afficher la HBox dans la cellule de la ListView
-                        setGraphic(item);
-                    }
-                }
-            });
-
-            listviewcommentfront.getStyleClass().add("list-view-comment-back");
-
-            listviewcommentfront.setItems(formattedComments);
-            anchordetailleblog.setVisible(true);
-            anchorlisteblog.setVisible(false);
         }
-    }
 
     public void addCommentaireFront() {
         BlogService bs = new BlogService();

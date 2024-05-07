@@ -5,10 +5,13 @@ import Models.ordonnance;
 import Services.ordonnanceService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -79,13 +82,23 @@ public class AjoutOrdonnance implements Initializable {
         try {
             // Appeler la méthode pour ajouter l'ordonnance avec l'ID du dossier médical correspondant
             service.ajouter(ordonnance); // Passer l'ID du dossier médical
+            //Afficher une notification pour indiquer que l'ordonnance a été ajoutée avec succès
+            showNotification("L'ordonnance a été ajoutée avec succès.");
 
-            // Afficher une alerte pour indiquer que l'ordonnance a été ajoutée avec succès
-            afficherAlerteInformation("L'ordonnance a été ajoutée avec succès.");
         } catch (SQLException e) {
             // Afficher une alerte en cas d'erreur lors de l'ajout de l'ordonnance
             afficherAlerteErreur("Une erreur est survenue lors de l'ajout de l'ordonnance : " + e.getMessage());
         }
+    }
+
+    private void showNotification(String message) {
+        Notifications.create()
+                .title("Succès")
+                .text(message)
+                .darkStyle()  // Style sombre
+                .hideAfter(Duration.seconds(20))  // Durée d'affichage de 20 secondes
+                .position(Pos.CENTER)  // Position au milieu de la page
+                .showInformation();
     }
 
     private void afficherAlerteErreur(String message) {

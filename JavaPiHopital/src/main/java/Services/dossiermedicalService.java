@@ -27,7 +27,7 @@ public class dossiermedicalService implements IService <dossiermedical> {
                 // Vérification s'il y a un résultat
                 if (resultSet.next()) {
                     dossier = new dossiermedical();
-                    //dossier.setId(resultSet.getInt("id"));
+                    dossier.setId(resultSet.getInt("id"));
                     dossier.setNumdossier(resultSet.getInt("numdossier"));
                     dossier.setResultatexamen(resultSet.getString("resultatexamen"));
                     dossier.setDate_creation(resultSet.getDate("date_creation"));
@@ -48,8 +48,8 @@ public class dossiermedicalService implements IService <dossiermedical> {
         Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
 
         // Préparation de la requête SQL avec des paramètres de substitution
-        String requete = "INSERT INTO dossiermedical(date_creation,resultatexamen,antecedentspersonelles ,image,patient_id,numdossier) " +
-                "VALUES (?, ?, ?, ?,?,?)";
+        String requete = "INSERT INTO dossiermedical(date_creation,resultatexamen,antecedentspersonelles ,image,numdossier) " +
+                "VALUES (?, ?, ?, ?,?)";
 
         try (Connection connection = new DataBase().getCnx();
              PreparedStatement statement = connection.prepareStatement(requete)) {
@@ -59,8 +59,8 @@ public class dossiermedicalService implements IService <dossiermedical> {
             statement.setString(2, dossiermedical.getResultatexamen());
             statement.setString(3, dossiermedical.getAntecedentspersonelles());
             statement.setString(4, dossiermedical.getImage());
-            statement.setInt(5, 1);
-            statement.setInt(6,dossiermedical.getNumdossier() );
+           // statement.setInt(5, 1);
+            statement.setInt(5,dossiermedical.getNumdossier() );
 
             // Exécution de la requête d'insertion
             int rowsInserted = statement.executeUpdate();
@@ -87,29 +87,9 @@ public class dossiermedicalService implements IService <dossiermedical> {
         // Obtention de la date actuelle
         Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
 
-        // Préparation de la requête SQL pour obtenir le nom et prénom du patient
-      String requetePatient = "SELECT nom, prenom FROM global_user WHERE id = ?";
-        String nomPatient = "";
-        String prenomPatient = "";
-
-        try (Connection connection = new DataBase().getCnx();
-             PreparedStatement statementPatient = connection.prepareStatement(requetePatient)) {
-            // Attribution de l'ID du patient à la requête
-            statementPatient.setInt(1, 1); // Vous avez mentionné que vous voulez récupérer les informations pour l'ID 1
-
-            // Exécution de la requête pour obtenir les informations du patient
-            ResultSet rs = statementPatient.executeQuery();
-            if (rs.next()) {
-                nomPatient = rs.getString("nom");
-                prenomPatient = rs.getString("prenom");
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de la récupération des informations du patient: " + e.getMessage());
-        }
-
         // Préparation de la requête SQL avec des paramètres de substitution
-        String requete = "INSERT INTO dossiermedical(date_creation,resultatexamen,antecedentspersonelles,image,patient_id,nom_patient,prenom_patient,numdossier) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+        String requete = "INSERT INTO dossiermedical(date_creation,resultatexamen,antecedentspersonelles,image) " +
+                "VALUES (?, ?, ?, ?)";
 
         try (Connection connection = new DataBase().getCnx();
              PreparedStatement statement = connection.prepareStatement(requete)) {
@@ -119,10 +99,7 @@ public class dossiermedicalService implements IService <dossiermedical> {
             statement.setString(2, dossiermedical.getResultatexamen());
             statement.setString(3, dossiermedical.getAntecedentspersonelles());
             statement.setString(4, dossiermedical.getImage());
-            statement.setInt(5, 1); // ID du patient
-            statement.setInt(8, dossiermedical.getNumdossier()); // ID du patient
-            statement.setString(6, nomPatient); // Nom du patient
-            statement.setString(7, prenomPatient); // Prénom du patient
+           // statement.setInt(5, 1); // ID du patient
 
             // Exécution de la requête d'insertion
             int rowsInserted = statement.executeUpdate();

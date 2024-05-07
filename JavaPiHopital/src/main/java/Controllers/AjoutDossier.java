@@ -5,11 +5,14 @@ import Models.dossiermedical;
 import Services.dossiermedicalService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.io.File;
 import java.net.URL;
@@ -108,16 +111,24 @@ public class AjoutDossier implements Initializable {
         dossier.setAntecedentspersonelles(antecedents);
         dossier.setImage(imageFilePath);
 
+
         try {
             dossierService.ajouter(dossier);
-            afficherAlerteInformation("Dossier ajouté avec succès !");
+            showNotification("Dossier ajouté avec succès !");
         } catch (SQLException e) {
             afficherAlerteErreur("Erreur lors de l'ajout du dossier médical : " + e.getMessage());
         }
     }
 
-
-
+    private void showNotification(String message) {
+        Notifications.create()
+                .title("Succès")
+                .text(message)
+                .darkStyle()  // Style sombre
+                .hideAfter(Duration.seconds(20))  // Durée d'affichage de 20 secondes
+                .position(Pos.CENTER)  // Position au milieu de la page
+                .showInformation();
+    }
 
 
     private boolean isValidImageType(String imagePath) {

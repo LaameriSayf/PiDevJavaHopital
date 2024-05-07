@@ -13,6 +13,9 @@ module JavaPiHopital {
     requires org.bouncycastle.provider;
     requires sign;
     requires tess4j;
+    requires org.controlsfx.controls;
+    requires org.apache.poi.poi;
+    requires org.apache.poi.ooxml;
 
     //  exports votre.package.contenant.les.classes; // Spécifiez les packages que vous souhaitez exporter
 

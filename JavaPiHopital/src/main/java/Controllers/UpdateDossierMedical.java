@@ -4,12 +4,15 @@ import Models.dossiermedical;
 import Services.dossiermedicalService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.io.File;
 import java.net.URL;
@@ -70,6 +73,7 @@ public class UpdateDossierMedical implements Initializable {
                 imagePathText.setText("");
             }
         }
+
     }
 
 
@@ -80,31 +84,19 @@ public class UpdateDossierMedical implements Initializable {
             dossierModifier.setResultatexamen(resultatExamenField.getText());
             dossierModifier.setAntecedentspersonelles(antecedentsField.getText());
             dossierModifier.setImage(imageFilePath); // Mettre à jour le chemin de l'image
-
             try {
                 dossierService.modifier(dossierModifier);
-                // Afficher une alerte pour indiquer que le dossier a été modifié avec succès
-                afficherAlerteInformation("Le dossier a été modifié avec succès.");
+                // Modification réussie, afficher la notification
+                showNotification("Dossier Modifié avec succès");
             } catch (SQLException e) {
                 // Afficher une alerte en cas d'erreur lors de la modification du dossier
-                afficherAlerteErreur("Une erreur est survenue lors de la modification du dossier : " + e.getMessage());
+                afficherErreur("Une erreur est survenue lors de la modification du dossier : " + e.getMessage());
             }
         }
+
     }
 
 
-
-
-
-
-    @FXML
-    private void clearFields() {
-        resultatExamenField.clear();
-        antecedentsField.clear();
-        dateCreationPicker.setValue(LocalDate.now());
-        imagePathText.setText("");
-        imageView.setImage(null);
-    }
 
     @FXML
     private void chooseImage() {
@@ -121,26 +113,21 @@ public class UpdateDossierMedical implements Initializable {
         }
     }
 
-    private void showAlert(String message) {
+    private void afficherErreur(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
-    private void afficherAlerteErreur(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-    private void afficherAlerteInformation(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Succès");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    public void showNotification(String message) {
+        Notifications notifications = Notifications.create();
+        notifications.text(message);
+        notifications.title("Success Message");
+        notifications.hideAfter(Duration.seconds(30));
+        notifications.darkStyle();
+        notifications.position(Pos.BOTTOM_CENTER);
+        notifications.show();
     }
 
 

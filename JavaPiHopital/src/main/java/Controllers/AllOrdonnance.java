@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.security.PrivateKey;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,8 +69,10 @@ public class AllOrdonnance implements Initializable {
     private Button btnDashBord;
 
     @FXML
-    private Button PDF;
+    private Button pdf;
 
+    @FXML
+    private Button excel;
 
 
 
@@ -236,6 +239,72 @@ public class AllOrdonnance implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+    @FXML
+    private void PDF(ActionEvent event) {
+        // Récupérer le dossier sélectionnée dans la liste
+      ordonnance selectedOrdonnance = ordonnanceTableView.getSelectionModel().getSelectedItem();
+
+        if (ordonnanceTableView != null) {
+            // Créer un sélecteur de fichiers pour choisir l'emplacement où enregistrer le PDF
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save PDF");
+            fileChooser.setInitialFileName("MesInformations.pdf");
+
+            // Afficher la boîte de dialogue pour enregistrer le fichier et obtenir le chemin du fichier choisi
+            File file = fileChooser.showSaveDialog(new Stage());
+
+            if (file != null) {
+                // Si l'utilisateur a choisi un emplacement, générez le PDF et enregistrez-le à cet emplacement
+                pdf pd = new pdf();
+                try {
+                    pd.GeneratePdfO(file.getAbsolutePath(), selectedOrdonnance, selectedOrdonnance.getId());
+                    System.out.println("PDF saved successfully.");
+
+                } catch (Exception ex) {
+                    Logger.getLogger(AllDossier.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            showAlert("Please select a Dossier to generate PDF.");
+        }
+
+
+    }
+
+    private void showAlert(String s) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setContentText(s);
+        alert.showAndWait();
+
+    }
+    public void generateExcelFile(ActionEvent event) {
+        List<ordonnance> ordonnanceList = ordonnanceTableView.getItems();
+
+        if (!ordonnanceList.isEmpty()) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Excel File");
+            fileChooser.setInitialFileName("Ordonnances.xlsx");
+
+            File file = fileChooser.showSaveDialog(new Stage());
+
+            if (file != null) {
+                ExcelWriter excelWriter = new ExcelWriter();
+                excelWriter.writeOrdonnancesToExcel(ordonnanceList, file.getAbsolutePath());
+                showAlert("Excel file saved successfully.");
+            }
+        } else {
+            showAlerte("No data available to generate Excel file.");
+        }
+    }
+
+    // Méthode pour afficher une boîte de dialogue d'alerte
+    private void showAlerte(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 

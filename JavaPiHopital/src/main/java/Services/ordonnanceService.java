@@ -38,8 +38,6 @@ public class ordonnanceService implements IService <ordonnance>{
             statement.setString(3, ordonnance.getMedecamentprescrit());
             statement.setString(4, ordonnance.getAdresse());
             statement.setInt(5, ordonnance.getDossiermedical_id()); // Ajout de l'ID du dossier médical
-            statement.setString(6, ordonnance.getDigitalSignature()); // Ajout de la signature numérique
-
 
             // Exécution de la requête d'insertion
             int rowsInserted = statement.executeUpdate();

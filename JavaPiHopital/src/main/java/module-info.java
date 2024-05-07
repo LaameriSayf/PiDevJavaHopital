@@ -9,6 +9,10 @@ module JavaPiHopital {
     requires layout;
     requires chatgpt;
     requires fastjson;
+    requires org.apache.pdfbox;
+    requires org.bouncycastle.provider;
+    requires sign;
+    requires tess4j;
 
     //  exports votre.package.contenant.les.classes; // Spécifiez les packages que vous souhaitez exporter
 

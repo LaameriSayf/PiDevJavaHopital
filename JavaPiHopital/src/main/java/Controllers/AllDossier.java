@@ -60,12 +60,14 @@ public class AllDossier implements Initializable {
     @FXML
     private Button PDF;
 
+
+
     @FXML
-    private TextField rechercheDossier;
+    private TextField searchBar;
 
 
     private final dossiermedicalService dossierService = new dossiermedicalService();
-    private Labeled SearchBar;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -230,7 +232,7 @@ public class AllDossier implements Initializable {
 
     @FXML
     private void PDF(ActionEvent event) {
-        // Récupérer la réclamation sélectionnée dans la liste
+        // Récupérer le dossier sélectionnée dans la liste
         dossiermedical selectedDossier = dossierTableView.getSelectionModel().getSelectedItem();
 
         if (selectedDossier != null) {
@@ -265,41 +267,9 @@ public class AllDossier implements Initializable {
         alert.showAndWait();
     }
 
-    @FXML
-    private void searchFilter() {
-        // Création d'une liste filtrée initialisée avec la liste des dossiers médicaux
-        FilteredList<dossiermedical> filterData = new FilteredList<>(dossierTableView.getItems());
 
-        // Obtention du texte saisi dans la barre de recherche
-        String searchInput = rechercheDossier.getText().trim();
 
-        // Mise à jour du prédicat en fonction du nouveau texte de recherche
-        filterData.setPredicate(dossier -> {
-            // Si le texte de recherche est vide, toutes les dossiers sont affichées
-            if (searchInput == null || searchInput.isEmpty()) {
-                return true;
-            }
 
-            // Tentative de conversion du texte en entier
-            try {
-                int searchNumber = Integer.parseInt(searchInput);
-                // Vérifier si le numéro de dossier du dossier médical correspond au numéro recherché
-                return dossier.getNumdossier() == searchNumber;
-            } catch (NumberFormatException ex) {
-                // Gérer l'exception si le texte n'est pas un nombre entier
-                return false;
-            }
-        });
-
-        // Création d'une liste triée à partir de la liste filtrée
-        SortedList<dossiermedical> sortedData = new SortedList<>(filterData);
-        // Liaison du comparateur de la liste triée avec le comparateur de la table des dossiers médicaux
-        sortedData.comparatorProperty().bind(dossierTableView.comparatorProperty());
-        // Mise à jour de la table des dossiers médicaux avec la liste triée
-        dossierTableView.setItems(sortedData);
-    }
-
-    
 
 }
 

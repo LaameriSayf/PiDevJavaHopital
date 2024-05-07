@@ -80,7 +80,7 @@
                                                 <TableColumn fx:id="actionColumn" text="Action" />
                                             </columns>
                                         </TableView>
-                              <Button fx:id="PDF" layoutX="291.0" layoutY="406.0" mnemonicParsing="false" onAction="#PDF" prefHeight="26.0" prefWidth="118.0" text="PDF" />
+
                                     </children>
                                 </AnchorPane>
                             </children>

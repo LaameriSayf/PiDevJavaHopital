@@ -21,7 +21,7 @@ public class ChatGPTApp {
     public ChatGPTApp() {
         // Initialisez le client ChatGPT ici avec votre clé API
         chatGPT = ChatGPT.builder()
-                .apiKey("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")
+                .apiKey("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")
                 .build()
                 .init();
     }

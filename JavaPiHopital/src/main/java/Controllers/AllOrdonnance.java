@@ -20,10 +20,17 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
+import org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureOptions;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.security.PrivateKey;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -80,9 +87,9 @@ public class AllOrdonnance implements Initializable {
         btnGestionDossiers.setOnAction(event -> ouvrirAjoutDossier());
         btnGestionOrdonnances.setOnAction(event -> ouvrirAjoutOrdonnance());
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        datePrescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("datePrescription"));
+        datePrescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("dateprescription"));
         renouvellementColumn.setCellValueFactory(new PropertyValueFactory<>("renouvellement"));
-        medecamentPrescritColumn.setCellValueFactory(new PropertyValueFactory<>("medecamentPrescrit"));
+        medecamentPrescritColumn.setCellValueFactory(new PropertyValueFactory<>("medecamentprescrit"));
         adresseColumn.setCellValueFactory(new PropertyValueFactory<>("adresse"));
 
         setupActionCellFactory();
@@ -230,42 +237,6 @@ public class AllOrdonnance implements Initializable {
             ex.printStackTrace();
         }
     }
-    @FXML
-    private void PDF( ActionEvent event) {
-        // Récupérer la réclamation sélectionnée dans la liste
-        ordonnance selectedOrdonnance = ordonnanceTableView.getSelectionModel().getSelectedItem();
-
-        if (selectedOrdonnance != null) {
-            // Créer un sélecteur de fichiers pour choisir l'emplacement où enregistrer le PDF
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save PDF");
-            fileChooser.setInitialFileName("MesInformations.pdf");
-
-            // Afficher la boîte de dialogue pour enregistrer le fichier et obtenir le chemin du fichier choisi
-            File file = fileChooser.showSaveDialog(new Stage());
-
-            if (file != null) {
-                // Si l'utilisateur a choisi un emplacement, générez le PDF et enregistrez-le à cet emplacement
-                pdf pd = new pdf();
-                try {
-                    pd.GeneratePdf(file.getAbsolutePath(), selectedOrdonnance, selectedOrdonnance.getId());
-                    System.out.println("PDF saved successfully.");
-
-                } catch (Exception ex) {
-                    Logger.getLogger(AllOrdonnance.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } else {
-            showAlert("Please select ordonnance to generate PDF.");
-        }
-    }
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
 
 
 

@@ -25,11 +25,7 @@
                             <children>
                                 <AnchorPane layoutX="140.0" layoutY="4.8" prefHeight="62.0" prefWidth="1237.0" styleClass="nav-form" stylesheets="@DashboarsDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                                     <children>
-                                        <Label fx:id="modifierDossier" alignment="CENTER" layoutX="517.0" layoutY="27.0" prefHeight="22.0" prefWidth="250.0" text="Modifier Dossier ">
-                                            <font>
-                                                <Font name="System Bold" size="24.0" />
-                                            </font>
-                                        </Label>
+
                                     </children>
                                 </AnchorPane>
                             </children>

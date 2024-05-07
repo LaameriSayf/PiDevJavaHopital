@@ -319,12 +319,14 @@ public class AjouterRdv {
     }
 
     public static void sendEmail(String recipientEmail, String contenue) {
+        final String senderEmail = "batoutbata5@gmail.com";
         final String senderName = "Team MediConnect"; // Your desired sender name
         if (recipientEmail == null || recipientEmail.isEmpty()) {
             System.out.println("Recipient email is null or empty. Cannot send email.");
             return;
         }
         // Password
+        final String password = "ialgvzhizvvrwozy";
 
         // SMTP server properties
         Properties properties = new Properties();
@@ -341,19 +343,14 @@ public class AjouterRdv {
         });
 
         try {
-            // Create a MimeMessage object
             MimeMessage message = new MimeMessage(session);
 
-            // Set the sender's name and email address
             message.setFrom(new InternetAddress(senderEmail, senderName));
 
-            // Set the recipient's email address
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
 
-            // Set the email subject
             message.setSubject("Thank you for your feedback");
 
-            // Create a MimeMultipart object
             Multipart multipart = new MimeMultipart();
 
             MimeBodyPart htmlPart = new MimeBodyPart();
@@ -364,17 +361,14 @@ public class AjouterRdv {
             htmlPart.setContent(htmlContent, "text/html");
             multipart.addBodyPart(htmlPart);
 
-            // Create and add the image part of the message
             MimeBodyPart imagePart = new MimeBodyPart();
             DataSource source = new FileDataSource("C:\\Users\\Mega-PC\\Desktop\\PIDEV1\\src\\main\\resources\\0dca79a4-6e06-4b14-aefe-ac46705d1113-removebg-preview.png"); // Replace with the path to your image file
             imagePart.setDataHandler(new DataHandler(source));
             imagePart.setHeader("Content-ID", "<image>");
             multipart.addBodyPart(imagePart);
 
-            // Set the content of the message to the multipart object
             message.setContent(multipart);
 
-            // Send the message
             Transport.send(message);
 
             System.out.println("Email sent successfully!");
@@ -415,7 +409,6 @@ public class AjouterRdv {
         Paragraph paragraph = new Paragraph(text, textFont);
         paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
         document.add(paragraph);
-
         document.close();
 
         showSuccess("PDF generated successfully!");

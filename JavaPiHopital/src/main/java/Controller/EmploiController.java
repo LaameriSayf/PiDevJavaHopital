@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import services.EmpService;
 import utils.MyDataBase;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -52,7 +53,7 @@ public class EmploiController {
     @FXML
     private BorderPane borderNav;
 
-   
+    
 
     private Stage stage;
     private Scene scene;
@@ -225,55 +226,12 @@ public class EmploiController {
 
 
    }
-   public void modifierEmploi(javafx.event.ActionEvent event) {
-        LocalDate start = startLabel.getValue();
-        LocalDate end = endLabel.getValue();
-        String titre = titreLabel.getText();
-        String description = descLabel.getText();
-        LocalDate currentDate = LocalDate.now();
+   public void modifierEmploi(ActionEvent event) {
 
-        if (titre.isEmpty() || description.isEmpty() || start == null || end == null || start.isAfter(end)) {
-            if (titre.isEmpty()) {
-                showAlert("Veuillez remplir tous les champs.");
-            } else if (start == null) {
-                showAlert("Veuillez remplir tous les champs.");
-            } else if (end == null) {
-                showAlert("Veuillez remplir tous les champs.");
-            } else if (description.isEmpty()) {
-                showAlert("Veuillez remplir tous les champs.");
-            } else if (end.isBefore(start)) {
-                showAlert("La date de fin ne peut pas être antérieure qu debut.");
-            }
-            return;
-        }
-        if (start.isBefore(currentDate)) {
-            showAlert("La date de début ne peut pas être antérieure à aujourd'hui.");
-            return;
-        }
-
-        if (empService != null) {
-            try {
-
-                Emploi emploi = new Emploi(titre,start,end,description);
-                empService.modifierEmploi(emploi,getListEmploi(listeEmploi.getSelectionModel().getSelectedItem()));
-                showSuccess("emploi modifie");
-
-                loadAndDisplayData();
-            } catch (SQLException e)
-            { e.printStackTrace();
-            }if (!listeEmploi.getItems().isEmpty()){
-                listeEmploi.getItems().removeAll();
-                loadAndDisplayData();
-            }else {loadAndDisplayData();
-            }
-        }else
-        {
-            System.err.println("RDVservice echec");
-
-        }
     }
     public static void sendSMS(String toPhoneNumber, String messageBody) {
         // Initialize Twilio
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
 
         try {

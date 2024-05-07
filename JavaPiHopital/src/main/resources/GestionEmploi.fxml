@@ -16,7 +16,6 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.EmploiController">
    <center>
       <AnchorPane prefHeight="666.0" prefWidth="989.0">
@@ -45,7 +44,7 @@
                         <Image url="@téléchargé-removebg-preview.png" />
                      </image>
                   </ImageView>
-                  <ListView fx:id="listeEmploi" layoutX="357.0" layoutY="103.0" prefHeight="266.0" prefWidth="648.0" stylesheets="@../java/CssBlog/RendezVous.css">
+                  <ListView fx:id="listeEmploi" layoutX="357.0" layoutY="103.0" prefHeight="266.0" prefWidth="648.0" stylesheets="">
                      <effect>
                         <InnerShadow height="255.0" radius="102.20750000000001" width="155.83">
                            <color>
@@ -59,7 +58,7 @@
                         <Font name="System Bold Italic" size="24.0" />
                      </font>
                   </Label>
-                  <Button fx:id="updateEM" layoutX="805.0" layoutY="54.0" mnemonicParsing="false" onAction="#modifierEmploi" prefHeight="25.0" prefWidth="67.0" style="-fx-background-color: blue;" text="Modifier" textFill="WHITE" />
+                  <Button fx:id="updateEM" layoutX="805.0" layoutY="54.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="67.0" style="-fx-background-color: blue;" text="Modifier" textFill="WHITE" />
                   <Button fx:id="deleteEM" layoutX="896.0" layoutY="54.0" mnemonicParsing="false" onAction="#supprimerEmploi" style="-fx-background-color: red;" text="Delete" textFill="WHITE" />
                   <BorderPane fx:id="borderNav" layoutX="665.0" layoutY="54.0" prefHeight="25.0" prefWidth="123.0">
                      <bottom>
@@ -77,7 +76,7 @@
    <top>
       <AnchorPane prefHeight="42.0" prefWidth="1208.0" style="-fx-background-color: linear-gradient(to bottom right, #DFF5FF,#378CE7);" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="54.0" fitWidth="235.0" layoutX="-4.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="51.0" fitWidth="189.0" layoutX="-4.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@140c4943-bb90-4670-a606-0cfd229fc45b.jpg" />
                </image>

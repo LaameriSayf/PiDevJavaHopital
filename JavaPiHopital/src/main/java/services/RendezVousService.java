@@ -62,6 +62,8 @@ public class RendezVousService implements RdvService {
         ps.setString(4, rendezVous.getFile());
         ps.setInt(5, id);
 
+        ps.executeUpdate();
+
 
     }
 

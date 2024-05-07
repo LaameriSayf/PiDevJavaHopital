@@ -156,76 +156,66 @@ public void dincrementeNbrLike(Commentaire cmtr) {
         throw new RuntimeException(e);
     }
 }
-
-/*************************************MettreLike a Commentaire******************************************************************************************/
-
-
-public void like(Commentaire cmtr, Admin admin) {
-    String likeQuery = "INSERT INTO `like`(`commentaire_id`,`userr_id`) VALUES(?,?)";
-    String likeDeleteQuery = "DELETE FROM `like` WHERE commentaire_id=? AND userr_id = ?";
-    String dislikeDeleteQuery = "DELETE FROM `dislike` WHERE commentaire_id=? AND userr_id = ?";
-
-    try {
-        if (!hasUserLikedComment(cmtr.getId(), admin.getId())) {
-            // Supprimer le dislike de l'utilisateur s'il existe
-            removeDisLike(cmtr.getId(), admin.getId());
-
-            // Supprimer le like de l'utilisateur s'il existe déjà
-            removeLike(cmtr.getId(), admin.getId());
-
-            // Insérer le like de l'utilisateur
-            PreparedStatement likeStm = cnx.prepareStatement(likeQuery);
-            likeStm.setInt(1, cmtr.getId());
-            likeStm.setInt(2, admin.getId());
-            likeStm.executeUpdate();
-
-            // Mettre à jour le nombre de likes dans le commentaire
-            incrementeNbrLike(cmtr);
-
-            // JavaFX Alert: Like successful
-            showInformationAlert("Success", "You liked the comment successfully!");
-        } else {
-            // JavaFX Alert: Already liked
-            showWarningAlert("Warning", "You already liked this comment before :)");
-        }
-    } catch (SQLException e) {
-        // Handle SQL exception
-        handleSQLException(e);
-    }
-}
-
-    public void dislike(Commentaire cmtr, Admin admin) {
-        String dislikeQuery = "INSERT INTO `dislike`(`commentaire_id`,`userr_id`) VALUES(?,?)";
-        String dislikeDeleteQuery = "DELETE FROM `dislike` WHERE commentaire_id=? AND userr_id = ?";
-        String likeDeleteQuery = "DELETE FROM `like` WHERE commentaire_id=? AND userr_id = ?";
+    public void DincrementeNbrLike(Commentaire cmtr) {
+        String rqt = "UPDATE `commentaire` SET nbdislike = nbdislike - 1 WHERE id = ?";
 
         try {
-            if (!hasUserDislikedComment(cmtr.getId(), admin.getId())) {
-                // Supprimer le like de l'utilisateur s'il existe
-                removeLike(cmtr.getId(), admin.getId());
+            PreparedStatement stm = cnx.prepareStatement(rqt);
+            stm.setInt(1, cmtr.getId());
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-                // Supprimer le dislike de l'utilisateur s'il existe déjà
-                removeDisLike(cmtr.getId(), admin.getId());
+/*************************************MettreLike a Commentaire******************************************************************************************/
+public void like(Commentaire cmtr,Admin admin){
+    String rqt="INSERT INTO `like`(`commentaire_id`,`userr_id`) VALUES(?,?)";
+    try {
+        PreparedStatement stm= cnx.prepareStatement(rqt);
 
-                // Insérer le dislike de l'utilisateur
-                PreparedStatement dislikeStm = cnx.prepareStatement(dislikeQuery);
-                dislikeStm.setInt(1, cmtr.getId());
-                dislikeStm.setInt(2, admin.getId());
-                dislikeStm.executeUpdate();
+        if (!hasUserLikedComment(cmtr.getId(),admin.getId())){
+            stm.setInt(1,cmtr.getId());
+            stm.setInt(2,admin.getId());
 
-                // Mettre à jour le nombre de dislikes dans le commentaire
+            stm.executeUpdate();
+            incrementeNbrLike(cmtr);
+            DincrementeNbrLike(cmtr);
+            removeDisLike(cmtr.getId(), admin.getId());
+            showInformationAlert("","You Liked this succesfuly ");
+        }else{
+            showWarningAlert("","you liked this before ");
+            System.out.println("You liked this before :) ");
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+
+}
+    /*************************************Mettre Dislike commentaire **************************************************************************************/
+    public void dislike(Commentaire cmtr,Admin admin){
+        String rqt="INSERT INTO `dislike`(`commentaire_id`,`userr_id`) VALUES(?,?)";
+        try {
+            PreparedStatement stm= cnx.prepareStatement(rqt);
+
+            if (!hasUserDislikedComment(cmtr.getId(),admin.getId())){
+                stm.setInt(1,cmtr.getId());
+                stm.setInt(2,admin.getId());
+
+                stm.executeUpdate();
                 incrementeNbrDisLike(cmtr);
+                dincrementeNbrLike(cmtr);
+                removeLike(cmtr.getId(), admin.getId());
+                showInformationAlert("Information ","You disLiked this succesfuly ");
 
-                // JavaFX Alert: Dislike successful
-                showInformationAlert("Success", "You disliked the comment successfully!");
-            } else {
-                // JavaFX Alert: Already disliked
-                showWarningAlert("Warning", "You already disliked this comment before :)");
+            }else{
+                System.out.println("You disliked this before :) ");
+                showWarningAlert("Warnining","You disliked this before :)");
             }
         } catch (SQLException e) {
-            // Handle SQL exception
-            handleSQLException(e);
+            throw new RuntimeException(e);
         }
+
     }
 
 

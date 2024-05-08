@@ -94,6 +94,16 @@ public class UpdateDossierMedical implements Initializable {
             }
         }
 
+
+    }
+    private void showNotification(String message) {
+        Notifications.create()
+                .title("Succès")
+                .text(message)
+                .darkStyle()  // Style sombre
+                .hideAfter(Duration.seconds(20))  // Durée d'affichage de 20 secondes
+                .position(Pos.CENTER)  // Position au milieu de la page
+                .showInformation();
     }
 
 
@@ -120,15 +130,7 @@ public class UpdateDossierMedical implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    public void showNotification(String message) {
-        Notifications notifications = Notifications.create();
-        notifications.text(message);
-        notifications.title("Success Message");
-        notifications.hideAfter(Duration.seconds(30));
-        notifications.darkStyle();
-        notifications.position(Pos.BOTTOM_CENTER);
-        notifications.show();
-    }
+
 
 
 

@@ -75,44 +75,44 @@ public class dossiermedicalService implements IService <dossiermedical> {
         }
 
     }
-
-
-
-
-
-
-
     @Override
     public void modifier(dossiermedical dossiermedical) throws SQLException {
         // Obtention de la date actuelle
         Timestamp dateActuelle = new Timestamp(System.currentTimeMillis());
-
-        // Préparation de la requête SQL avec des paramètres de substitution
-        String requete = "INSERT INTO dossiermedical(date_creation,resultatexamen,antecedentspersonelles,image) " +
-                "VALUES (?, ?, ?, ?)";
+        // Préparation de la requête SQL pour mettre à jour le dossier
+        String requete = "UPDATE dossiermedical SET date_creation = ?, resultatexamen = ?, antecedentspersonelles = ?, image = ? WHERE numdossier = ?";
 
         try (Connection connection = new DataBase().getCnx();
              PreparedStatement statement = connection.prepareStatement(requete)) {
 
             // Attribution des valeurs aux paramètres de la requête
-            statement.setTimestamp(1, dateActuelle); // Date actuelle pour la date de creation
+            statement.setTimestamp(1, dateActuelle);
             statement.setString(2, dossiermedical.getResultatexamen());
             statement.setString(3, dossiermedical.getAntecedentspersonelles());
             statement.setString(4, dossiermedical.getImage());
-           // statement.setInt(5, 1); // ID du patient
+            statement.setInt(5, dossiermedical.getNumdossier());
 
-            // Exécution de la requête d'insertion
-            int rowsInserted = statement.executeUpdate();
+            // Exécution de la requête de mise à jour
+            int rowsUpdated = statement.executeUpdate();
 
-            if (rowsInserted > 0) {
-                System.out.println("Dossier ajouté avec succès !");
+            if (rowsUpdated > 0) {
+                System.out.println("Dossier modifié avec succès !");
             } else {
-                System.out.println("Échec de l'ajout du dossier medical !");
+                System.out.println("Échec de la modification du dossier medical !");
             }
         } catch (SQLException e) {
-            System.out.println("Erreur lors de l'ajout du dossier medical: " + e.getMessage());
+            System.out.println("Erreur lors de la modification du dossier medical: " + e.getMessage());
+            throw e; // Propager l'exception pour la gérer plus haut dans la pile d'appels
         }
     }
+
+
+
+
+
+
+
+
 
 
 

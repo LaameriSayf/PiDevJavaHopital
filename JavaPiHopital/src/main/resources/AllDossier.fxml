@@ -70,7 +70,7 @@
 
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane layoutX="-2.0" layoutY="-1.0" prefHeight="628.0" prefWidth="842.0">
+                                <AnchorPane layoutX="2.0" prefHeight="628.0" prefWidth="847.0">
                                     <children>
                                         <TableView fx:id="dossierTableView" layoutX="22.0" layoutY="99.0" prefHeight="342.0" prefWidth="797.0" styleClass="table-view" stylesheets="@style.css">
                                             <columns>
@@ -81,7 +81,7 @@
                                                 <TableColumn fx:id="imageColumn" prefWidth="150.0" text="Image" />
                                             </columns>
                                         </TableView>
-                                     <Button fx:id="PDF" layoutX="613.0" layoutY="497.0" mnemonicParsing="false" onAction="#PDF" prefHeight="26.0" prefWidth="94.0" text="PDF" />
+                                     <Button fx:id="PDF" layoutX="82.0" layoutY="462.0" mnemonicParsing="false" onAction="#PDF" prefHeight="26.0" prefWidth="131.0" stylesheets="@style.css" text="PDF" />
                               <ImageView fitHeight="76.0" fitWidth="97.0" layoutX="247.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true" />
                               <ImageView fitHeight="26.0" fitWidth="45.0" layoutX="198.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -89,6 +89,11 @@
                                  </image>
                               </ImageView>
                               <TextField fx:id="searchBar" layoutX="39.0" layoutY="65.0" />
+                              <ImageView fitHeight="39.0" fitWidth="61.0" layoutX="39.0" layoutY="460.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@pictures/pdf.png" />
+                                 </image>
+                              </ImageView>
                                     </children>
                                 </AnchorPane>
                             </children>

@@ -61,7 +61,6 @@ public class AllDossier implements Initializable {
     private Button PDF;
 
 
-
     @FXML
     private TextField searchBar;
 
@@ -73,6 +72,7 @@ public class AllDossier implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeTableView();
         loadDossiers();
+        search();
     }
 
     private void initializeTableView() {
@@ -266,11 +266,34 @@ public class AllDossier implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    private void search() {
+        // Création d'une liste filtrée initialisée avec la liste de tous les dossiers
+        FilteredList<dossiermedical> filteredData = new FilteredList<>(dossierTableView.getItems(), e -> true);
 
+        // Ajout d'un écouteur sur la propriété text de la barre de recherche pour mettre à jour le prédicat à chaque modification de texte
+        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(dossier -> {
+                // Si le texte de recherche est vide, toutes les dossiers sont affichées
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                // Convertir le texte de recherche en minuscules
+                String lowerCaseFilter = newValue.toLowerCase();
 
+                // Vérifiez si le texte de recherche correspond à une des propriétés du dossier ou au numéro de dossier
+                return dossier.getAntecedentspersonelles().toLowerCase().contains(lowerCaseFilter)
+                        || dossier.getResultatexamen().toLowerCase().contains(lowerCaseFilter)
+                        || String.valueOf(dossier.getNumdossier()).contains(newValue);
+            });
+        });
 
-
-
+        // Création d'une liste triée à partir de la liste filtrée
+        SortedList<dossiermedical> sortedData = new SortedList<>(filteredData);
+        // Liaison du comparateur de la liste triée avec le comparateur de la table des dossiers
+        sortedData.comparatorProperty().bind(dossierTableView.comparatorProperty());
+        // Mise à jour de la table des dossiers avec la liste triée
+        dossierTableView.setItems(sortedData);
+    }
 }
 
 

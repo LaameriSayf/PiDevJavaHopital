@@ -26,6 +26,7 @@ public class dossiermedical {
 
 
 
+
     public  int getId() {
         return id;
     }

@@ -58,23 +58,5 @@ public class FrontEnd implements Initializable {
         }
     }
 
-    @FXML
-    void chatgpt(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChatGPT.fxml"));
-            Parent root = loader.load();
 
-            ChatGPTApp ChatGPTApp = loader.getController();
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            // Close the current window
-            btn1.getScene().getWindow().hide();
-
-        } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception as needed
-        }
-    }
 }

@@ -68,7 +68,7 @@
 
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane layoutX="-4.0" layoutY="-3.0" prefHeight="628.0" prefWidth="842.0">
+                                <AnchorPane layoutX="14.0" prefHeight="628.0" prefWidth="842.0">
                                     <children>
                                         <TableView fx:id="ordonnanceTableView" layoutX="32.0" layoutY="28.0" prefHeight="337.0" prefWidth="702.0" styleClass="table-view" stylesheets="@style.css">
                                             <columns>
@@ -80,8 +80,18 @@
                                                 <TableColumn fx:id="actionColumn" text="Action" />
                                             </columns>
                                         </TableView>
-                              <Button fx:id="pdf" layoutX="288.0" layoutY="411.0" mnemonicParsing="false" onAction="#PDF" prefHeight="26.0" prefWidth="241.0" text="PDF" />
-                              <Button fx:id="excel" layoutX="282.0" layoutY="478.0" mnemonicParsing="false" onAction="#generateExcelFile" prefHeight="26.0" prefWidth="269.0" text="Button" />
+                              <Button fx:id="pdf" layoutX="88.0" layoutY="386.0" mnemonicParsing="false" onAction="#PDF" prefHeight="28.0" prefWidth="138.0" stylesheets="@style.css" text="PDF" />
+                              <Button fx:id="excel" layoutX="355.0" layoutY="386.0" mnemonicParsing="false" onAction="#generateExcelFile" prefHeight="26.0" prefWidth="140.0" stylesheets="@style.css" text="Excel" />
+                              <ImageView fx:id="pdff" fitHeight="40.0" fitWidth="46.0" layoutX="39.0" layoutY="385.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@pictures/pdf.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="53.0" fitWidth="46.0" layoutX="300.0" layoutY="382.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@pictures/excel.png" />
+                                 </image>
+                              </ImageView>
 
                                     </children>
                                 </AnchorPane>

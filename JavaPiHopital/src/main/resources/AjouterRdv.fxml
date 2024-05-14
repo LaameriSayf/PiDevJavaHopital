@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXListView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -43,30 +44,46 @@
                      <Font name="Franklin Gothic Medium" size="18.0" />
                   </font>
                </Button>
+               <ImageView fitHeight="92.0" fitWidth="101.0" layoutX="47.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@téléchargé.png" />
+                  </image>
+               </ImageView>
+               <ImageView fitHeight="101.0" fitWidth="101.0" layoutX="42.0" layoutY="284.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@medical-appointment.png" />
+                  </image>
+               </ImageView>
             </children>
          </AnchorPane>
       </left>
       <center>
-         <AnchorPane prefHeight="659.0" prefWidth="756.0" BorderPane.alignment="CENTER">
+         <AnchorPane prefHeight="670.0" prefWidth="903.0" BorderPane.alignment="CENTER">
             <children>
                <AnchorPane fx:id="panblog" layoutX="113.0" layoutY="1.0" prefHeight="718.0" prefWidth="878.0" style="-fx-background-color: white;">
                   <children>
                      <HBox layoutX="9.0" layoutY="53.0" prefHeight="48.0" prefWidth="815.0">
                         <children>
-                           <Label prefHeight="48.0" prefWidth="592.0" text="                              Liste des rendez vous" textAlignment="CENTER" textFill="#3573bf">
+                           <Label prefHeight="46.0" prefWidth="599.0" text="                              Liste des rendez vous" textAlignment="CENTER" textFill="#3573bf">
                               <font>
                                  <Font name="System Bold Italic" size="31.0" />
                               </font>
                            </Label>
-                           <ImageView fitHeight="53.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
+                           <Button mnemonicParsing="false" onAction="#modifier" prefHeight="52.0" prefWidth="87.0" style="-fx-background-color: green;" text="Modifier" textFill="WHITE">
                               <HBox.margin>
-                                 <Insets left="18.0" />
+                                 <Insets right="5.0" />
                               </HBox.margin>
-                              <image>
-                                 <Image url="@icons8-panneau-de-contrôle-94.png" />
-                              </image>
-                           </ImageView>
+                           </Button>
+                           <Button fx:id="supprimerRDB" mnemonicParsing="false" onAction="#supprimerRDV" prefHeight="51.0" prefWidth="103.0" style="-fx-background-color: red;" text="suprimer" textFill="WHITE">
+                              <HBox.margin>
+                                 <Insets right="5.0" />
+                              </HBox.margin>
+                           </Button>
+                           <Button fx:id="pdfLabel" mnemonicParsing="false" onAction="#generateAndSavePDF" prefHeight="52.0" prefWidth="85.0" style="-fx-background-color: red;" text="PDF" textAlignment="CENTER" textFill="WHITE" />
                         </children>
+                        <padding>
+                           <Insets top="10.0" />
+                        </padding>
                      </HBox>
                      <AnchorPane layoutX="390.0" layoutY="126.0" prefHeight="231.0" prefWidth="475.0">
                         <children>
@@ -87,30 +104,58 @@
                      </AnchorPane>
                      <VBox layoutX="33.0" layoutY="133.0" prefHeight="370.0" prefWidth="314.0">
                         <children>
-                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date :" />
-                           <DatePicker fx:id="dateLabel" prefHeight="45.0" prefWidth="298.0" promptText="choisir date ..." style="-fx-border-radius: 12px;" />
-                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Heure" />
-                           <TextField fx:id="heureLabel" prefHeight="40.0" prefWidth="285.0" promptText="Choisir Date ..." />
-                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date :">
+                              <font>
+                                 <Font name="System Bold Italic" size="12.0" />
+                              </font></Text>
+                           <DatePicker fx:id="dateLabel" prefHeight="45.0" prefWidth="328.0" promptText="choisir date ..." style="-fx-border-radius: 12px;" />
+                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Heure">
+                              <VBox.margin>
+                                 <Insets top="10.0" />
+                              </VBox.margin>
+                              <font>
+                                 <Font name="System Bold Italic" size="13.0" />
+                              </font></Text>
+                           <ChoiceBox fx:id="heureLabel" prefHeight="47.0" prefWidth="314.0" />
+                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description">
+                              <VBox.margin>
+                                 <Insets top="10.0" />
+                              </VBox.margin>
+                              <font>
+                                 <Font name="System Bold Italic" size="13.0" />
+                              </font></Text>
                            <TextField fx:id="descriptionLabel" prefHeight="39.0" prefWidth="274.0" promptText="choisir description ..." styleClass="rechBlog" />
-                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="File" wrappingWidth="42.947265625" />
+                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="File" wrappingWidth="42.947265625">
+                              <VBox.margin>
+                                 <Insets top="10.0" />
+                              </VBox.margin>
+                              <font>
+                                 <Font name="System Bold Italic" size="13.0" />
+                              </font></Text>
                            <ListView fx:id="fileList" prefHeight="69.0" prefWidth="297.0" />
-                           <Button fx:id="importFile" mnemonicParsing="false" onAction="#importFile" prefHeight="45.0" prefWidth="301.0" text="Import file" />
+                           <Button fx:id="importFile" mnemonicParsing="false" onAction="#importFile" prefHeight="45.0" prefWidth="315.0" text="Import file" />
+                           <Button fx:id="ajouterButton" mnemonicParsing="false" onAction="#ajouterRDV" prefHeight="50.0" prefWidth="178.0" style="-fx-background-color: blue;" text="Ajouter" textFill="WHITE">
+                              <VBox.margin>
+                                 <Insets top="10.0" />
+                              </VBox.margin>
+                           </Button>
 
                                                                   </children>
                      </VBox>
                      <VBox layoutX="535.0" layoutY="658.0" prefHeight="48.0" prefWidth="359.0">
                         <children>
-                           <HBox prefHeight="48.0" prefWidth="359.0">
-                              <children>
-                                 <Button mnemonicParsing="false" onAction="#modifier" prefHeight="52.0" prefWidth="87.0" style="-fx-background-color: green;" text="Modifier" textFill="WHITE" />
-                                 <Button fx:id="supprimerRDB" mnemonicParsing="false" onAction="#supprimerRDV" prefHeight="51.0" prefWidth="103.0" style="-fx-background-color: red;" text="suprimer" textFill="WHITE" />
-                                 <Button fx:id="ajouterButton" mnemonicParsing="false" onAction="#ajouterRDV" prefHeight="50.0" prefWidth="106.0" style="-fx-background-color: blue;" text="Ajouter" textFill="WHITE" />
-                                 <Button fx:id="pdfLabel" mnemonicParsing="false" onAction="#generateAndSavePDF" prefHeight="52.0" prefWidth="85.0" style="-fx-background-color: red;" text="PDF" textAlignment="CENTER" textFill="WHITE" />
-                              </children>
-                           </HBox>
+                           <HBox prefHeight="48.0" prefWidth="359.0" />
                         </children>
                      </VBox>
+                     <AnchorPane layoutX="7.0" layoutY="8.0" prefHeight="45.0" prefWidth="880.0" style="-fx-background-color: #378CE7; -fx-background-radius: 50;">
+                        <children>
+                           <Button fx:id="logout_btn" layoutX="747.0" layoutY="10.0" mnemonicParsing="false" onAction="#logout" styleClass="delete-btn" stylesheets="@DashboarsDesign.css" text="se deconnecter">
+                              <font>
+                                 <Font name="Times New Roman" size="12.0" />
+                              </font>
+                           </Button>
+                        </children>
+                     </AnchorPane>
                   </children>
                   <effect>
                      <InnerShadow>
@@ -120,16 +165,6 @@
                      </InnerShadow>
                   </effect>
                </AnchorPane>
-               <ImageView fitHeight="92.0" fitWidth="101.0" layoutX="-31.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@téléchargé.png" />
-                  </image>
-               </ImageView>
-               <ImageView fitHeight="101.0" fitWidth="101.0" layoutX="-33.0" layoutY="296.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@medical-appointment.png" />
-                  </image>
-               </ImageView>
             </children>
             <opaqueInsets>
                <Insets />

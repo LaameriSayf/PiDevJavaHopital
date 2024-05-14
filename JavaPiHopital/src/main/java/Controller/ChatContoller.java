@@ -1,15 +1,18 @@
 package Controller;
 
-import entities.Server;
+import Model.Server;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -18,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -114,5 +118,20 @@ public class ChatContoller implements Initializable {
 
 
 
+
+    }
+    @FXML
+    public void start(Stage primaryStage) throws Exception {
+        // Charge le fichier FXML
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Chat.fxml"));
+        Parent root = loader.load();
+
+        // Récupère le contrôleur
+
+        // Appelle la méthode pour démarrer le serveur dans le contrôleur
+
+        // Affiche la scène
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
     }
 }

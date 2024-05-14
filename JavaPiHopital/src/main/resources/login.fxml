@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Login">
+   <children>
+      <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <AnchorPane prefHeight="400.0" prefWidth="300.0">
+               <children>
+                  <ImageView fitHeight="404.0" fitWidth="300.0" layoutX="-1.0">
+                     <image>
+                        <Image url="@mediconnect.jpg" />
+                     </image>
+                  </ImageView>
+               </children></AnchorPane>
+            <AnchorPane layoutX="300.0" layoutY="2.0" prefHeight="400.0" prefWidth="300.0">
+               <children>
+                  <Label layoutX="42.0" layoutY="81.0" text="Bienvenue de nouveau !">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="emailTF" layoutX="16.0" layoutY="140.0" prefHeight="25.0" prefWidth="241.0" promptText="Email" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                  <Button fx:id="login" layoutX="65.0" layoutY="251.0" mnemonicParsing="false" onAction="#login" prefHeight="33.0" prefWidth="142.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Se connecter" />
+                  <Label layoutX="58.0" layoutY="308.0" prefHeight="20.0" prefWidth="126.0" text="Créer un compte">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="inscri_btn" layoutX="58.0" layoutY="337.0" mnemonicParsing="false" onAction="#inscription_btn" prefHeight="25.0" prefWidth="150.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="Inscription" />
+                  <Hyperlink fx:id="MDPoublie" layoutX="150.0" layoutY="229.0" onAction="#MDPoubliebtn" text="Mot de passe oubliée ?" />
+                  <Button fx:id="close" layoutX="269.0" layoutY="8.0" mnemonicParsing="false" onAction="#close" styleClass="close" stylesheets="@DashboarsDesign.css" text="X" />
+                  <Line endX="121.0" layoutX="144.0" layoutY="123.0" startX="-119.0" />
+                  <Button fx:id="minimise" layoutX="247.0" layoutY="8.0" mnemonicParsing="false" onAction="#minimise" styleClass="minimize" stylesheets="@DashboarsDesign.css" text="-" />
+                  <TextField fx:id="loginshowpassword" layoutX="16.0" layoutY="175.0" prefHeight="25.0" prefWidth="241.0" promptText="Mot de passe" />
+                  <PasswordField fx:id="passwordTF" layoutX="16.0" layoutY="175.0" prefHeight="25.0" prefWidth="241.0" promptText="mot de passe" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                  <ImageView>
+                     <image>
+                        <Image url="@logomediconnect.PNG" />
+                     </image>
+                  </ImageView>
+                  <CheckBox fx:id="showpassword" layoutX="16.0" layoutY="212.0" mnemonicParsing="false" onAction="#showPassword" prefHeight="17.0" prefWidth="159.0" text="Afficher le mot de passe" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>

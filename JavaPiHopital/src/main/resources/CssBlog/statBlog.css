@@ -1,0 +1,24 @@
+.panombre {
+    -fx-border-radius: 0px 0px 50px 50px;
+    -fx-border-width: 2px;
+    -fx-background-radius: 0px 50px 50px 50px;
+    -fx-background-color: #EBC95E; /* Couleur d'arrière-plan */
+}
+.panombre2 {
+    -fx-border-radius: 0px 50px 50px 50px;
+    -fx-border-width: 2px;
+    -fx-background-radius: 0px 50px 50px 50px;
+    -fx-background-color:  #54D39D; /* Couleur d'arrière-plan */
+}
+.panombre3 {
+    -fx-border-radius: 0px 50px 50px 50px;
+    -fx-border-width: 2px;
+    -fx-background-radius: 0px 50px 50px 50px;
+    -fx-background-color: #70B8D9; /* Couleur d'arrière-plan */
+}
+.panombre4 {
+    -fx-border-radius: 0px 50px 50px 50px;
+    -fx-border-width: 2px;
+    -fx-background-radius: 0px 50px 50px 50px;
+    -fx-background-color:  #F9A885; /* Couleur d'arrière-plan */
+}

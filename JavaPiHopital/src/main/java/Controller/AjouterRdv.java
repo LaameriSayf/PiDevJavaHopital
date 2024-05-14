@@ -1,9 +1,16 @@
 package Controller;
 
 
+import Model.RendezVous;
+import Service.RdvService;
+import Service.RendezVousService;
+import Test.HelloApplication;
+import Util.MyDataBase;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import entities.RendezVous;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,12 +19,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import services.RdvService;
-import services.RendezVousService;
-import utils.MyDataBase;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -27,6 +33,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -35,6 +42,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -54,7 +62,8 @@ public class AjouterRdv {
     private TextField descriptionLabel;
 
     @FXML
-    private TextField heureLabel;
+    private ChoiceBox<LocalTime> heureLabel;
+
 
     @FXML
     private Button importFile;
@@ -66,6 +75,29 @@ public class AjouterRdv {
     @FXML
     private ListView<String> listeRdv;
     private RdvService rdvService;
+    ObservableList<LocalTime> heuresList = FXCollections.observableArrayList(
+            LocalTime.parse("08:00"),
+            LocalTime.parse("09:00"),
+            LocalTime.parse("10:00"),
+            LocalTime.parse("11:00"),
+            LocalTime.parse("12:00"),
+            LocalTime.parse("13:00"),
+            LocalTime.parse("14:00"),
+            LocalTime.parse("15:00"),
+            LocalTime.parse("16:00"),
+            LocalTime.parse("17:00"),
+            LocalTime.parse("18:00"),
+            LocalTime.parse("19:00"),
+            LocalTime.parse("20:00"),
+            LocalTime.parse("21:00"),
+            LocalTime.parse("22:00"),
+            LocalTime.parse("23:00"),
+            LocalTime.parse("00:00"),
+            LocalTime.parse("01:00")
+
+    );
+
+
 
     public int get_List_RDV(String chaine){
         String selectedItem =chaine;
@@ -81,14 +113,13 @@ public class AjouterRdv {
         }return 0;
     }
 
+
     @FXML
     private void initialize() {
-
-
         final Connection connection = MyDataBase.getInstance().getConnection();
-
         rdvService = new RendezVousService(connection);
         loadAndDisplayData();
+        heureLabel.setItems(heuresList);
         listeRdv.setOnMouseClicked(event -> {
             String selectedItem = listeRdv.getSelectionModel().getSelectedItem();
             System.out.println("Selected item: " + selectedItem);
@@ -101,7 +132,7 @@ public class AjouterRdv {
                     System.out.println(rdv);
                     if (rdv!=null) {
                         dateLabel.setValue(rdv.getDaterdv());
-                        heureLabel.setText(rdv.getHeurerdv());
+                        heureLabel.setValue(rdv.getHeurerdv());
                         descriptionLabel.setText(rdv.getDescription());
                         if(fileList.getItems().isEmpty()==false)
                             fileList.getItems().clear();
@@ -147,18 +178,17 @@ public class AjouterRdv {
     @FXML
     void ajouterRDV(ActionEvent event) {
         LocalDate date = dateLabel.getValue();
-        String heure = heureLabel.getText();
+        LocalTime heure = heureLabel.getValue();
         String description = descriptionLabel.getText();
         LocalDate currentDate = LocalDate.now();
         String email = ("halimtrabelsi73@gmail.com");
 
 
 
-
-        if (date == null || heure.isEmpty() || description.isEmpty() || fileList.getItems().isEmpty()) {
+        if (date == null || heure == null || description.isEmpty() || fileList.getItems().isEmpty()) {
             if (date == null) {
                 showAlert("Ajouter la date");
-            } else if (heure.isEmpty()) {
+            } else if (heure == null) {
                 showAlert("Ajouter Heure");
             } else if (description.isEmpty()) {
                 showAlert("Ajouter Description");
@@ -182,7 +212,7 @@ public class AjouterRdv {
                     RendezVous rendezVous = new RendezVous(description, fileName, date, heure);
                     rdvService.ajouterRDV(rendezVous);
                     dateLabel.setValue(null);
-                    heureLabel.setText("");
+                    heureLabel.setValue(null);
                     descriptionLabel.setText("");
                     fileList.setItems(null);
 
@@ -192,7 +222,7 @@ public class AjouterRdv {
                         "                    + \"<p style=\\\"font-family: Arial, sans-serif; font-size: 14px;\\\">Votre rendez-vous a été envoyé avec succès.</p>\"\n" +
                         "                    + \"<p style=\\\"font-family: Arial, sans-serif; font-size: 14px;\\\">À bientôt,<br/>Hopital Militaire de Tunis<br/>@MediConnect</p>";
 
-                sendEmail(email,content);
+               sendEmail(email,content);
                 showAlert("RendezVous ajouté avec succès!");
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -234,8 +264,8 @@ public class AjouterRdv {
         try {
             List<RendezVous> rendezVousList = rdvService.recuperer();
             for (RendezVous rendezVous : rendezVousList) {
-                String item = String.format("ID: %d, Description: %s, File: %s, Date: %s, Heure: %s",
-                        rendezVous.getId(), rendezVous.getDescription(), rendezVous.getFile(),
+                String item = String.format("ID: %s, Description: %s, File: %s, Date: %s, Heure: %s",
+                       rendezVous.getId(), rendezVous.getDescription(), rendezVous.getFile(),
                         rendezVous.getDaterdv(), rendezVous.getHeurerdv());
                 items.add(item);
             }
@@ -248,13 +278,13 @@ public class AjouterRdv {
     @FXML
     private void modifier(ActionEvent event){
         LocalDate date = dateLabel.getValue();
-        String heure = heureLabel.getText();
+        LocalTime heure = heureLabel.getValue();
         String description = descriptionLabel.getText();
 
-        if (date == null || heure.isEmpty() || description.isEmpty() || fileList.getItems().isEmpty()) {
+        if (date == null || heure == null || description.isEmpty() || fileList.getItems().isEmpty()) {
             if (date == null) {
                 showAlert("Ajouter la date");
-            } else if (heure.isEmpty()) {
+            } else if (heure == null) {
                 showAlert("Ajouter Heure");
             } else if (description.isEmpty()) {
                 showAlert("Ajouter Description");
@@ -303,9 +333,10 @@ public class AjouterRdv {
     }
     @FXML
     public void switchToEmploi(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/GestionEmploi.fxml"));
-        Scene scene = new Scene(root);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/GestionEmploi.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("medi_connect!");
         stage.setScene(scene);
         stage.show();
     }
@@ -325,8 +356,14 @@ public class AjouterRdv {
             System.out.println("Recipient email is null or empty. Cannot send email.");
             return;
         }
+
+        if (recipientEmail == null || recipientEmail.isEmpty()) {
+            System.out.println("Recipient email is null or empty. Cannot send email.");
+            return;
+        }
         // Password
         final String password = "ialgvzhizvvrwozy";
+
 
         // SMTP server properties
         Properties properties = new Properties();
@@ -376,22 +413,51 @@ public class AjouterRdv {
         } catch (MessagingException | IOException e) {
             e.printStackTrace();
         }
-    } @FXML
+    }
+   @FXML
     void generateAndSavePDF() {
-        String selectedData = listeRdv.getSelectionModel().getSelectedItem();
-        LocalDate currentDate = LocalDate.now();
-        String randomUUID = UUID.randomUUID().toString();
-        String filePath = "PDFfile_" + randomUUID + ".pdf";
+        RendezVous selectedRdv = getSelectedRdv();
+        if (selectedRdv != null) {
+            LocalDate currentDate = LocalDate.now();
+            String randomUUID = UUID.randomUUID().toString();
+            String filePath = "PDFfile_" + randomUUID + ".pdf";
 
-        try {
-            generatePDF(selectedData, filePath);
-        } catch (IOException | DocumentException e) {
-            e.printStackTrace();
-            showAlert("Error occurred while generating PDF.");
+            try {
+                generatePDF(selectedRdv, filePath);
+                openPDF(filePath); // Ouvrir le fichier PDF
+            } catch (IOException | DocumentException e) {
+                e.printStackTrace();
+                showAlert("Error occurred while generating PDF.");
+            }
+        } else {
+            showAlert("No rendez-vous selected.");
         }
     }
 
-    private void generatePDF(String text, String filePath) throws IOException, DocumentException {
+    private RendezVous getSelectedRdv() {
+        String selectedData = listeRdv.getSelectionModel().getSelectedItem();
+        if (selectedData != null) {
+            // Extract the ID from the selected item
+            int rdvId = get_List_RDV(selectedData);
+            try {
+                return rdvService.selectRDV(rdvId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    private void openPDF(String filePath) throws IOException {
+        File file = new File(filePath);
+        if (Desktop.isDesktopSupported() && file.exists()) {
+            Desktop.getDesktop().open(file);
+        } else {
+            showAlert("Could not open PDF file.");
+        }
+    }
+
+    private void generatePDF(RendezVous rendezVous, String filePath) throws IOException, DocumentException {
         Document document = new Document();
         PdfWriter.getInstance(document, new FileOutputStream(filePath));
         document.open();
@@ -404,16 +470,46 @@ public class AjouterRdv {
 
         document.add(new Paragraph(" "));
 
-        // Add text content to the document
-        Font textFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL, BaseColor.RED);
-        Paragraph paragraph = new Paragraph(text, textFont);
-        paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
-        document.add(paragraph);
+        // Create table
+        PdfPTable table = new PdfPTable(2); // 2 columns
+
+        // Add rendez-vous attributes to the table
+        addRowToTable(table, "Date:", rendezVous.getDaterdv().toString());
+        addRowToTable(table, "Heure:", rendezVous.getHeurerdv().toString());
+        addRowToTable(table, "Description:", rendezVous.getDescription());
+        addRowToTable(table, "File:", rendezVous.getFile());
+
+        // Add table to document
+        document.add(table);
+
         document.close();
 
         showSuccess("PDF generated successfully!");
     }
 
+    // Method to add a row to the table
+    private void addRowToTable(PdfPTable table, String attributeName, String attributeValue) {
+        PdfPCell cell1 = new PdfPCell(new Phrase(attributeName));
+        PdfPCell cell2 = new PdfPCell(new Phrase(attributeValue));
+        table.addCell(cell1);
+        table.addCell(cell2);
+    }
+
+    @FXML
+    private Button logout_btn;
+    @FXML
+    void logout(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/login.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage)  logout_btn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 
 

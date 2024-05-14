@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="1038.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AllDossier">
+    <children>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <children>
+                <BorderPane layoutX="284.0" layoutY="154.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <top>
+                        <AnchorPane prefHeight="45.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <AnchorPane layoutX="140.0" layoutY="4.8" prefHeight="62.0" prefWidth="1237.0" styleClass="nav-form" stylesheets="@DashboarsDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
+                            </children>
+                        </AnchorPane>
+                    </top>
+                    <left>
+                        <AnchorPane prefHeight="623.0" prefWidth="227.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <AnchorPane layoutX="16.0" prefHeight="610.0" prefWidth="222.0" styleClass="nav-form" stylesheets="@DashboarsDesign.css" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="-5.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <Label layoutX="49.0" layoutY="14.0" text="Bienvenue">
+                                            <font>
+                                                <Font name="System Bold" size="18.0" />
+                                            </font>
+                                        </Label>
+                                        <Line endX="84.5" layoutX="95.0" layoutY="42.0" startX="-74.5" />
+                                        <Button fx:id="btnDashBord" layoutX="52.0" layoutY="72.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="161.0" styleClass="add-btn" stylesheets="@style.css" text="Tableau de board" />
+                                        <Button fx:id="btnGestionDossiers" layoutX="52.0" layoutY="176.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="126.0" styleClass="add-btn" stylesheets="@style.css" text="Gérer Dossiers " />
+                                        <Button fx:id="btnGestionOrdonnances" layoutX="52.0" layoutY="124.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@style.css" text="Gérer Ordonnances " />
+                                        <Button fx:id="OCRR" layoutX="59.0" layoutY="223.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="109.0" styleClass="add-btn" stylesheets="@style.css" text="OCR Model" />
+                                        <Button fx:id="logout_btn" layoutX="47.0" layoutY="504.0" mnemonicParsing="false" onAction="#logout" prefHeight="31.0" prefWidth="152.0" styleClass="add-btn" stylesheets="@style.css" text="Se déconnecter" />
+                                        <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="20.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@pictures/medecin.png" />
+                                            </image>
+                                        </ImageView>
+                                        <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="20.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@pictures/ordonD.png" />
+                                            </image>
+                                        </ImageView>
+                                        <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="20.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@pictures/dossierD.png" />
+                                            </image>
+                                        </ImageView>
+                                        <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="20.0" layoutY="508.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@pictures/logout.png" />
+                                            </image>
+                                        </ImageView>
+
+                              <ImageView fitHeight="30.0" fitWidth="53.0" layoutX="19.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@pictures/ddd.png" />
+                                 </image>
+                              </ImageView>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
+                    </left>
+                    <center>
+
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <AnchorPane fx:id="OCR" layoutX="2.0" prefHeight="628.0" prefWidth="847.0">
+                                    <children>
+                                        <TableView fx:id="dossierTableView" layoutX="22.0" layoutY="99.0" prefHeight="342.0" prefWidth="797.0" styleClass="table-view" stylesheets="@style.css">
+                                            <columns>
+                                                <TableColumn fx:id="numdossierColumn" prefWidth="75.0" text="N°Dossier" />
+                                                <TableColumn fx:id="resultatExamenColumn" prefWidth="150.0" text="Résultat Examen" />
+                                                <TableColumn fx:id="dateCreationColumn" prefWidth="150.0" text="Date de Création" />
+                                                <TableColumn fx:id="antecedentsColumn" prefWidth="150.0" text="Antécédents Personnels" />
+                                                <TableColumn fx:id="imageColumn" prefWidth="150.0" text="Image" />
+                                            </columns>
+                                        </TableView>
+                                     <Button fx:id="PDF" layoutX="82.0" layoutY="462.0" mnemonicParsing="false" onAction="#PDF" prefHeight="26.0" prefWidth="131.0" stylesheets="@style.css" text="PDF" />
+                              <ImageView fitHeight="76.0" fitWidth="97.0" layoutX="247.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="26.0" fitWidth="45.0" layoutX="198.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@pictures/iconsearch.png" />
+                                 </image>
+                              </ImageView>
+                              <TextField fx:id="searchBar" layoutX="39.0" layoutY="65.0" />
+                              <ImageView fitHeight="39.0" fitWidth="61.0" layoutX="39.0" layoutY="460.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@pictures/pdf.png" />
+                                 </image>
+                              </ImageView>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
+                    </center>
+                </BorderPane>
+            </children>
+        </AnchorPane>
+    </children>
+</StackPane>

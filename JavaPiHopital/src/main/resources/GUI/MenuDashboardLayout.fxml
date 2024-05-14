@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="708.0" prefWidth="1105.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CategorieBlogBack">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="700.0" minWidth="900.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <AnchorPane fx:id="sidebar" prefHeight="400.0" prefWidth="133.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox fx:id="sidebardash" layoutY="-37.0" prefHeight="708.0" prefWidth="201.0" styleClass="sidebardash" stylesheets="@../CssBlog/Sidebar.css">
+               <children>
+                  <ImageView fitHeight="28.0" fitWidth="143.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Template/back/images/medimedi-removebg-preview.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets top="8.0" />
+                     </VBox.margin>
+                  </ImageView>
+                  <HBox fx:id="hboxsidebar" prefHeight="56.0" prefWidth="170.0" styleClass="hboxsidebar" stylesheets="@../CssBlog/Sidebar.css">
+                     <children>
+                        <ImageView fitHeight="35.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="18.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../Template/back/images/icons8-panneau-de-contrôle-94.png" />
+                           </image>
+                        </ImageView>
+                        <Text fx:id="dash" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: italic;" styleClass="styleecriture" text="Dashboard">
+                           <HBox.margin>
+                              <Insets left="2.0" top="8.0" />
+                           </HBox.margin>
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                        </Text>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="80.0" />
+                     </VBox.margin>
+                        <opaqueInsets>
+                           <Insets top="200.0" />
+                        </opaqueInsets>
+                  </HBox>
+                  <HBox fx:id="sidecateg" prefHeight="28.0" prefWidth="202.0" styleClass="hboxsidebar">
+                     <children>
+                        <ImageView fitHeight="35.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Template/back/images/output-onlinegiftools.gif" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="18.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Text fx:id="sidecateg1" strokeType="OUTSIDE" strokeWidth="0.0" text="Categorie Blog">
+                           <HBox.margin>
+                              <Insets top="2.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="System Bold Italic" size="14.0" />
+                           </font></Text>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="30.0" prefWidth="138.0" styleClass="hboxsidebar">
+                     <children>
+                        <ImageView fitHeight="34.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Template/back/images/icons8-nouvelles-94.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="18.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Text fx:id="sideblog" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: italic;" styleClass="styleecriture" text="Blog">
+                           <HBox.margin>
+                              <Insets left="8.0" top="6.0" />
+                           </HBox.margin>
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                        </Text>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="27.0" prefWidth="130.0" styleClass="hboxsidebar">
+                     <children>
+                        <ImageView fitHeight="32.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Template/back/images/icons8-dynamique-positive-94.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="18.0" top="2.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Text fx:id="sidestat" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: italic;" styleClass="styleecriture" text="Charts">
+                           <HBox.margin>
+                              <Insets top="8.0" />
+                           </HBox.margin></Text>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <ImageView fitHeight="29.0" fitWidth="146.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fitHeight="296.0" fitWidth="201.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Template/back/images/contact-img.png" />
+                        </image>
+                        <VBox.margin>
+                           <Insets top="160.0" />
+                        </VBox.margin>
+                     </ImageView>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </left>
+   <top>
+      <AnchorPane prefHeight="33.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox fx:id="navbarback" layoutX="398.0" layoutY="7.0" prefHeight="46.0" prefWidth="891.0" styleClass="sidebardash" stylesheets="@../CssBlog/Sidebar.css">
+               <children>
+                     <Button fx:id="dasboardbtn" mnemonicParsing="false" onAction="#dasboardbtn" prefHeight="33.0" prefWidth="128.0" style="-fx-background-color: darkblue;" text="Retourner" textFill="WHITE" />
+                     <Button fx:id="logout_btn" mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: darkblue;" text="Deconnecter" textFill="WHITE" />
+                     <ImageView fitHeight="48.0" fitWidth="45.0" onMouseClicked="#franch" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Template/back/images/france.png" />
+                        </image>
+                        <HBox.margin>
+                           <Insets left="500.0" />
+                        </HBox.margin>
+                     </ImageView>
+                     <ImageView fitHeight="45.0" fitWidth="47.0" onMouseClicked="#english" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Template/back/images/royaume-uni.png" />
+                        </image>
+                     </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets left="100.0" top="5.0" />
+                     </HBox.margin>
+                     <image>
+                        <Image url="@../Template/back/images/icons8-cloche-94.png" />
+                     </image>
+                  </ImageView>
+                     <ImageView fx:id="btndarkmode" fitHeight="35.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Template/back/images/icons8-nuit-partiellement-nuageuse-94.png" />
+                        </image>
+                        <HBox.margin>
+                           <Insets left="20.0" />
+                        </HBox.margin>
+                     </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <AnchorPane prefHeight="629.0" prefWidth="942.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane fx:id="panCategorie" layoutX="98.0" layoutY="6.0" prefHeight="654.0" prefWidth="888.0" style="-fx-background-color: white; -fx-border-radius: 12px;" visible="false">
+               <children>
+                  <HBox layoutX="19.0" layoutY="43.0" prefHeight="47.0" prefWidth="845.0" stylesheets="@../CssBlog/categorieBlog.css" AnchorPane.leftAnchor="19.0" AnchorPane.topAnchor="43.0">
+                     <children>
+                        <ImageView fx:id="btndelete" accessibleRole="BUTTON" fitHeight="44.0" fitWidth="48.0" onMouseClicked="#supprimerCategorieSelectionnee" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                           <image>
+                              <Image url="@../Template/back/images/icons8-annuler-94.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="250.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <ImageView accessibleRole="BUTTON" fitHeight="43.0" fitWidth="49.0" onMouseClicked="#modifier" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                           <image>
+                              <Image url="@../Template/back/images/icons8-modifier-94.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                           <ImageView fx:id="btnafficheform" fitHeight="46.0" fitWidth="51.0" onMouseClicked="#AfficherFormPanel" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                              <image>
+                                 <Image url="@../Template/back/images/icons8-visibilité-94.png" />
+                              </image>
+                           </ImageView>
+                        <ImageView fitHeight="45.0" fitWidth="52.0" onMouseClicked="#ActualiserTableau" pickOnBounds="true" preserveRatio="true" styleClass="btnadd">
+                           <image>
+                              <Image url="@../Template/back/images/icons8-redémarrer-94.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                        </ImageView>
+                           <ImageView fx:id="btnclear" accessibleRole="BUTTON" fitHeight="46.0" fitWidth="49.0" onMouseClicked="#ClearInput" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                              <image>
+                                 <Image url="@../Template/back/images/icons8-balayer-94.png" />
+                              </image>
+                              <HBox.margin>
+                                 <Insets left="40.0" />
+                              </HBox.margin>
+                           </ImageView>
+                        <TextField id="rechGen" fx:id="inputsearch" minWidth="94.0" prefHeight="30.0" prefWidth="159.0" promptText="Search ....." styleClass="rechGen">
+                           <HBox.margin>
+                              <Insets left="120.0" top="10.0" />
+                           </HBox.margin>
+                           <stylesheets>
+                              <URL value="@../CssBlog/categorieBlog.css" />
+                              <URL value="@../CssBlog/Sidebar.css" />
+                           </stylesheets>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="15.0" layoutY="98.0" prefHeight="258.0" prefWidth="858.0" style="-fx-border-color: white;">
+                     <children>
+                        <TableView fx:id="tabcategorie" prefHeight="257.0" prefWidth="854.0" style="-fx-background-radius: 12; -fx-border-color: white; -fx-font-weight: bold;" stylesheets="@../CssBlog/categorieBlog.css">
+                          <columns>
+                            <TableColumn fx:id="thtitre" prefWidth="251.20000910758972" text="Titre" />
+                            <TableColumn fx:id="thdescription" minWidth="0.0" prefWidth="484.8000946044922" style="-fx-text-fill: black;" text="Description" />
+                          </columns>
+                              <effect>
+                                 <InnerShadow height="255.0" radius="127.0" width="255.0">
+                                    <color>
+                                       <Color red="0.1269395649433136" green="0.43120986223220825" blue="0.7789473533630371" />
+                                    </color>
+                                 </InnerShadow>
+                              </effect>
+                              <styleClass>
+                                 <String fx:value="thdescription" />
+                                 <String fx:value="thtitre" />
+                              </styleClass>
+                        </TableView>
+                     </children>
+                  </HBox>
+                     <AnchorPane fx:id="panformcateg" layoutX="209.0" layoutY="415.0" visible="false">
+                        <children>
+                        <VBox layoutX="2.0" prefHeight="214.0" prefWidth="330.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Titre" />
+                              <TextField fx:id="inputtitre" prefHeight="34.0" prefWidth="311.0" promptText="Saisir Titre...." styleClass="rechCat" stylesheets="@../CssBlog/categorieBlog.css" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description">
+                                 <font>
+                                    <Font name="System Bold Italic" size="12.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <TextArea fx:id="inputdescription" prefHeight="87.0" prefWidth="254.0" promptText="Saisir Description ..." styleClass="rechCat" stylesheets="@../CssBlog/categorieBlog.css" />
+                              <Button fx:id="btnadd" mnemonicParsing="false" onAction="#ajouterCategorieFormulaire" prefHeight="42.0" prefWidth="94.0" styleClass="btnadd" stylesheets="@../CssBlog/categorieBlog.css" text="Ajouter">
+                                 <VBox.margin>
+                                    <Insets left="220.0" top="20.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
+                        </children>
+                     </AnchorPane>
+                     <HBox layoutX="400.0" layoutY="368.0" prefHeight="42.0" prefWidth="324.0">
+                        <children>
+                           <Pagination fx:id="pagination" prefHeight="29.0" prefWidth="342.0" />
+                        </children>
+                     </HBox>
+               </children>
+                  <effect>
+                     <InnerShadow />
+                  </effect>
+            </AnchorPane>
+               <AnchorPane fx:id="panblog" layoutX="103.0" layoutY="5.0" prefHeight="653.0" prefWidth="881.0" style="-fx-background-color: white;">
+                  <children>
+                     <HBox layoutX="9.0" layoutY="53.0" prefHeight="48.0" prefWidth="815.0" stylesheets="@../CssBlog/Blog.css">
+                        <children>
+                           <ImageView fitHeight="39.0" fitWidth="37.0" onMouseClicked="#deleteBlog" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                              <image>
+                                 <Image url="@../Template/back/images/icons8-annuler-94.png" />
+                              </image>
+                              <HBox.margin>
+                                 <Insets left="250.0" />
+                              </HBox.margin>
+                           </ImageView>
+                           <ImageView fx:id="btnmodifierblog" fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                              <image>
+                                 <Image url="@../Template/back/images/icons8-modifier-94.png" />
+                              </image>
+                           </ImageView>
+                           <ImageView accessibleRole="BUTTON" fitHeight="40.0" fitWidth="45.0" onMouseClicked="#refrechBlog" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                              <image>
+                                 <Image url="@../Template/back/images/icons8-redémarrer-94.png" />
+                              </image>
+                           </ImageView>
+                           <ImageView fx:id="btnclearblog" accessibleRole="BUTTON" fitHeight="41.0" fitWidth="41.0" onMouseClicked="#clearInputBlog" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                              <image>
+                                 <Image url="@../Template/back/images/icons8-balayer-94.png" />
+                              </image>
+                           </ImageView>
+                           <ImageView fx:id="btnvisibleblog" fitHeight="41.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                              <image>
+                                 <Image url="@../Template/back/images/icons8-visibilité-94.png" />
+                              </image>
+                           </ImageView>
+                           <ImageView fx:id="btndetaillecomment" fitHeight="40.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true" styleClass="btncrud">
+                              <image>
+                                 <Image url="@../Template/back/images/icons8-info-94.png" />
+                              </image>
+                           </ImageView>
+                           <TextField fx:id="rechBlog" prefHeight="39.0" prefWidth="160.0" promptText="Search ..." styleClass="rechBlog" stylesheets="@../CssBlog/Blog.css" />
+                        </children>
+                     </HBox>
+                     <AnchorPane layoutX="6.0" layoutY="117.0" prefHeight="234.0" prefWidth="820.0">
+                        <children>
+                           <HBox layoutX="-5.0" layoutY="6.0" prefHeight="229.0" prefWidth="874.0">
+                              <children>
+                                 <TableView fx:id="tabblog" prefHeight="229.0" prefWidth="872.0">
+                                   <columns>
+                                     <TableColumn fx:id="thcategorieblog" prefWidth="122.0" text="Categorie Blog" />
+                                     <TableColumn fx:id="thtitreblog" prefWidth="64.0" text="Titre" />
+                                       <TableColumn fx:id="thtitredescriptionblog" prefWidth="141.0" text="Description" />
+                                       <TableColumn fx:id="thdatepublication" prefWidth="130.0" text="Date Publication" />
+                                       <TableColumn fx:id="thlieu" prefWidth="88.0" text="Lieu" />
+                                       <TableColumn fx:id="thrate" prefWidth="94.0" text="Rate" />
+                                   </columns>
+                                    <effect>
+                                       <InnerShadow height="255.0" radius="127.0" width="255.0">
+                                          <color>
+                                             <Color red="0.05882352963089943" green="0.5372549295425415" blue="0.8509804010391235" />
+                                          </color>
+                                       </InnerShadow>
+                                    </effect>
+                                 </TableView>
+                              </children>
+                           </HBox>
+                        </children>
+                     </AnchorPane>
+                     <AnchorPane fx:id="panformulaireblog" layoutX="7.0" layoutY="362.0" visible="false">
+                        <children>
+                           <VBox layoutX="2.0" prefHeight="262.0" prefWidth="285.0">
+                              <children>
+                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Titre :" />
+                                 <TextField fx:id="inputtitreblog" prefHeight="37.0" prefWidth="281.0" styleClass="rechBlog" stylesheets="@../CssBlog/Blog.css" />
+                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description :" />
+                                 <TextField fx:id="inputdescriptionblog" prefHeight="40.0" prefWidth="284.0" styleClass="rechBlog" stylesheets="@../CssBlog/Blog.css" />
+                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lieu :" />
+                                 <TextField fx:id="inputlieublog" prefHeight="39.0" prefWidth="274.0" styleClass="rechBlog" stylesheets="@../CssBlog/Blog.css" />
+                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rate" />
+                                 <TextField fx:id="inputrate" prefHeight="34.0" prefWidth="284.0" styleClass="rechBlog" stylesheets="@../CssBlog/Blog.css" />
+                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Categorie" />
+                                 <ChoiceBox fx:id="choicecategorie" prefWidth="150.0" />
+                              </children>
+                           </VBox>
+                        </children>
+                     </AnchorPane>
+                     <Button layoutX="721.0" layoutY="522.0" mnemonicParsing="false" onAction="#ajouterBlogFormulaire" prefHeight="39.0" prefWidth="116.0" text="Ajouter" />
+                     <AnchorPane fx:id="panimageblog" layoutX="374.0" layoutY="379.0" prefHeight="157.0" prefWidth="96.0" visible="false">
+                        <children>
+                           <VBox layoutX="-3.0" prefHeight="198.0" prefWidth="274.0">
+                              <children>
+                                 <ImageView fx:id="imageviewblog" fitHeight="163.0" fitWidth="163.0" pickOnBounds="true" preserveRatio="true" />
+                                 <Button fx:id="btnaddimage" mnemonicParsing="false" onAction="#InsertImage" prefHeight="56.0" prefWidth="292.0" text="Importer" />
+                              </children>
+                           </VBox>
+                        </children>
+                     </AnchorPane>
+                     <Pagination fx:id="paginationblog" layoutX="728.0" layoutY="361.0" prefHeight="53.0" prefWidth="69.0" />
+                     <AnchorPane fx:id="pancommentback" layoutX="3.0" layoutY="361.0" prefHeight="290.0" prefWidth="704.0" style="-fx-border-color: white;" visible="false">
+                        <children>
+                           <ListView fx:id="listviewcommentback" layoutX="5.0" layoutY="5.0" prefHeight="280.0" prefWidth="694.0" style="-fx-border-color: white;" />
+                        </children>
+                        <effect>
+                           <InnerShadow />
+                        </effect>
+                     </AnchorPane>
+                  </children>
+                  <effect>
+                     <DropShadow>
+                        <color>
+                           <Color red="0.20350876450538635" green="0.5477777719497681" blue="0.9157894849777222" />
+                        </color>
+                     </DropShadow>
+                  </effect>
+               </AnchorPane>
+               <AnchorPane fx:id="panstatblog" layoutX="100.0" layoutY="7.0" prefHeight="651.0" prefWidth="884.0" stylesheets="@../CssBlog/statBlog.css" visible="false">
+                  <children>
+                     <HBox layoutY="3.0" prefHeight="172.0" prefWidth="882.0">
+                        <children>
+                           <AnchorPane fx:id="panstat1" prefHeight="149.0" prefWidth="187.0" styleClass="panombre" stylesheets="@../CssBlog/statBlog.css">
+                              <HBox.margin>
+                                 <Insets left="20.0" />
+                              </HBox.margin>
+                              <children>
+                                 <Text fx:id="nombrecateg" fill="WHITE" layoutX="26.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8">
+                                    <font>
+                                       <Font name="System Bold Italic" size="24.0" />
+                                    </font>
+                                 </Text>
+                                 <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="124.0" layoutY="86.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Template/back/images/output-onlinegiftools%20(1).gif" />
+                                    </image>
+                                 </ImageView>
+                                 <Text layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Totale Categorie">
+                                    <font>
+                                       <Font name="System Bold Italic" size="18.0" />
+                                    </font>
+                                 </Text>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane fx:id="panstat11" layoutX="10.0" layoutY="10.0" prefHeight="149.0" prefWidth="187.0" styleClass="panombre2" stylesheets="@../CssBlog/statBlog.css">
+                              <padding>
+                                 <Insets left="20.0" />
+                              </padding>
+                              <HBox.margin>
+                                 <Insets left="20.0" />
+                              </HBox.margin>
+                              <children>
+                                 <Text fx:id="statnombreblog" fill="WHITE" layoutX="28.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9">
+                                    <font>
+                                       <Font name="System Bold Italic" size="24.0" />
+                                    </font>
+                                 </Text>
+                                 <ImageView fitHeight="58.0" fitWidth="55.0" layoutX="105.0" layoutY="86.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Template/back/images/online-pharmacy_5703576.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Text layoutX="8.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Totale Blogs" wrappingWidth="124.66015625">
+                                    <font>
+                                       <Font name="System Bold Italic" size="18.0" />
+                                    </font>
+                                 </Text>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane fx:id="panstat111" layoutX="197.0" layoutY="10.0" prefHeight="149.0" prefWidth="187.0" styleClass="panombre3" stylesheets="@../CssBlog/statBlog.css">
+                              <HBox.margin>
+                                 <Insets left="20.0" />
+                              </HBox.margin>
+                              <children>
+                                 <Text fill="WHITE" layoutX="24.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="24%">
+                                    <font>
+                                       <Font name="System Bold Italic" size="18.0" />
+                                    </font>
+                                 </Text>
+                                 <ImageView fitHeight="42.0" fitWidth="44.0" layoutX="131.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Template/back/images/output-onlinegiftools%20(3).gif" />
+                                    </image>
+                                 </ImageView>
+                                 <Text layoutX="6.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Totale Likes" wrappingWidth="124.66015625">
+                                    <font>
+                                       <Font name="System Bold Italic" size="18.0" />
+                                    </font>
+                                 </Text>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane fx:id="panstat1111" layoutX="384.0" layoutY="10.0" prefHeight="149.0" prefWidth="187.0" styleClass="panombre4" stylesheets="@../CssBlog/statBlog.css">
+                              <HBox.margin>
+                                 <Insets left="20.0" />
+                              </HBox.margin>
+                              <children>
+                                 <ImageView fitHeight="49.0" fitWidth="55.0" layoutX="124.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Template/back/images/output-onlinegiftools%20(4).gif" />
+                                    </image>
+                                 </ImageView>
+                                 <Text fill="WHITE" layoutX="25.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                                    <font>
+                                       <Font name="System Bold Italic" size="18.0" />
+                                    </font>
+                                 </Text>
+                                 <Text layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Totale Dislike" wrappingWidth="124.66015625">
+                                    <font>
+                                       <Font name="System Bold Italic" size="18.0" />
+                                    </font>
+                                 </Text>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </HBox>
+                     <AnchorPane layoutX="14.0" layoutY="209.0" prefHeight="436.0" prefWidth="855.0">
+                        <children>
+                           <AreaChart layoutX="14.0" layoutY="98.0" prefHeight="311.0" prefWidth="380.0">
+                             <xAxis>
+                               <CategoryAxis side="BOTTOM" />
+                             </xAxis>
+                             <yAxis>
+                               <NumberAxis side="LEFT" />
+                             </yAxis>
+                           </AreaChart>
+                           <BarChart layoutX="416.0" layoutY="102.0" prefHeight="300.0" prefWidth="425.0">
+                             <xAxis>
+                               <CategoryAxis side="BOTTOM" />
+                             </xAxis>
+                             <yAxis>
+                               <NumberAxis side="LEFT" />
+                             </yAxis>
+                           </BarChart>
+                           <Text layoutX="80.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre Commentaire par blog">
+                              <font>
+                                 <Font name="System Bold Italic" size="18.0" />
+                              </font>
+                           </Text>
+                           <Text layoutX="565.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre Blog par Categorie">
+                              <font>
+                                 <Font name="System Bold Italic" size="18.0" />
+                              </font>
+                           </Text>
+                        </children>
+                     </AnchorPane>
+                  </children>
+               </AnchorPane>
+         </children>
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+            <BorderPane.margin>
+               <Insets left="100.0" />
+            </BorderPane.margin>
+      </AnchorPane>
+   </center>
+</BorderPane>
+</AnchorPane>

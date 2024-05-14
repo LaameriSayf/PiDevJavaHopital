@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="509.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Inscription">
+   <children>
+      <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <AnchorPane layoutX="1.0" prefHeight="509.0" prefWidth="253.0">
+               <children>
+                  <ImageView fitHeight="466.0" fitWidth="255.0" layoutY="43.0">
+                     <image>
+                        <Image url="@imageinsc.PNG" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="41.0" fitWidth="255.0" layoutY="2.0">
+                     <image>
+                        <Image url="@logomediconnect.PNG" />
+                     </image>
+                  </ImageView>
+               </children></AnchorPane>
+            <AnchorPane layoutX="254.0" prefHeight="509.0" prefWidth="465.0">
+               <children>
+                  <Label layoutX="157.0" layoutY="20.0" prefHeight="35.0" prefWidth="214.0" text="Créer un compte" textFill="#378ce7">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Line endX="246.0" layoutX="165.0" layoutY="53.0" startX="-127.0" />
+                  <Label layoutX="15.0" layoutY="67.0" text="Numéro de la carte jaune:" />
+                  <TextField fx:id="numcarteTF" layoutX="162.0" layoutY="63.0" prefHeight="25.0" prefWidth="214.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                  <Button fx:id="close" layoutX="440.0" layoutY="10.0" mnemonicParsing="false" onAction="#close" styleClass="close" stylesheets="@DashboarsDesign.css" text="X" />
+                  <Button fx:id="minimise" layoutX="412.0" layoutY="10.0" mnemonicParsing="false" onAction="#minimise" styleClass="minimize" stylesheets="@DashboarsDesign.css" text="-" />
+                  <Label layoutX="131.0" layoutY="100.0" prefHeight="17.0" prefWidth="21.0" text="Cin:" />
+                  <TextField fx:id="cinTF" layoutX="162.0" layoutY="96.0" prefHeight="25.0" prefWidth="214.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                  <Label layoutX="122.0" layoutY="130.0" prefHeight="17.0" prefWidth="35.0" text="Nom:" />
+                  <TextField fx:id="nomTF" layoutX="162.0" layoutY="126.0" prefHeight="25.0" prefWidth="214.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                  <Label layoutX="109.0" layoutY="159.0" text="Prénom:" />
+                  <TextField fx:id="prenomTF" layoutX="162.0" layoutY="155.0" prefHeight="25.0" prefWidth="214.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                  <Label layoutX="123.0" layoutY="189.0" text="Genre:" />
+                  <Label layoutX="61.0" layoutY="217.0" text="Date de naissance:" />
+                  <Label layoutX="38.0" layoutY="260.0" text="Numéro de téléphone:" />
+                  <TextField fx:id="numtelTF" layoutX="162.0" layoutY="256.0" prefHeight="25.0" prefWidth="214.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                  <Label layoutX="125.0" layoutY="289.0" text="Email:" />
+                  <TextField fx:id="emailTF" layoutX="162.0" layoutY="285.0" prefHeight="25.0" prefWidth="214.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                  <Label layoutX="120.0" layoutY="345.0" prefHeight="17.0" prefWidth="44.0" text="Image:" />
+                  <Label layoutX="81.0" layoutY="430.0" prefHeight="17.0" prefWidth="78.0" text="Mot de passe:" />
+                  <AnchorPane layoutX="169.0" layoutY="320.0" prefHeight="100.0" prefWidth="136.0" stylesheets="@DashboarsDesign.css">
+                     <children>
+                        <ImageView fx:id="imageTF" fitHeight="71.0" fitWidth="137.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="inscription_insérerBtn" layoutY="74.0" mnemonicParsing="false" onAction="#inscriptionInsertImage" prefHeight="25.0" prefWidth="136.0" styleClass="import-btn" stylesheets="@DashboarsDesign.css" text="Insérer une image" />
+                     </children>
+                     <styleClass>
+                        <String fx:value="shadow" />
+                        <String fx:value="white-bg" />
+                     </styleClass>
+                  </AnchorPane>
+                  <Button fx:id="inscription_patientbtn" layoutX="114.0" layoutY="470.0" mnemonicParsing="false" onAction="#inscription_patient" prefHeight="25.0" prefWidth="246.0" styleClass="add-btn" stylesheets="@DashboarsDesign.css" text="S'inscrire" />
+                  <DatePicker fx:id="date_de_naissanceTF" layoutX="162.0" layoutY="213.0" prefHeight="25.0" prefWidth="214.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                  <PasswordField fx:id="passwordTF" layoutX="162.0" layoutY="426.0" prefHeight="25.0" prefWidth="214.0" styleClass="textfield" stylesheets="@DashboarsDesign.css" />
+                  <RadioButton fx:id="genreTF" layoutX="169.0" layoutY="189.0" mnemonicParsing="false" text="Homme" />
+                  <RadioButton fx:id="genreTF1" layoutX="251.0" layoutY="189.0" mnemonicParsing="false" text="Femme" />
+                  <Label fx:id="agelabel" layoutX="165.0" layoutY="238.0" prefHeight="17.0" prefWidth="206.0" text="L'Âge est:0" />
+                  <Label fx:id="passwordComplexityLabel" layoutX="159.0" layoutY="453.0" prefHeight="17.0" prefWidth="262.0" text="Le mot de passe est:" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>

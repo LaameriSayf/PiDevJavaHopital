@@ -1,5 +1,9 @@
 package Controller;
 
+import Model.RendezVous;
+import Service.RendezVousService;
+import Test.HelloApplication;
+import Util.MyDataBase;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -7,24 +11,26 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import entities.RendezVous;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import services.RendezVousService;
-import utils.MyDataBase;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -36,14 +42,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ListeRdvController implements Initializable {
     @FXML
-    private Button generateQRCodeButton;
+    private Button generateQRCode;
 
     @FXML
     private VBox qrcodeVbox;
@@ -71,19 +77,25 @@ public class ListeRdvController implements Initializable {
 
     @FXML
     private TableView<RendezVous> rdvTableView;
+    @FXML
+    private Text countnbtotal;
+    private Connection cnx;
 
+@FXML
+private Text nbrexpire;
     private ObservableList<RendezVous> rendezVousObservableList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         fetchRendezVousData();
         configureTableView();
-        refreshTableView();
-        rdvTableView.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
-                editRdv(null); // Call the editRdv method when double-clicked
-            }
-        });
+
+        RendezVousService rds=new RendezVousService(cnx);
+        int aa=  rds.nombreTotalRendezVous();
+        int dd= rds.nombreRendezVousDepasseDateAujourdhui();
+        countnbtotal.setText(""+aa);
+        nbrexpire.setText(""+dd);
     }
 
     private void fetchRendezVousData() {
@@ -94,7 +106,7 @@ public class ListeRdvController implements Initializable {
             while (queryOutput.next()) {
                 Integer queryRdvID = queryOutput.getInt("id");
                 String queryDesc = queryOutput.getString("description");
-                String queryHeure = queryOutput.getString("heurerendezvous");
+                LocalTime queryHeure = queryOutput.getTime("heurerendezvous").toLocalTime();
                 String queryFile = queryOutput.getString("file");
                 LocalDate queryDate = queryOutput.getDate("daterendezvous").toLocalDate();
                 rendezVousObservableList.add(new RendezVous(queryRdvID, queryDesc, queryDate, queryHeure, queryFile));
@@ -112,16 +124,14 @@ public class ListeRdvController implements Initializable {
         fileLabel.setCellValueFactory(new PropertyValueFactory<>("file"));
 
         FilteredList<RendezVous> filteredData = new FilteredList<>(rendezVousObservableList);
-        keywordTextField.textProperty().addListener((observable, oldvalue, newvalue) -> {
+        keywordTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(rendezVous -> {
-                if (newvalue == null || newvalue.trim().isEmpty()) {
+                if (newValue == null || newValue.trim().isEmpty()) {
                     return true;
                 }
-                String searchText = newvalue.toLowerCase();
-                return rendezVous.getHeurerdv().toLowerCase().contains(searchText) ||
-                        rendezVous.getDescription().toLowerCase().contains(searchText) ||
-                        rendezVous.getFile().toLowerCase().contains(searchText) ||
-                        rendezVous.getDaterdv().toString().contains(searchText);
+                String searchText = newValue.toLowerCase();
+                return rendezVous.getDescription().toLowerCase().contains(searchText) ||
+                        rendezVous.getFile().toLowerCase().contains(searchText);
             });
         });
 
@@ -130,11 +140,141 @@ public class ListeRdvController implements Initializable {
         rdvTableView.setItems(sortedData);
     }
 
+
+   /* @FXML
+    void editRdv(ActionEvent event) {
+        RendezVous selectedRdv = rdvTableView.getSelectionModel().getSelectedItem();
+        if (selectedRdv != null) {
+            // Create a custom dialog
+            Dialog<RendezVous> dialog = new Dialog<>();
+            dialog.setTitle("Edit Rendezvous");
+            dialog.setHeaderText("Edit Rendezvous Details");
+
+            // Set the button types (OK and Cancel)
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+            // Create text fields for each input
+            TextField dateField = new TextField(selectedRdv.getDaterdv().toString());
+            TextField descriptionField = new TextField(selectedRdv.getDescription());
+
+            // Set the content of the dialog pane
+            VBox content = new VBox();
+            content.getChildren().addAll(
+                    new Label("Date:"),
+                    dateField,
+                    new Label("Description:"),
+                    descriptionField
+            );
+            dialog.getDialogPane().setContent(content);
+
+            // Convert the result to a rendezvous object when the save button is clicked
+            dialog.setResultConverter(buttonType -> {
+                if (buttonType == saveButtonType) {
+                    return new RendezVous(
+                            selectedRdv.getId(),
+                            descriptionField.getText(),
+                            LocalDate.parse(dateField.getText()),
+                            selectedRdv.getFile()
+                    );
+                }
+                return null;
+            });
+
+            // Show the dialog and wait for the user response
+            Optional<RendezVous> result = dialog.showAndWait();
+
+            // If the user clicks save, update the rendezvous object and refresh the table view
+            result.ifPresent(newRdv -> {
+                try {
+                    RendezVousService rendezVousService = new RendezVousService(MyDataBase.getInstance().getConnection());
+                    rendezVousService.modifier(newRdv, newRdv.getId());
+                    showAlert("Success", "Rendezvous updated successfully.");
+                    refreshTableView();
+                } catch (SQLException e) {
+                    showAlert("Error", "Failed to update rendezvous: " + e.getMessage());
+                }
+            });
+        } else {
+            showAlert("Error", "No rendezvous selected.");
+        }
+    }
+*/
+
+
+
+    private void refreshTableView() {
+        rendezVousObservableList.clear(); // Clear the existing data
+
+        // Fetch the updated data from the database
+        fetchRendezVousData();
+
+        // Update the TableView with the refreshed data
+        rdvTableView.setItems(rendezVousObservableList);
+    }
+
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private Button logout_btn;
+    @FXML
+    void logout(javafx.event.ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/login.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage)  logout_btn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    @FXML
+    private ImageView backHalim;
+    @FXML
+    void backHalim(MouseEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/GestionEmploi.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage)  backHalim.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @FXML
+    private ImageView chatRoom;
+
+    @FXML
+    void chatRoom(MouseEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/Chat.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage)  backHalim.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     @FXML
     private void handleGenerateQRCode() {
 
 
-        String directoryPath = "C:\\Users\\Mega-PC\\Desktop\\PIDEV1\\src\\main\\QRCodes";
+        String directoryPath = "C:\\Users\\Mega-PC\\Desktop\\PiDevJavaHopital-main\\JavaPiHopital\\src\\main\\uploads";
 
         RendezVous selectedRendezVous = rdvTableView.getSelectionModel().getSelectedItem();
         if (selectedRendezVous != null) {
@@ -184,90 +324,6 @@ public class ListeRdvController implements Initializable {
             e.printStackTrace();
         }
 
-    }
-    @FXML
-    void editRdv(ActionEvent event) {
-        RendezVous selectedRdv = rdvTableView.getSelectionModel().getSelectedItem();
-        if (selectedRdv != null) {
-            // Create a custom dialog
-            Dialog<RendezVous> dialog = new Dialog<>();
-            dialog.setTitle("Edit Rendezvous");
-            dialog.setHeaderText("Edit Rendezvous Details");
-
-            // Set the button types (OK and Cancel)
-            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
-            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
-
-            // Create text fields for each input
-            TextField dateField = new TextField(selectedRdv.getDaterdv().toString());
-            TextField hourField = new TextField(selectedRdv.getHeurerdv());
-            TextField descriptionField = new TextField(selectedRdv.getDescription());
-
-            // Set the content of the dialog pane
-            VBox content = new VBox();
-            content.getChildren().addAll(
-                    new Label("Date:"),
-                    dateField,
-                    new Label("Hour:"),
-                    hourField,
-                    new Label("Description:"),
-                    descriptionField
-            );
-            dialog.getDialogPane().setContent(content);
-
-            // Convert the result to a rendezvous object when the save button is clicked
-            dialog.setResultConverter(buttonType -> {
-                if (buttonType == saveButtonType) {
-                    return new RendezVous(
-                            selectedRdv.getId(),
-                            descriptionField.getText(),
-                            LocalDate.parse(dateField.getText()),
-                            hourField.getText(),
-                            selectedRdv.getFile()
-                    );
-                }
-                return null;
-            });
-
-            // Show the dialog and wait for the user response
-            Optional<RendezVous> result = dialog.showAndWait();
-
-            // If the user clicks save, update the rendezvous object and refresh the table view
-            result.ifPresent(newRdv -> {
-                try {
-                    RendezVousService rendezVousService = new RendezVousService(MyDataBase.getInstance().getConnection());
-                    rendezVousService.modifier(newRdv, newRdv.getId());
-                    showAlert("Success", "Rendezvous updated successfully.");
-                    refreshTableView();
-                } catch (SQLException e) {
-                    showAlert("Error", "Failed to update rendezvous: " + e.getMessage());
-                }
-            });
-        } else {
-            showAlert("Error", "No rendezvous selected.");
-        }
-    }
-
-
-
-
-    private void refreshTableView() {
-        rendezVousObservableList.clear(); // Clear the existing data
-
-        // Fetch the updated data from the database
-        fetchRendezVousData();
-
-        // Update the TableView with the refreshed data
-        rdvTableView.setItems(rendezVousObservableList);
-    }
-
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
 

@@ -4,15 +4,18 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="779.0" prefWidth="1204.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ListeRdvController">
+<AnchorPane prefHeight="779.0" prefWidth="1204.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ListeRdvController">
    <children>
-      <TableView fx:id="rdvTableView" layoutX="181.0" layoutY="127.0" prefHeight="368.0" prefWidth="951.0">
+      <TableView fx:id="rdvTableView" layoutX="256.0" layoutY="127.0" prefHeight="368.0" prefWidth="876.0">
         <columns>
           <TableColumn fx:id="rdvID" prefWidth="75.0" text="ID" />
           <TableColumn fx:id="dateLabel" prefWidth="123.0" text="Date" />
@@ -21,14 +24,16 @@
             <TableColumn fx:id="fileLabel" prefWidth="223.0" text="Lettre" />
             <TableColumn prefWidth="173.0" text="Action" />
         </columns>
+         <effect>
+            <InnerShadow height="255.0" radius="127.0" width="255.0">
+               <color>
+                  <Color red="0.12037037312984467" green="0.6774691343307495" blue="1.0" />
+               </color>
+            </InnerShadow>
+         </effect>
       </TableView>
-      <TextField fx:id="keywordTextField" layoutX="327.0" layoutY="93.0" prefHeight="25.0" prefWidth="780.0" promptText="Chercher un rendezvous..." />
-      <Button fx:id="qrcodeLabel" layoutX="252.0" layoutY="504.0" mnemonicParsing="false" onAction="#handleGenerateQRCode" prefHeight="35.0" prefWidth="177.0" style="-fx-background-color: #378CE7; -fx-border-radius: 20px;" text="Generate" textFill="WHITE">
-         <font>
-            <Font name="Franklin Gothic Medium" size="18.0" />
-         </font>
-      </Button>
-      <ImageView fitHeight="69.0" fitWidth="76.0" layoutX="217.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true">
+      <TextField fx:id="keywordTextField" layoutX="507.0" layoutY="83.0" prefHeight="35.0" prefWidth="600.0" promptText="Chercher un rendezvous..." />
+           <ImageView fitHeight="51.0" fitWidth="45.0" layoutX="1119.0" layoutY="78.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@icons8-search-48.png" />
          </image>
@@ -40,8 +45,62 @@
                   <Image url="@qr-code.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="qrimageLabel" fitHeight="221.0" fitWidth="379.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="qrimageLabel" fitHeight="221.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </HBox>
+      <AnchorPane prefHeight="781.0" prefWidth="211.0" style="-fx-background-color: #378CE7;">
+         <children>
+            <ImageView fitHeight="56.0" fitWidth="204.0" layoutX="4.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@140c4943-bb90-4670-a606-0cfd229fc45b.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="193.0" fitWidth="200.0" layoutX="6.0" layoutY="580.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@téléchargé-removebg-preview.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="101.0" fitWidth="136.0" layoutX="49.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+
+            </ImageView>
+            <Text fill="WHITE" layoutX="7.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue Docteur" wrappingWidth="204.0">
+               <font>
+                  <Font name="Britannic Bold" size="24.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="37.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-----------------------" wrappingWidth="144.5" />
+            <Text fx:id="countnbtotal" fill="WHITE" layoutX="162.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7" />
+            <Text fill="WHITE" layoutX="4.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de rendez-vous ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="7.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de rendez-vous Expire" wrappingWidth="118.9189453125">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fx:id="nbrexpire" fill="WHITE" layoutX="148.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="213.0" layoutY="5.0" prefHeight="45.0" prefWidth="986.0" style="-fx-background-color: #378CE7; -fx-background-radius: 50;">
+         <children>
+            <Button fx:id="logout_btn" layoutX="828.0" layoutY="10.0" mnemonicParsing="false" onAction="#logout" styleClass="delete-btn" stylesheets="@DashboarsDesign.css" text="deconnecter">
+               <font>
+                  <Font name="Bernard MT Condensed" size="12.0" />
+               </font>
+            </Button>
+            <ImageView fx:id="backHalim" fitHeight="35.0" fitWidth="60.0" layoutX="23.0" layoutY="5.0" onMouseClicked="#backHalim" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Template/front/images/icons8-flèche-gauche.gif" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <ImageView fx:id="chatRoom" fitHeight="150.0" fitWidth="200.0" layoutX="999.0" layoutY="575.0" onMouseClicked="#chatRoom" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Capture%20d'écran%202024-05-09%20041150.png" />
+         </image></ImageView>
+      <Button fx:id="generateQRCode" layoutX="294.0" layoutY="511.0" mnemonicParsing="false" onAction="#handleGenerateQRCode" text="Generate" />
    </children>
 </AnchorPane>

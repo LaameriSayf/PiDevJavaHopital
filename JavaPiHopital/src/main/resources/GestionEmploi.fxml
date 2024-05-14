@@ -81,6 +81,11 @@
                   <Image url="@140c4943-bb90-4670-a606-0cfd229fc45b.jpg" />
                </image>
             </ImageView>
+            <Button fx:id="logout_btn" layoutX="1116.0" layoutY="8.0" mnemonicParsing="false" onAction="#logout" styleClass="delete-btn" stylesheets="@DashboarsDesign.css" text="se deconnecter">
+               <font>
+                  <Font name="Times New Roman" size="12.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </top>

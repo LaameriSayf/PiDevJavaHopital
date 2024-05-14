@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="core-3.5.31">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/JavaPiHopital/src/main/resources/jarHalim/core-3.5.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/JavaPiHopital/src/main/resources/jarHalim/core-java6-3.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/JavaPiHopital/src/main/resources/jarHalim/itextpdf-5.5.13.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/JavaPiHopital/src/main/resources/jarHalim/javase-3.5.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/JavaPiHopital/src/main/resources/jarHalim/javase-java6-3.2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

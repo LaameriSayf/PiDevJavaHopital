@@ -1,10 +1,13 @@
 package Controller;
 
+import Model.Emploi;
+import Service.EmpService;
+import Test.HelloApplication;
+import Util.MyDataBase;
 import com.twilio.Twilio;
 import com.twilio.exception.ApiException;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
-import entities.Emploi;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,10 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import services.EmpService;
-import utils.MyDataBase;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -53,7 +53,7 @@ public class EmploiController {
     @FXML
     private BorderPane borderNav;
 
-    
+
 
     private Stage stage;
     private Scene scene;
@@ -136,7 +136,7 @@ public class EmploiController {
         String description = descLabel.getText();
         LocalDate currentDate = LocalDate.now();
         String toPhoneNumber = "+21623340490";
-        String messageBody = "Emploi ajoute avec success";
+        String messageBody = "L'emploi de travail de cette semaine a été publié. Consultez Medi-Connect";
 
         if (titre.isEmpty() || description.isEmpty() || start == null || end == null || start.isAfter(end)) {
             if (titre.isEmpty()) {
@@ -226,9 +226,7 @@ public class EmploiController {
 
 
    }
-   public void modifierEmploi(ActionEvent event) {
 
-    }
     public static void sendSMS(String toPhoneNumber, String messageBody) {
         // Initialize Twilio
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
@@ -247,14 +245,42 @@ public class EmploiController {
             System.out.println("Failed to send SMS. Error: " + e.getMessage());
         }
     }
-    public void switchToRdv(javafx.event.ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/AjouterRdv.fxml"));
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
+    public void switchToRdv(javafx.event.ActionEvent event) {
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/AjouterRdv.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setTitle("medi_connect!");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace(); // or handle the exception according to your application's logic
+        } catch (Exception e) {
+            // Handle other exceptions, including InvocationTargetException
+            Throwable cause = e.getCause();
+            if (cause != null) {
+                cause.printStackTrace(); // print the cause's stack trace
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
+    @FXML
+    private Button logout_btn;
+    @FXML
+    void logout(javafx.event.ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/login.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage)  logout_btn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 
 

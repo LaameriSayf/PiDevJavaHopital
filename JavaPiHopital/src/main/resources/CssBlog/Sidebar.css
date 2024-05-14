@@ -1,0 +1,44 @@
+.sidebardash{
+    -fx-background-color: linear-gradient(to bottom right, #DFF5FF,#378CE7);
+    -fx-background-radius: 12px;
+}
+
+.rechGen{
+    -fx-background-color: #f2f2f2;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 4px 8px;
+    -fx-font-size: 12px;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.2) , 2,0,0,1 );
+    -fx-min-width: 100px;
+    -fx-min-height: 20px;
+}
+
+.tabcategorie{
+    -fx-border-radius: 12px;
+}
+.thtitre{
+    -fx-background-color: blue;
+}
+
+.styleecriture{
+
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+}
+.dark-mode {
+    /* Définissez les styles pour le mode sombre */
+    -fx-background-color: #1a1a1a;
+    -fx-text-fill: #ffffff;
+}
+.hboxsidebar:hover {
+    -fx-background-color: linear-gradient(to bottom right,#C147E9 , white); /* Dégradé linéaire du blanc à la couleur de votre choix */
+    -fx-background-radius: 12px;
+    -fx-border-width: 2px; /* Épaisseur du contour */
+    -fx-border-radius: 12px; /* Rayon du contour, correspondant à celui de l'arrière-plan */
+}
+
+

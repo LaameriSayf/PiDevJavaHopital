@@ -202,7 +202,7 @@ public class CategorieController implements Initializable {
             // Charger l'image à partir du fichier sélectionné
             Image image = new Image(selectedFile.toURI().toString());
 
-            File destinationDirectory = new File("C:\\Users\\ASUS\\Desktop\\PiDevJava\\PiDevJavaHopital\\JavaPiHopital\\src\\main\\resources\\uploads");
+            File destinationDirectory = new File("C:\\Users\\ASUS\\Desktop\\Pidev2024\\PiDevJavaHopital\\JavaPiHopital\\src\\main\\resources\\uploads");
 
             Path destinationPath = null;
             try {
@@ -318,7 +318,7 @@ public static void sendEmail(String recipientEmail) {
 
         // Create and add the image part of the message
         MimeBodyPart imagePart = new MimeBodyPart();
-        DataSource source = new FileDataSource("C:\\Users\\ASUS\\Desktop\\PiDevJava\\PiDevJavaHopital\\JavaPiHopital\\src\\main\\resources\\uploads\\logo1.png"); // Replace with the path to your image file
+        DataSource source = new FileDataSource("C:\\Users\\ASUS\\Desktop\\Pidev2024\\PiDevJavaHopital\\JavaPiHopital\\src\\main\\resources\\uploads\\logo1.png"); // Replace with the path to your image file
         imagePart.setDataHandler(new DataHandler(source));
         imagePart.setHeader("Content-ID", "<image>");
         multipart.addBodyPart(imagePart);
@@ -513,48 +513,6 @@ public static void sendEmail(String recipientEmail) {
 
     }
 
-
-    /* @FXML
-    void rechercher(ActionEvent event) {
-        table.getItems().clear();
-        table.getItems().addAll(searchList(recherche.getText(), cs.getData()));
-    }*/
-
-    /*private List<Categorie> searchList(String searchWords, List<Categorie> data) {
-        List<String> searchWordsArray = Arrays.asList(searchWords.trim().split(" "));
-
-        return data.stream().filter(input -> {
-            boolean matchNom = false;
-            boolean matchType = false;
-            boolean matchDescription = false;
-
-            // Vérifie si le nom, le type ou la description contient l'un des mots derecherche
-            for (String word : searchWordsArray) {
-                if (input.getNom_cat().toLowerCase().contains(word.toLowerCase())) {
-                    matchNom = true;
-                }
-                if (input.getType_cat().toLowerCase().contains(word.toLowerCase())) {
-                    matchType = true;
-                }
-                if (input.getDescription_cat().toLowerCase().contains(word.toLowerCase())) {
-                    matchDescription = true;
-                }
-            }
-
-            // Renvoie vrai si le nom, le type ou la description correspond à l'un des mots derecherche
-            return matchNom || matchType || matchDescription;
-        }).collect(Collectors.toList());
-    }*/
-
-    /*private List<String> searchList1(String searchWords, List<String> listOfStrings) {
-
-        List<String> searchWordsArray = Arrays.asList(searchWords.trim().split(" "));
-
-        return listOfStrings.stream().filter(input -> {
-            return searchWordsArray.stream().allMatch(word ->
-                    input.toLowerCase().contains(word.toLowerCase()));
-        }).collect(Collectors.toList());
-    }*/
     private List<Medicament> obtenirTop5MedicamentsProchesExpiration() {
         // Supposons que vous avez une liste de médicaments quelconque
         List<Medicament> tousLesMedicaments = ms.getData();
